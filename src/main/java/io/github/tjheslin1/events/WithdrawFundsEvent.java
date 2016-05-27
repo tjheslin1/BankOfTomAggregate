@@ -1,10 +1,10 @@
 package io.github.tjheslin1.events;
 
-public class DepositFundsEvent implements Event {
+public class WithdrawFundsEvent implements Event {
 
     public final int amount;
 
-    public DepositFundsEvent(int amount) {
+    public WithdrawFundsEvent(int amount) {
         this.amount = amount;
     }
 
