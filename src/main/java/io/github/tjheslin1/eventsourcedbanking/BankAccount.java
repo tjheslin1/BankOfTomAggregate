@@ -1,4 +1,4 @@
-package io.github.tjheslin1.banking;
+package io.github.tjheslin1.eventsourcedbanking;
 
 public class BankAccount {
 
@@ -25,7 +25,6 @@ public class BankAccount {
         BankAccount that = (BankAccount) o;
 
         return balance == that.balance;
-
     }
 
     @Override

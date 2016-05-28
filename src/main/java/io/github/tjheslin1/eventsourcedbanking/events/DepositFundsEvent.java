@@ -1,11 +1,15 @@
-package io.github.tjheslin1.events;
+package io.github.tjheslin1.eventsourcedbanking.events;
 
 public class DepositFundsEvent implements Event {
 
     public final int amount;
 
-    public DepositFundsEvent(int amount) {
+    private DepositFundsEvent(int amount) {
         this.amount = amount;
+    }
+
+    public static DepositFundsEvent depositFundsEvent(int amount) {
+        return new DepositFundsEvent(amount);
     }
 
     @Override
