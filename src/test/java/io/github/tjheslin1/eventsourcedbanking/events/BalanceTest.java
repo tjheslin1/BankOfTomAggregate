@@ -1,11 +1,11 @@
 package io.github.tjheslin1.eventsourcedbanking.events;
 
+import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 
 import static io.github.tjheslin1.eventsourcedbanking.events.DepositFundsEvent.depositFundsEvent;
-import static org.assertj.core.api.Assertions.assertThat;
 
-public class BalanceTest {
+public class BalanceTest implements WithAssertions {
 
     @Test
     public void updateBalanceByDepositFundsEvent() {

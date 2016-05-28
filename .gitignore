@@ -1,5 +1,2 @@
-# Package Files #
-*.jar
-
 /.idea
 target/
