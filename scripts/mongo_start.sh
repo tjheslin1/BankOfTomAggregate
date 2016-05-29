@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
 
-docker pull mongo:3.2.6
-docker run -p 27017:27017 --name mongo_event_sourced_banking -d mongo
+#docker run --name mongo_banking -d -p 27017:27017 -v /data/mongo-docker:/data/db mongo-banking
+docker run --name mongo_banking -d -p 27017:27017 mongo-banking
+#docker run --name mongo_banking -d -p 27017:27017 mongo-banking-${project.version}
+
+exit $?
