@@ -1,6 +1,7 @@
-FROM mongo
+FROM mongo:3.2.1
 
-#VOLUME ["/data/db"]
+VOLUME ["/data/db"]
+WORKDIR /data
 
 EXPOSE 27017
 

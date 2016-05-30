@@ -34,6 +34,26 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <artifactId>exec-maven-plugin</artifactId>
+                <groupId>org.codehaus.mojo</groupId>
+                <executions>
+                    <execution>
+                        <id>mongo build</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+
+                        <configuration>
+                            <workingDirectory>scripts</workingDirectory>
+                            <!--TODO fix-->
+                            <executable>mongo_build.sh</executable>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
     <dependencies>
@@ -58,6 +78,24 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongo-java-driver</artifactId>
+            <version>3.2.1</version>
+        </dependency>
+
+        <!-- Embedded mongo database -->
+        <!-- http://stackoverflow.com/questions/6437226/embedded-mongodb-when-running-integration-tests -->
+        <!-- Be careful with this solution. It just gathers information about the current
+        operating system and downloads the appropriate platform-specific MongoDB binaries
+        from the internet, runs the daemon and does some other configuration stuff. As an
+        enterprise solution, this is not. Mocking may be the only real option.
+            – James Watkins Aug 5 '13 at 18:17 -->
+        <dependency>
+            <groupId>de.flapdoodle.embed</groupId>
+            <artifactId>de.flapdoodle.embed.mongo</artifactId>
+            <version>1.50.5</version>
+        </dependency>
     </dependencies>
 
     <profiles>
