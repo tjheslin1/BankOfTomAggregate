@@ -19,7 +19,6 @@ public class PropertiesReaderTest implements WithAssertions, WithMockito {
         verify(properties).load(inputStream);
     }
 
-    // TODO useful test?
     @Test
     public void readProperty() throws Exception {
         Properties properties = mock(Properties.class);

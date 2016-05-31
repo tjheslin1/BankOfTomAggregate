@@ -47,8 +47,7 @@
                         </goals>
 
                         <configuration>
-                            <workingDirectory>scripts</workingDirectory>
-                            <!--TODO fix-->
+                            <workingDirectory>${project.basedir}/scripts</workingDirectory>
                             <executable>mongo_build.sh</executable>
                         </configuration>
                     </execution>
