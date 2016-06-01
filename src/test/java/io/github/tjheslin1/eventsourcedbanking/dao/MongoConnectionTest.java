@@ -22,7 +22,7 @@ public class MongoConnectionTest implements WithMockito, WithAssertions {
     }
 
     @Test
-    public void connectToDatabaseContainer() {
+    public void connectToDatabaseContainerTest() {
         // TODO test this
     }
 }

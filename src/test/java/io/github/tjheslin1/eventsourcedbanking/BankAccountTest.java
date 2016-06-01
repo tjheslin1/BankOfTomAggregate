@@ -13,7 +13,7 @@ import static io.github.tjheslin1.eventsourcedbanking.events.WithdrawFundsBalanc
 public class BankAccountTest {
 
     @Test
-    public void considerEventsToBankAccountToFindUpToDateBalance() {
+    public void considerEventsToBankAccountToFindUpToDateBalanceTest() {
         List<BalanceEvent> balanceEvents = Arrays.asList(depositFundsEvent(10), withdrawFundsEvent(5));
 
         BankAccount bankAccount = bankAccountProjection(7);

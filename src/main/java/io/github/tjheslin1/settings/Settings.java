@@ -11,4 +11,8 @@ public class Settings {
     public int mongoDbPort() {
         return Integer.parseInt(propertiesReader.readProperty("mongo.db.port"));
     }
+
+    public String mongoDbName() {
+        return propertiesReader.readProperty("mongo.db.name");
+    }
 }

@@ -1,17 +1,19 @@
 package io.github.tjheslin1.settings;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import static java.lang.String.format;
+
 public class PropertiesReader {
 
+    private String environment;
     private Properties properties;
-    private InputStream inputStream;
 
-    public PropertiesReader(Properties properties, InputStream inputStream) {
-        this.properties = properties;
-        this.inputStream = inputStream;
+    public PropertiesReader(String environment) {
+        this.environment = environment;
 
         loadProperties();
     }
@@ -22,9 +24,14 @@ public class PropertiesReader {
 
     private void loadProperties() {
         try {
+            InputStream inputStream = new FileInputStream(propertiesFileName());
             properties.load(inputStream);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IllegalStateException("Unable to read file: " + propertiesFileName());
         }
+    }
+
+    private String propertiesFileName() {
+        return format("src/main/resources/%s.properties", environment);
     }
 }
