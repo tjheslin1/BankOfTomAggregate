@@ -7,10 +7,14 @@ import io.github.tjheslin1.eventsourcedbanking.events.WithdrawFundsBalanceEvent;
 public class JsonRenderer {
 
     public static BasicDBObject renderDepositFundsEvent(DepositFundsBalanceEvent depositFundsEvent) {
-        return new BasicDBObject(depositFundsEvent.timeOfEvent(), new Object[]{depositFundsEvent.amount()});
+        BasicDBObject depositDoc = new BasicDBObject(depositFundsEvent.timeOfEvent(), DepositFundsBalanceEvent.class.getSimpleName());
+        depositDoc.append("amount", depositFundsEvent.amount());
+        return depositDoc;
     }
 
     public static BasicDBObject renderWithdrawFundsEvent(WithdrawFundsBalanceEvent withdrawFundsEvent) {
-        return new BasicDBObject(withdrawFundsEvent.timeOfEvent(), new Object[]{withdrawFundsEvent.amount()});
+        BasicDBObject withdrawDoc = new BasicDBObject(withdrawFundsEvent.timeOfEvent(), WithdrawFundsBalanceEvent.class.getSimpleName());
+        withdrawDoc.append("amount", withdrawFundsEvent.amount());
+        return withdrawDoc;
     }
 }
