@@ -45,7 +45,7 @@
                         <configuration>
                             <target>
                                 <exec executable="/bin/bash">
-                                    <arg value="/Users/Tom/GitHub/EventSourcedBanking/scripts/mongo_build.sh"/>
+                                    <arg value="${project.basedir}/scripts/mongo_build.sh"/>
                                 </exec>
                             </target>
 
