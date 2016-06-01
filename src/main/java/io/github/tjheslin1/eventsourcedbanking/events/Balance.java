@@ -1,24 +1,24 @@
 package io.github.tjheslin1.eventsourcedbanking.events;
 
-public class Balance implements EventVisitor {
+public class Balance implements BalanceEventVisitor {
 
-    private int balance;
+    private int funds;
 
     public Balance() {
-        balance = 0;
+        funds = 0;
     }
 
     public int balance() {
-        return balance;
+        return funds;
     }
 
     @Override
-    public void consider(DepositFundsEvent depositFunds) {
-        balance += depositFunds.amount;
+    public void consider(DepositFundsBalanceEvent depositFunds) {
+        funds += depositFunds.amount();
     }
 
     @Override
-    public void consider(WithdrawFundsEvent withdrawFunds) {
-        balance -= withdrawFunds.amount;
+    public void consider(WithdrawFundsBalanceEvent withdrawFunds) {
+        funds -= withdrawFunds.amount();
     }
 }

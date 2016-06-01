@@ -35,6 +35,7 @@
                 </configuration>
             </plugin>
 
+            <!-- mongo_build.sh -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
@@ -44,11 +45,13 @@
                         <phase>generate-resources</phase>
                         <configuration>
                             <target>
-                                <exec executable="/bin/bash">
-                                    <arg value="${project.basedir}/scripts/mongo_build.sh"/>
+                                <exec dir="${project.basedir}/scripts" executable="/bin/bash">
+                                    <arg value="mongo_build.sh"/>
+                                </exec>
+                                <exec dir="${project.basedir}/scripts" executable="/bin/bash">
+                                    <arg value="mongo_start.sh"/>
                                 </exec>
                             </target>
-
                         </configuration>
                         <goals>
                             <goal>run</goal>
@@ -86,13 +89,6 @@
             <version>3.2.1</version>
         </dependency>
 
-        <!-- Embedded mongo database -->
-        <!-- http://stackoverflow.com/questions/6437226/embedded-mongodb-when-running-integration-tests -->
-        <!-- Be careful with this solution. It just gathers information about the current
-        operating system and downloads the appropriate platform-specific MongoDB binaries
-        from the internet, runs the daemon and does some other configuration stuff. As an
-        enterprise solution, this is not. Mocking may be the only real option.
-            – James Watkins Aug 5 '13 at 18:17 -->
         <dependency>
             <groupId>de.flapdoodle.embed</groupId>
             <artifactId>de.flapdoodle.embed.mongo</artifactId>
