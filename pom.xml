@@ -36,20 +36,23 @@
             </plugin>
 
             <plugin>
-                <artifactId>exec-maven-plugin</artifactId>
-                <groupId>org.codehaus.mojo</groupId>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.8</version>
                 <executions>
                     <execution>
-                        <id>mongo build</id>
                         <phase>generate-resources</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-
                         <configuration>
-                            <workingDirectory>${project.basedir}/scripts</workingDirectory>
-                            <executable>mongo_build.sh</executable>
+                            <target>
+                                <exec executable="/bin/bash">
+                                    <arg value="/Users/Tom/GitHub/EventSourcedBanking/scripts/mongo_build.sh"/>
+                                </exec>
+                            </target>
+
                         </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>

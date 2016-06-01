@@ -1,8 +1,5 @@
 package io.github.tjheslin1.learning;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -21,9 +18,8 @@ import org.assertj.core.api.WithAssertions;
 import org.bson.Document;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
-
-import java.util.Date;
 
 // http://mongodb.github.io/mongo-java-driver/2.13/getting-started/quick-tour/
 public class EmbeddedMongoTest implements WithAssertions, WithMockito {
@@ -56,6 +52,7 @@ public class EmbeddedMongoTest implements WithAssertions, WithMockito {
         }
     }
 
+    @Ignore
     @Test
     public void shouldCreateNewObjectInEmbeddedMongoDbv3() {
         MongoDatabase db = mongo.getDatabase(DATABASE_NAME);
