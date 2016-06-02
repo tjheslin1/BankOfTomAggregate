@@ -9,11 +9,12 @@ import static java.lang.String.format;
 
 public class PropertiesReader {
 
-    private String environment;
+    private final String environment;
     private Properties properties;
 
     public PropertiesReader(String environment) {
         this.environment = environment;
+        this.properties = new Properties();
 
         loadProperties();
     }
@@ -23,8 +24,7 @@ public class PropertiesReader {
     }
 
     private void loadProperties() {
-        try {
-            InputStream inputStream = new FileInputStream(propertiesFileName());
+        try (InputStream inputStream = new FileInputStream(propertiesFileName())) {
             properties.load(inputStream);
         } catch (IOException e) {
             throw new IllegalStateException("Unable to read file: " + propertiesFileName());
