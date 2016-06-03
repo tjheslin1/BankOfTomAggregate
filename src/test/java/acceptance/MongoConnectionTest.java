@@ -5,12 +5,13 @@ import com.mongodb.MongoClientOptions;
 import com.mongodb.MongoClientOptions.Builder;
 import com.mongodb.ServerAddress;
 import io.github.tjheslin1.settings.Settings;
+import io.github.tjheslin1.settings.TestSettings;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 
 public class MongoConnectionTest implements WithAssertions {
 
-    private Settings settings = new Settings();
+    private Settings settings = new TestSettings();
 
     @Test
     public void connectToDatabaseContainerTest() throws Exception {

@@ -4,6 +4,7 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.MongoDatabase;
 import io.github.tjheslin1.WithMockito;
 import io.github.tjheslin1.settings.Settings;
+import io.github.tjheslin1.settings.TestSettings;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,7 +17,7 @@ public class MongoOperationsTest implements WithMockito, WithAssertions {
     private final String NON_EXISTENT_COLLECTION = "new_collection_2";
 
     private MongoDatabase mongoDb;
-    private Settings settings = new Settings();
+    private Settings settings = new TestSettings();
 
     @Before
     public void before() {
