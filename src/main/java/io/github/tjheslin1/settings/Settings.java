@@ -4,6 +4,11 @@ public class Settings {
 
     private PropertiesReader propertiesReader;
 
+    // TODO this bad?
+    public Settings() {
+        this.propertiesReader = new PropertiesReader("localhost");
+    }
+
     public Settings(PropertiesReader propertiesReader) {
         this.propertiesReader = propertiesReader;
     }

@@ -8,6 +8,7 @@ import io.github.tjheslin1.settings.PropertiesReader;
 import io.github.tjheslin1.settings.Settings;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static io.github.tjheslin1.eventsourcedbanking.events.DepositFundsBalanceEvent.depositFundsEvent;
@@ -24,6 +25,8 @@ public class EventWriterTest implements WithAssertions {
         eventWriter = new EventWriter(mongoConnection, settings);
     }
 
+    // TODO finish once MongoConnectionTest is done
+    @Ignore
     @Test
     public void writeEventToDatabaseTest() throws Exception {
         DepositFundsBalanceEvent depositFundsBalanceEvent = depositFundsEvent(6);
