@@ -46,6 +46,9 @@
                         <configuration>
                             <target>
                                 <exec dir="${project.basedir}/scripts" executable="/bin/bash">
+                                    <arg value="mongo_remove.sh"/>
+                                </exec>
+                                <exec dir="${project.basedir}/scripts" executable="/bin/bash">
                                     <arg value="mongo_build.sh"/>
                                 </exec>
                                 <exec dir="${project.basedir}/scripts" executable="/bin/bash">

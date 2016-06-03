@@ -15,8 +15,8 @@ import static io.github.tjheslin1.eventsourcedbanking.events.DepositFundsBalance
 
 public class EventWriterTest implements WithAssertions {
 
-    private MongoConnection mongoConnection = new MongoConnection();
     private Settings settings = new TestSettings();
+    private MongoConnection mongoConnection = new MongoConnection(settings);
 
     private EventWriter eventWriter;
 
