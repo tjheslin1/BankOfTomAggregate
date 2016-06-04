@@ -1,9 +1,9 @@
 package io.github.tjheslin1.eventsourcedbanking.dao;
 
-import com.mongodb.BasicDBObject;
 import io.github.tjheslin1.WithMockito;
 import io.github.tjheslin1.eventsourcedbanking.events.WithdrawFundsBalanceEvent;
 import org.assertj.core.api.WithAssertions;
+import org.bson.Document;
 import org.junit.Test;
 
 public class WithdrawFundsRendererTest implements WithMockito, WithAssertions {
@@ -18,11 +18,10 @@ public class WithdrawFundsRendererTest implements WithMockito, WithAssertions {
         when(withdrawFundsEvent.timeOfEvent()).thenReturn(EXAMPLE_DATE);
         when(withdrawFundsEvent.collectionName()).thenReturn(WithdrawFundsBalanceEvent.class.getSimpleName());
 
-        BasicDBObject expectedDbDoc = new BasicDBObject(EXAMPLE_DATE, withdrawFundsEvent.collectionName());
+        Document expectedDbDoc = new Document(EXAMPLE_DATE, withdrawFundsEvent.collectionName());
         expectedDbDoc.append("amount", 4);
 
-        BasicDBObject actualDbDoc = new WithdrawFundsRenderer().renderBalanceEvent(withdrawFundsEvent);
-
+        Document actualDbDoc = new WithdrawFundsRenderer().renderBalanceEvent(withdrawFundsEvent);
         assertThat(actualDbDoc).isEqualTo(expectedDbDoc);
     }
 }

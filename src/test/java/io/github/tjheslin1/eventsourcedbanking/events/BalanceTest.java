@@ -13,7 +13,6 @@ public class BalanceTest implements WithAssertions {
         DepositFundsBalanceEvent depositFundsEvent = depositFundsEvent(7);
 
         depositFundsEvent.visit(balance);
-
         assertThat(balance.balance()).isEqualTo(7);
     }
 }

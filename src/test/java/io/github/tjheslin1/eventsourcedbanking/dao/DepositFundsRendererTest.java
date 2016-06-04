@@ -1,9 +1,9 @@
 package io.github.tjheslin1.eventsourcedbanking.dao;
 
-import com.mongodb.BasicDBObject;
 import io.github.tjheslin1.WithMockito;
 import io.github.tjheslin1.eventsourcedbanking.events.DepositFundsBalanceEvent;
 import org.assertj.core.api.WithAssertions;
+import org.bson.Document;
 import org.junit.Test;
 
 public class DepositFundsRendererTest implements WithMockito, WithAssertions {
@@ -18,11 +18,10 @@ public class DepositFundsRendererTest implements WithMockito, WithAssertions {
         when(depositFundsEvent.timeOfEvent()).thenReturn(EXAMPLE_DATE);
         when(depositFundsEvent.collectionName()).thenReturn(DepositFundsBalanceEvent.class.getSimpleName());
 
-        BasicDBObject expectedDbDoc = new BasicDBObject(EXAMPLE_DATE, depositFundsEvent.collectionName());
+        Document expectedDbDoc = new Document(EXAMPLE_DATE, depositFundsEvent.collectionName());
         expectedDbDoc.append("amount", 4);
 
-        BasicDBObject actualDbDoc = new DepositFundsRenderer().renderBalanceEvent(depositFundsEvent);
-
+        Document actualDbDoc = new DepositFundsRenderer().renderBalanceEvent(depositFundsEvent);
         assertThat(actualDbDoc).isEqualTo(expectedDbDoc);
     }
 }

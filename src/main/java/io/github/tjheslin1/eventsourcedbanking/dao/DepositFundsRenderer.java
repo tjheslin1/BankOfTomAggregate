@@ -1,16 +1,16 @@
 package io.github.tjheslin1.eventsourcedbanking.dao;
 
-import com.mongodb.BasicDBObject;
 import io.github.tjheslin1.eventsourcedbanking.events.BalanceEvent;
 import io.github.tjheslin1.eventsourcedbanking.events.DepositFundsBalanceEvent;
+import org.bson.Document;
 
 public class DepositFundsRenderer implements JsonRenderer {
 
     @Override
-    public BasicDBObject renderBalanceEvent(BalanceEvent balanceEvent) {
+    public Document renderBalanceEvent(BalanceEvent balanceEvent) {
         DepositFundsBalanceEvent depositFundsEvent = (DepositFundsBalanceEvent) balanceEvent;
 
-        BasicDBObject depositDoc = new BasicDBObject(depositFundsEvent.timeOfEvent(), depositFundsEvent.collectionName());
+        Document depositDoc = new Document(depositFundsEvent.timeOfEvent(), depositFundsEvent.collectionName());
         depositDoc.append("amount", depositFundsEvent.amount());
         return depositDoc;
     }

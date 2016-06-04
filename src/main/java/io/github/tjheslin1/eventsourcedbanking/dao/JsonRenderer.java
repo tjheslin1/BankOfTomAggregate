@@ -1,8 +1,8 @@
 package io.github.tjheslin1.eventsourcedbanking.dao;
 
-import com.mongodb.BasicDBObject;
 import io.github.tjheslin1.eventsourcedbanking.events.BalanceEvent;
+import org.bson.Document;
 
 public interface JsonRenderer {
-    BasicDBObject renderBalanceEvent(BalanceEvent balanceEvent);
+    Document renderBalanceEvent(BalanceEvent balanceEvent);
 }

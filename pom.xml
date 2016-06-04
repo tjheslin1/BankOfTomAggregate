@@ -86,6 +86,9 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- TODO com.mongodb.MongoSocketReadException: Prematurely reached end of stream
+            for EventWriterTest
+         -->
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongo-java-driver</artifactId>
