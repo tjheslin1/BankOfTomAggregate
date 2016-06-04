@@ -29,4 +29,9 @@ public class DepositFundsBalanceEvent implements BalanceEvent {
     public void visit(BalanceEventVisitor balanceEventVisitor) {
         balanceEventVisitor.consider(this);
     }
+
+    @Override
+    public String collectionName() {
+        return getClass().getSimpleName();
+    }
 }

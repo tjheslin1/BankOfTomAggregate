@@ -16,8 +16,9 @@ public class DepositFundsRendererTest implements WithMockito, WithAssertions {
     public void renderDepositFundsEventTest() {
         when(depositFundsEvent.amount()).thenReturn(4);
         when(depositFundsEvent.timeOfEvent()).thenReturn(EXAMPLE_DATE);
+        when(depositFundsEvent.collectionName()).thenReturn(DepositFundsBalanceEvent.class.getSimpleName());
 
-        BasicDBObject expectedDbDoc = new BasicDBObject(EXAMPLE_DATE, DepositFundsBalanceEvent.class.getSimpleName());
+        BasicDBObject expectedDbDoc = new BasicDBObject(EXAMPLE_DATE, depositFundsEvent.collectionName());
         expectedDbDoc.append("amount", 4);
 
         BasicDBObject actualDbDoc = new DepositFundsRenderer().renderBalanceEvent(depositFundsEvent);
