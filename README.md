@@ -9,5 +9,5 @@ Example event:
 --------------
 Account **Y** has £**X** deposited into it at date/time **Z**.
 
---------------
+
 These 'events' are then read from the database, ordered by time, to *project* the current state of the bank account.
