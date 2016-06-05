@@ -9,17 +9,17 @@ public class DepositFundsBalanceEvent implements BalanceEvent {
 
     private LocalDateTime timeOfEvent;
 
-    private DepositFundsBalanceEvent(int amount) {
+    private DepositFundsBalanceEvent(int amount, LocalDateTime timeOfEvent) {
         this.amount = amount;
-        this.timeOfEvent = LocalDateTime.now();
+        this.timeOfEvent = timeOfEvent;
     }
 
     public int amount() {
         return amount;
     }
 
-    public static DepositFundsBalanceEvent depositFundsEvent(int amount) {
-        return new DepositFundsBalanceEvent(amount);
+    public static DepositFundsBalanceEvent depositFundsEvent(int amount, LocalDateTime timeOfEvent) {
+        return new DepositFundsBalanceEvent(amount, timeOfEvent);
     }
 
     @Override

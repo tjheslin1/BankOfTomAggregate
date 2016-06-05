@@ -9,17 +9,17 @@ public class WithdrawFundsBalanceEvent implements BalanceEvent {
 
     private LocalDateTime timeOfEvent;
 
-    private WithdrawFundsBalanceEvent(int amount) {
+    private WithdrawFundsBalanceEvent(int amount, LocalDateTime timeOfEvent) {
         this.amount = amount;
-        this.timeOfEvent = LocalDateTime.now();
+        this.timeOfEvent = timeOfEvent;
     }
 
     public int amount() {
         return amount;
     }
 
-    public static WithdrawFundsBalanceEvent withdrawFundsEvent(int amount) {
-        return new WithdrawFundsBalanceEvent(amount);
+    public static WithdrawFundsBalanceEvent withdrawFundsEvent(int amount, LocalDateTime timeOfEvent) {
+        return new WithdrawFundsBalanceEvent(amount, timeOfEvent);
     }
 
     @Override
