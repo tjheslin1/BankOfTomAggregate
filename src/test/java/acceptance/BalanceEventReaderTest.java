@@ -4,7 +4,7 @@ import org.assertj.core.api.WithAssertions;
 import org.junit.Ignore;
 import org.junit.Test;
 
-public class EventReaderTest implements WithAssertions {
+public class BalanceEventReaderTest implements WithAssertions {
 
     @Ignore
     @Test

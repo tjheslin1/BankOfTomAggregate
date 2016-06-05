@@ -4,7 +4,7 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import io.github.tjheslin1.eventsourcedbanking.dao.MongoConnection;
 import io.github.tjheslin1.eventsourcedbanking.dao.writing.DepositFundsMarshaller;
-import io.github.tjheslin1.eventsourcedbanking.dao.writing.EventWriter;
+import io.github.tjheslin1.eventsourcedbanking.dao.writing.BalanceEventWriter;
 import io.github.tjheslin1.eventsourcedbanking.dao.writing.WithdrawFundsMarshaller;
 import io.github.tjheslin1.eventsourcedbanking.events.DepositFundsBalanceEvent;
 import io.github.tjheslin1.eventsourcedbanking.events.WithdrawFundsBalanceEvent;
@@ -22,12 +22,12 @@ import java.time.LocalDateTime;
 import static io.github.tjheslin1.eventsourcedbanking.events.DepositFundsBalanceEvent.depositFundsEvent;
 import static io.github.tjheslin1.eventsourcedbanking.events.WithdrawFundsBalanceEvent.withdrawFundsEvent;
 
-public class EventWriterTest implements WithAssertions {
+public class BalanceEventWriterTest implements WithAssertions {
 
     private Settings settings = new TestSettings();
     private MongoConnection mongoConnection = new MongoConnection(settings);
 
-    private EventWriter eventWriter;
+    private BalanceEventWriter eventWriter;
     private MongoClient mongoClient;
 
     private final Clock clock = Clock.systemDefaultZone();
@@ -35,7 +35,7 @@ public class EventWriterTest implements WithAssertions {
     @Before
     public void before() {
         mongoClient = mongoConnection.connection();
-        eventWriter = new EventWriter(mongoClient, settings);
+        eventWriter = new BalanceEventWriter(mongoClient, settings);
     }
 
     @After
