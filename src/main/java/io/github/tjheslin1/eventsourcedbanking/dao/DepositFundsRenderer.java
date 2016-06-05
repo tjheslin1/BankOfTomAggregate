@@ -10,7 +10,7 @@ public class DepositFundsRenderer implements JsonRenderer {
     public Document renderBalanceEvent(BalanceEvent balanceEvent) {
         DepositFundsBalanceEvent depositFundsEvent = (DepositFundsBalanceEvent) balanceEvent;
 
-        Document depositDoc = new Document(depositFundsEvent.timeOfEvent(), depositFundsEvent.collectionName());
+        Document depositDoc = new Document("timeOfEvent", depositFundsEvent.timeOfEvent());
         depositDoc.append("amount", depositFundsEvent.amount());
         return depositDoc;
     }

@@ -1,6 +1,7 @@
 package io.github.tjheslin1.eventsourcedbanking.events;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class WithdrawFundsBalanceEvent implements BalanceEvent {
 
@@ -17,12 +18,13 @@ public class WithdrawFundsBalanceEvent implements BalanceEvent {
         return amount;
     }
 
-    public String timeOfEvent() {
-        return timeOfEvent.toString();
-    }
-
     public static WithdrawFundsBalanceEvent withdrawFundsEvent(int amount) {
         return new WithdrawFundsBalanceEvent(amount);
+    }
+
+    @Override
+    public String timeOfEvent() {
+        return timeOfEvent.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss:SSS"));
     }
 
     @Override

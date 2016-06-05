@@ -10,7 +10,7 @@ public class WithdrawFundsRenderer implements JsonRenderer {
     public Document renderBalanceEvent(BalanceEvent balanceEvent) {
         WithdrawFundsBalanceEvent withdrawFundsEvent = (WithdrawFundsBalanceEvent) balanceEvent;
 
-        Document withdrawDoc = new Document(withdrawFundsEvent.timeOfEvent(), withdrawFundsEvent.collectionName());
+        Document withdrawDoc = new Document("timeOfEvent", withdrawFundsEvent.timeOfEvent());
         withdrawDoc.append("amount", withdrawFundsEvent.amount());
         return withdrawDoc;
     }

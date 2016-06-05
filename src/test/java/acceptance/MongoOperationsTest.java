@@ -32,6 +32,7 @@ public class MongoOperationsTest implements WithMockito, WithAssertions {
     @After
     public void after() {
         mongoDb.getCollection(EXISTING_COLLECTION).drop();
+        mongoDb.getCollection(NON_EXISTENT_COLLECTION).drop();
     }
 
     @Test

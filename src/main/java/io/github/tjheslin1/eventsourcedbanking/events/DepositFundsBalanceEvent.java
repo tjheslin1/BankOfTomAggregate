@@ -18,12 +18,13 @@ public class DepositFundsBalanceEvent implements BalanceEvent {
         return amount;
     }
 
-    public String timeOfEvent() {
-        return timeOfEvent.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
-    }
-
     public static DepositFundsBalanceEvent depositFundsEvent(int amount) {
         return new DepositFundsBalanceEvent(amount);
+    }
+
+    @Override
+    public String timeOfEvent() {
+        return timeOfEvent.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss:SSS"));
     }
 
     @Override
