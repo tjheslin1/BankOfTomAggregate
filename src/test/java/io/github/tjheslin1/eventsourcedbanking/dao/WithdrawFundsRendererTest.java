@@ -1,6 +1,7 @@
 package io.github.tjheslin1.eventsourcedbanking.dao;
 
 import io.github.tjheslin1.WithMockito;
+import io.github.tjheslin1.eventsourcedbanking.dao.writing.WithdrawFundsMarshaller;
 import io.github.tjheslin1.eventsourcedbanking.events.WithdrawFundsBalanceEvent;
 import org.assertj.core.api.WithAssertions;
 import org.bson.Document;
@@ -21,7 +22,7 @@ public class WithdrawFundsRendererTest implements WithMockito, WithAssertions {
         Document expectedDbDoc = new Document("timeOfEvent", EXAMPLE_DATE);
         expectedDbDoc.append("amount", 4);
 
-        Document actualDbDoc = new WithdrawFundsMarshaller().renderBalanceEvent(withdrawFundsEvent);
+        Document actualDbDoc = new WithdrawFundsMarshaller().marshallBalanceEvent(withdrawFundsEvent);
         assertThat(actualDbDoc).isEqualTo(expectedDbDoc);
     }
 }

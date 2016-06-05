@@ -2,10 +2,10 @@ package acceptance;
 
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
-import io.github.tjheslin1.eventsourcedbanking.dao.DepositFundsMarshaller;
-import io.github.tjheslin1.eventsourcedbanking.dao.EventWriter;
+import io.github.tjheslin1.eventsourcedbanking.dao.writing.DepositFundsMarshaller;
+import io.github.tjheslin1.eventsourcedbanking.dao.writing.EventWriter;
 import io.github.tjheslin1.eventsourcedbanking.dao.MongoConnection;
-import io.github.tjheslin1.eventsourcedbanking.dao.WithdrawFundsMarshaller;
+import io.github.tjheslin1.eventsourcedbanking.dao.writing.WithdrawFundsMarshaller;
 import io.github.tjheslin1.eventsourcedbanking.events.DepositFundsBalanceEvent;
 import io.github.tjheslin1.eventsourcedbanking.events.WithdrawFundsBalanceEvent;
 import io.github.tjheslin1.settings.Settings;

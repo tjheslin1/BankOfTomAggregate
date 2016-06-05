@@ -1,4 +1,4 @@
-package io.github.tjheslin1.eventsourcedbanking.dao;
+package io.github.tjheslin1.eventsourcedbanking.dao.writing;
 
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
@@ -24,7 +24,7 @@ public class EventWriter {
         MongoDatabase eventStoreDb = mongoClient.getDatabase(settings.mongoDbName());
 
         MongoCollection<Document> collection = collectionCreateIfNotExistsForDatabase(balanceEvent.collectionName(), eventStoreDb);
-        Document balanceEventDoc = jsonMarshaller.renderBalanceEvent(balanceEvent);
+        Document balanceEventDoc = jsonMarshaller.marshallBalanceEvent(balanceEvent);
 
         collection.insertOne(balanceEventDoc);
     }
