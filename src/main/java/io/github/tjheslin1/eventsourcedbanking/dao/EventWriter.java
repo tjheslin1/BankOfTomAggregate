@@ -20,11 +20,11 @@ public class EventWriter {
     }
 
     // TODO get the database here or pass in?
-    public void write(BalanceEvent balanceEvent, JsonRenderer jsonRenderer) {
+    public void write(BalanceEvent balanceEvent, JsonMarshaller jsonMarshaller) {
         MongoDatabase eventStoreDb = mongoClient.getDatabase(settings.mongoDbName());
 
         MongoCollection<Document> collection = collectionCreateIfNotExistsForDatabase(balanceEvent.collectionName(), eventStoreDb);
-        Document balanceEventDoc = jsonRenderer.renderBalanceEvent(balanceEvent);
+        Document balanceEventDoc = jsonMarshaller.renderBalanceEvent(balanceEvent);
 
         collection.insertOne(balanceEventDoc);
     }

@@ -4,7 +4,7 @@ import io.github.tjheslin1.eventsourcedbanking.events.BalanceEvent;
 import io.github.tjheslin1.eventsourcedbanking.events.DepositFundsBalanceEvent;
 import org.bson.Document;
 
-public class DepositFundsRenderer implements JsonRenderer {
+public class DepositFundsMarshaller implements JsonMarshaller {
 
     @Override
     public Document renderBalanceEvent(BalanceEvent balanceEvent) {

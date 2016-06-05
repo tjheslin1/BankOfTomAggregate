@@ -21,7 +21,7 @@ public class DepositFundsRendererTest implements WithMockito, WithAssertions {
         Document expectedDbDoc = new Document("timeOfEvent", EXAMPLE_DATE);
         expectedDbDoc.append("amount", 4);
 
-        Document actualDbDoc = new DepositFundsRenderer().renderBalanceEvent(depositFundsEvent);
+        Document actualDbDoc = new DepositFundsMarshaller().renderBalanceEvent(depositFundsEvent);
         assertThat(actualDbDoc).isEqualTo(expectedDbDoc);
     }
 }
