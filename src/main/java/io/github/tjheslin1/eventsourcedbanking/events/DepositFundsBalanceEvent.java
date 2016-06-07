@@ -5,21 +5,27 @@ import java.time.format.DateTimeFormatter;
 
 public class DepositFundsBalanceEvent implements BalanceEvent {
 
+    private final int accountId;
     private final int amount;
 
     private LocalDateTime timeOfEvent;
 
-    private DepositFundsBalanceEvent(int amount, LocalDateTime timeOfEvent) {
+    private DepositFundsBalanceEvent(int accountId, int amount, LocalDateTime timeOfEvent) {
+        this.accountId = accountId;
         this.amount = amount;
         this.timeOfEvent = timeOfEvent;
+    }
+
+    public int accountId() {
+        return accountId;
     }
 
     public int amount() {
         return amount;
     }
 
-    public static DepositFundsBalanceEvent depositFundsEvent(int amount, LocalDateTime timeOfEvent) {
-        return new DepositFundsBalanceEvent(amount, timeOfEvent);
+    public static DepositFundsBalanceEvent depositFundsEvent(int accountId, int amount, LocalDateTime timeOfEvent) {
+        return new DepositFundsBalanceEvent(accountId, amount, timeOfEvent);
     }
 
     @Override

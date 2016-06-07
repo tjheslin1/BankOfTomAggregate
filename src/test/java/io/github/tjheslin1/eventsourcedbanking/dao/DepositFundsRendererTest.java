@@ -15,11 +15,13 @@ public class DepositFundsRendererTest implements WithMockito, WithAssertions {
 
     @Test
     public void renderDepositFundsEventTest() {
-        when(depositFundsEvent.amount()).thenReturn(4);
         when(depositFundsEvent.timeOfEvent()).thenReturn(EXAMPLE_DATE);
+        when(depositFundsEvent.accountId()).thenReturn(20);
+        when(depositFundsEvent.amount()).thenReturn(4);
         when(depositFundsEvent.collectionName()).thenReturn(DepositFundsBalanceEvent.class.getSimpleName());
 
         Document expectedDbDoc = new Document("timeOfEvent", EXAMPLE_DATE);
+        expectedDbDoc.append("accountId", 20);
         expectedDbDoc.append("amount", 4);
 
         Document actualDbDoc = new DepositFundsMarshaller().marshallBalanceEvent(depositFundsEvent);

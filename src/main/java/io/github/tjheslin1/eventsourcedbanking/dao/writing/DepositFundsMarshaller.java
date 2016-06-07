@@ -11,6 +11,7 @@ public class DepositFundsMarshaller implements BalanceEventJsonMarshaller {
         DepositFundsBalanceEvent depositFundsEvent = (DepositFundsBalanceEvent) balanceEvent;
 
         Document depositDoc = new Document("timeOfEvent", depositFundsEvent.timeOfEvent());
+        depositDoc.append("accountId", depositFundsEvent.accountId());
         depositDoc.append("amount", depositFundsEvent.amount());
         return depositDoc;
     }

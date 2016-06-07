@@ -3,8 +3,8 @@ package acceptance;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import io.github.tjheslin1.eventsourcedbanking.dao.MongoConnection;
-import io.github.tjheslin1.eventsourcedbanking.dao.writing.DepositFundsMarshaller;
 import io.github.tjheslin1.eventsourcedbanking.dao.writing.BalanceEventWriter;
+import io.github.tjheslin1.eventsourcedbanking.dao.writing.DepositFundsMarshaller;
 import io.github.tjheslin1.eventsourcedbanking.dao.writing.WithdrawFundsMarshaller;
 import io.github.tjheslin1.eventsourcedbanking.events.DepositFundsBalanceEvent;
 import io.github.tjheslin1.eventsourcedbanking.events.WithdrawFundsBalanceEvent;
@@ -52,7 +52,7 @@ public class BalanceEventWriterTest implements WithAssertions {
 
     @Test
     public void writeDepositFundsEventToDatabaseTest() throws Exception {
-        DepositFundsBalanceEvent depositFundsBalanceEvent = depositFundsEvent(6, LocalDateTime.now(clock));
+        DepositFundsBalanceEvent depositFundsBalanceEvent = depositFundsEvent(20, 6, LocalDateTime.now(clock));
         eventWriter.write(depositFundsBalanceEvent, new DepositFundsMarshaller());
 
         assertThat(mongoClient.getDatabase(settings.mongoDbName())
@@ -63,7 +63,7 @@ public class BalanceEventWriterTest implements WithAssertions {
 
     @Test
     public void writeWithdrawFundsEventToDatabaseTest() throws Exception {
-        WithdrawFundsBalanceEvent withdrawFundsBalanceEvent = withdrawFundsEvent(6, LocalDateTime.now(clock));
+        WithdrawFundsBalanceEvent withdrawFundsBalanceEvent = withdrawFundsEvent(20, 6, LocalDateTime.now(clock));
         eventWriter.write(withdrawFundsBalanceEvent, new WithdrawFundsMarshaller());
 
         assertThat(mongoClient.getDatabase(settings.mongoDbName())

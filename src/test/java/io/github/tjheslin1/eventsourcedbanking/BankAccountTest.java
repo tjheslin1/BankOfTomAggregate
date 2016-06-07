@@ -19,8 +19,8 @@ public class BankAccountTest {
     @Test
     public void considerEventsToBankAccountToFindUpToDateBalanceTest() {
         List<BalanceEvent> balanceEvents = Arrays.asList(
-                depositFundsEvent(10, LocalDateTime.now(clock)),
-                withdrawFundsEvent(5, LocalDateTime.now(clock))
+                depositFundsEvent(20, 10, LocalDateTime.now(clock)),
+                withdrawFundsEvent(20, 5, LocalDateTime.now(clock))
         );
 
         BankAccount bankAccount = bankAccountProjection(7);
