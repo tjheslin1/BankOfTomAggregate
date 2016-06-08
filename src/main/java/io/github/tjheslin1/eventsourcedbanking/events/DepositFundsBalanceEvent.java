@@ -42,4 +42,25 @@ public class DepositFundsBalanceEvent implements BalanceEvent {
     public String collectionName() {
         return getClass().getSimpleName();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        DepositFundsBalanceEvent that = (DepositFundsBalanceEvent) o;
+
+        if (accountId != that.accountId) return false;
+        if (amount != that.amount) return false;
+        return timeOfEvent.equals(that.timeOfEvent);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = accountId;
+        result = 31 * result + amount;
+        result = 31 * result + timeOfEvent.hashCode();
+        return result;
+    }
 }

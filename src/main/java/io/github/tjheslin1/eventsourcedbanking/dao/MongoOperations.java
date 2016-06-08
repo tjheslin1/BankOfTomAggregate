@@ -4,9 +4,14 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 
+import java.time.format.DateTimeFormatter;
 import java.util.stream.StreamSupport;
 
 public class MongoOperations {
+
+    public static  DateTimeFormatter eventDatePattern() {
+        return DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss:SSS");
+    }
 
     public static MongoCollection<Document> collectionCreateIfNotExistsForDatabase(String collectionName, MongoDatabase eventStoreDb) {
         if (!collectionExistsInDatabase(collectionName, eventStoreDb)) {

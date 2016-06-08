@@ -8,7 +8,8 @@ import org.junit.Test;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+
+import static io.github.tjheslin1.eventsourcedbanking.dao.MongoOperations.eventDatePattern;
 
 public class DepositFundsMarshallerTest implements WithAssertions, WithMockito {
 
@@ -22,11 +23,11 @@ public class DepositFundsMarshallerTest implements WithAssertions, WithMockito {
     @Test
     public void marshallEventToMongoReadyDocument() {
         when(depositFundsEvent.timeOfEvent())
-                .thenReturn(timeOfEvent.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss:SSS")));
+                .thenReturn(timeOfEvent.format(eventDatePattern()));
         when(depositFundsEvent.accountId()).thenReturn(20);
         when(depositFundsEvent.amount()).thenReturn(30);
 
-        Document expectedDocument = new Document("timeOfEvent", timeOfEvent.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss:SSS")));
+        Document expectedDocument = new Document("timeOfEvent", timeOfEvent.format(eventDatePattern()));
         expectedDocument.append("accountId", 20);
         expectedDocument.append("amount", 30);
 
