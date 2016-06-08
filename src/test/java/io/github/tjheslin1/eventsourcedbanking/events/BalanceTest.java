@@ -19,7 +19,7 @@ public class BalanceTest implements WithAssertions {
         DepositFundsBalanceEvent depositFundsEvent = depositFundsEvent(20, 7, LocalDateTime.now(clock));
 
         depositFundsEvent.visit(balance);
-        assertThat(balance.balance()).isEqualTo(7);
+        assertThat(balance.funds()).isEqualTo(7);
     }
 
     @Test
@@ -28,6 +28,6 @@ public class BalanceTest implements WithAssertions {
         WithdrawFundsBalanceEvent depositFundsEvent = withdrawFundsEvent(20, 5, LocalDateTime.now(clock));
 
         depositFundsEvent.visit(balance);
-        assertThat(balance.balance()).isEqualTo(-5);
+        assertThat(balance.funds()).isEqualTo(-5);
     }
 }

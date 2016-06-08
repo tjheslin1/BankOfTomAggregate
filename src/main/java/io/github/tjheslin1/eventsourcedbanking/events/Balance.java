@@ -8,7 +8,7 @@ public class Balance implements BalanceEventVisitor {
         funds = 0;
     }
 
-    public int balance() {
+    public int funds() {
         return funds;
     }
 

@@ -1,6 +1,9 @@
 package io.github.tjheslin1.eventsourcedbanking;
 
 import io.github.tjheslin1.eventsourcedbanking.events.Balance;
+import io.github.tjheslin1.eventsourcedbanking.events.BalanceEvent;
+
+import java.util.List;
 
 public class BankAccount {
 
@@ -20,14 +23,14 @@ public class BankAccount {
         return balance;
     }
 
-    public static BankAccount bankAccountProjection(int accountId) {
-        Balance balance = upToDateBalance(accountId);
-        return new BankAccount(accountId, balance);
+    public static BankAccount bankAccountProjection(int accountId, List<BalanceEvent> balanceEvents) {
+        return new BankAccount(accountId, upToDateBalance(balanceEvents));
     }
 
-    private static Balance upToDateBalance(int accountId) {
-        // read existing events from DB
-        return new Balance();
+    private static Balance upToDateBalance(List<BalanceEvent> balanceEvents) {
+        Balance balance = new Balance();
+        balanceEvents.stream().forEach(event -> event.visit(balance));
+        return balance;
     }
 
     @Override

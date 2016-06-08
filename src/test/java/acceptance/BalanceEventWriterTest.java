@@ -2,6 +2,7 @@ package acceptance;
 
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 import io.github.tjheslin1.eventsourcedbanking.cqrs.MongoConnection;
 import io.github.tjheslin1.eventsourcedbanking.cqrs.command.BalanceEventWriter;
 import io.github.tjheslin1.eventsourcedbanking.cqrs.command.DepositFundsMarshaller;
@@ -41,10 +42,12 @@ public class BalanceEventWriterTest implements WithAssertions {
 
     @After
     public void after() {
-        MongoCollection<Document> depositFundsEventsCollection = mongoClient.getDatabase(settings.mongoDbName())
+        MongoDatabase database = mongoClient.getDatabase(settings.mongoDbName());
+
+        MongoCollection<Document> depositFundsEventsCollection = database
                 .getCollection(collectionNameForEvent(DepositFundsBalanceEvent.class));
 
-        MongoCollection<Document> withdrawFundsEventsCollection = mongoClient.getDatabase(settings.mongoDbName())
+        MongoCollection<Document> withdrawFundsEventsCollection = database
                 .getCollection(collectionNameForEvent(WithdrawFundsBalanceEvent.class));
 
         depositFundsEventsCollection.deleteMany(new Document());
