@@ -11,6 +11,7 @@ public class WithdrawFundsMarshaller implements BalanceEventJsonMarshaller {
         WithdrawFundsBalanceEvent withdrawFundsEvent = (WithdrawFundsBalanceEvent) balanceEvent;
 
         Document withdrawDoc = new Document("timeOfEvent", withdrawFundsEvent.timeOfEvent());
+        withdrawDoc.append("accountId", withdrawFundsEvent.accountId());
         withdrawDoc.append("amount", withdrawFundsEvent.amount());
         return withdrawDoc;
     }

@@ -23,9 +23,11 @@ public class WithdrawFundsMarshallerTest implements WithAssertions, WithMockito 
     public void marshallEventToMongoReadyDocument() {
         when(withdrawFundsEvent.timeOfEvent())
                 .thenReturn(timeOfEvent.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss:SSS")));
+        when(withdrawFundsEvent.accountId()).thenReturn(20);
         when(withdrawFundsEvent.amount()).thenReturn(28);
 
         Document expectedDocument = new Document("timeOfEvent", timeOfEvent.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss:SSS")));
+        expectedDocument.append("accountId", 20);
         expectedDocument.append("amount", 28);
 
         assertThat(withdrawFundsMarshaller.marshallBalanceEvent(withdrawFundsEvent)).isEqualTo(expectedDocument);

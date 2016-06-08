@@ -2,13 +2,17 @@ package acceptance;
 
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 import io.github.tjheslin1.eventsourcedbanking.dao.MongoConnection;
 import io.github.tjheslin1.eventsourcedbanking.dao.reading.BalanceEventReader;
 import io.github.tjheslin1.eventsourcedbanking.dao.reading.DepositFundsUnmarshaller;
+import io.github.tjheslin1.eventsourcedbanking.dao.reading.WithdrawFundsUnmarshaller;
 import io.github.tjheslin1.eventsourcedbanking.dao.writing.BalanceEventWriter;
 import io.github.tjheslin1.eventsourcedbanking.dao.writing.DepositFundsMarshaller;
+import io.github.tjheslin1.eventsourcedbanking.dao.writing.WithdrawFundsMarshaller;
 import io.github.tjheslin1.eventsourcedbanking.events.BalanceEvent;
 import io.github.tjheslin1.eventsourcedbanking.events.DepositFundsBalanceEvent;
+import io.github.tjheslin1.eventsourcedbanking.events.WithdrawFundsBalanceEvent;
 import io.github.tjheslin1.settings.Settings;
 import io.github.tjheslin1.settings.TestSettings;
 import org.assertj.core.api.WithAssertions;
@@ -23,6 +27,7 @@ import java.util.List;
 
 import static io.github.tjheslin1.eventsourcedbanking.dao.MongoOperations.collectionNameForEvent;
 import static io.github.tjheslin1.eventsourcedbanking.events.DepositFundsBalanceEvent.depositFundsEvent;
+import static io.github.tjheslin1.eventsourcedbanking.events.WithdrawFundsBalanceEvent.withdrawFundsEvent;
 
 public class BalanceEventReaderTest implements WithAssertions {
 
@@ -34,8 +39,12 @@ public class BalanceEventReaderTest implements WithAssertions {
     private MongoClient mongoClient;
 
     private final Clock clock = Clock.systemDefaultZone();
+
     private final DepositFundsBalanceEvent firstDepositFundsBalanceEvent = depositFundsEvent(20, 6, LocalDateTime.now(clock));
     private final DepositFundsBalanceEvent secondDepositFundsBalanceEvent = depositFundsEvent(20, 4, LocalDateTime.now(clock).plusHours(1));
+
+    private final WithdrawFundsBalanceEvent firstWithdrawFundsBalanceEvent = withdrawFundsEvent(20, 6, LocalDateTime.now(clock).plusMinutes(5));
+    private final WithdrawFundsBalanceEvent secondWithdrawFundsBalanceEvent = withdrawFundsEvent(20, 4, LocalDateTime.now(clock).plusHours(1).plusMinutes(5));
 
     @Before
     public void before() {
@@ -45,18 +54,23 @@ public class BalanceEventReaderTest implements WithAssertions {
 
         eventWriter.write(firstDepositFundsBalanceEvent, new DepositFundsMarshaller());
         eventWriter.write(secondDepositFundsBalanceEvent, new DepositFundsMarshaller());
+
+        eventWriter.write(firstWithdrawFundsBalanceEvent, new WithdrawFundsMarshaller());
+        eventWriter.write(secondWithdrawFundsBalanceEvent, new WithdrawFundsMarshaller());
     }
 
     @After
     public void after() {
-        MongoCollection<Document> depositFundsEventsCollection = mongoClient.getDatabase(settings.mongoDbName())
+        MongoDatabase database = mongoClient.getDatabase(settings.mongoDbName());
+
+        MongoCollection<Document> depositFundsEventsCollection = database
                 .getCollection(collectionNameForEvent(DepositFundsBalanceEvent.class));
 
-//        MongoCollection<Document> withdrawFundsEventsCollection = mongoClient.getDatabase(settings.mongoDbName())
-//                .getCollection(collectionNameForEvent(WithdrawFundsBalanceEvent.class));
+        MongoCollection<Document> withdrawFundsEventsCollection = database
+                .getCollection(collectionNameForEvent(WithdrawFundsBalanceEvent.class));
 
-        depositFundsEventsCollection.deleteMany(new Document());
-//        withdrawFundsEventsCollection.deleteMany(new Document());
+        depositFundsEventsCollection.deleteMany(filterForAllDocuments());
+        withdrawFundsEventsCollection.deleteMany(filterForAllDocuments());
     }
 
     @Test
@@ -65,5 +79,17 @@ public class BalanceEventReaderTest implements WithAssertions {
                 collectionNameForEvent(DepositFundsBalanceEvent.class));
 
         assertThat(actualBalanceEvents).containsExactly(firstDepositFundsBalanceEvent, secondDepositFundsBalanceEvent);
+    }
+
+    @Test
+    public void readWithdrawalFundsEventsFromDatabaseInTimeOrder() throws Exception {
+        List<BalanceEvent> actualBalanceEvents = eventReader.retrieveSorted(20, new WithdrawFundsUnmarshaller(),
+                collectionNameForEvent(WithdrawFundsBalanceEvent.class));
+
+        assertThat(actualBalanceEvents).containsExactly(firstWithdrawFundsBalanceEvent, secondWithdrawFundsBalanceEvent);
+    }
+
+    private Document filterForAllDocuments() {
+        return new Document();
     }
 }

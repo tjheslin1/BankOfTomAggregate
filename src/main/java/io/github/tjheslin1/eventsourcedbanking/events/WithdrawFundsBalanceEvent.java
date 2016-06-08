@@ -38,4 +38,25 @@ public class WithdrawFundsBalanceEvent implements BalanceEvent {
     public void visit(BalanceEventVisitor balanceEventVisitor) {
         balanceEventVisitor.consider(this);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        WithdrawFundsBalanceEvent that = (WithdrawFundsBalanceEvent) o;
+
+        if (accountId != that.accountId) return false;
+        if (amount != that.amount) return false;
+        return timeOfEvent.equals(that.timeOfEvent);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = accountId;
+        result = 31 * result + amount;
+        result = 31 * result + timeOfEvent.hashCode();
+        return result;
+    }
 }
