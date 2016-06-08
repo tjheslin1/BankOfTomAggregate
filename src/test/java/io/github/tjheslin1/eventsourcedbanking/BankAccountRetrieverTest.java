@@ -9,15 +9,12 @@ import org.junit.Test;
 import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Stream;
 
-import static io.github.tjheslin1.eventsourcedbanking.BankAccount.bankAccountProjection;
 import static io.github.tjheslin1.eventsourcedbanking.events.DepositFundsBalanceEvent.depositFundsEvent;
 import static io.github.tjheslin1.eventsourcedbanking.events.WithdrawFundsBalanceEvent.withdrawFundsEvent;
 import static java.util.Arrays.asList;
-import static java.util.stream.Collectors.toList;
 
-public class BankAccountTest implements WithAssertions {
+public class BankAccountRetrieverTest implements WithAssertions {
 
     public static final int ACCOUNT_ID = 20;
 
@@ -39,11 +36,11 @@ public class BankAccountTest implements WithAssertions {
             firstWithdrawalFundsEvent, secondWithdrawalFundsEvent
     );
 
+    private BankAccountRetriever bankAccountRetriever = new BankAccountRetriever();
+
     @Test
-    public void projectCurrentStateOfBankAccount() {
-        List<BalanceEvent> sortedBalanceEvents = Stream.concat(depositEvents.stream(), withdrawalEvents.stream())
-                .sorted()
-                .collect(toList());
+    public void sortedEventsTest() {
+        List<BalanceEvent> sortedBalanceEvents = bankAccountRetriever.sortedEvents(depositEvents, withdrawalEvents);
 
         assertThat(sortedBalanceEvents).containsExactly(
                 firstDepositFundsEvent,
@@ -53,10 +50,5 @@ public class BankAccountTest implements WithAssertions {
                 fourthDepositFundsEvent,
                 secondWithdrawalFundsEvent
         );
-
-        BankAccount bankAccount = bankAccountProjection(ACCOUNT_ID, sortedBalanceEvents);
-
-        int expectedCurrentBalance = 10 - 5 + 40 + 38 + 1 - 16;
-        assertThat(bankAccount.balance().funds()).isEqualTo(expectedCurrentBalance);
     }
 }
