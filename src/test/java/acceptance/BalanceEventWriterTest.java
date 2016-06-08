@@ -2,10 +2,10 @@ package acceptance;
 
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
-import io.github.tjheslin1.eventsourcedbanking.dao.MongoConnection;
-import io.github.tjheslin1.eventsourcedbanking.dao.writing.BalanceEventWriter;
-import io.github.tjheslin1.eventsourcedbanking.dao.writing.DepositFundsMarshaller;
-import io.github.tjheslin1.eventsourcedbanking.dao.writing.WithdrawFundsMarshaller;
+import io.github.tjheslin1.eventsourcedbanking.cqrs.MongoConnection;
+import io.github.tjheslin1.eventsourcedbanking.cqrs.command.BalanceEventWriter;
+import io.github.tjheslin1.eventsourcedbanking.cqrs.command.DepositFundsMarshaller;
+import io.github.tjheslin1.eventsourcedbanking.cqrs.command.WithdrawFundsMarshaller;
 import io.github.tjheslin1.eventsourcedbanking.events.DepositFundsBalanceEvent;
 import io.github.tjheslin1.eventsourcedbanking.events.WithdrawFundsBalanceEvent;
 import io.github.tjheslin1.settings.Settings;
@@ -19,7 +19,7 @@ import org.junit.Test;
 import java.time.Clock;
 import java.time.LocalDateTime;
 
-import static io.github.tjheslin1.eventsourcedbanking.dao.MongoOperations.collectionNameForEvent;
+import static io.github.tjheslin1.eventsourcedbanking.cqrs.MongoOperations.collectionNameForEvent;
 import static io.github.tjheslin1.eventsourcedbanking.events.DepositFundsBalanceEvent.depositFundsEvent;
 import static io.github.tjheslin1.eventsourcedbanking.events.WithdrawFundsBalanceEvent.withdrawFundsEvent;
 

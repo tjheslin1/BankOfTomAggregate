@@ -1,7 +1,7 @@
 package acceptance;
 
 import com.mongodb.MongoClient;
-import io.github.tjheslin1.eventsourcedbanking.dao.MongoConnection;
+import io.github.tjheslin1.eventsourcedbanking.cqrs.MongoConnection;
 import io.github.tjheslin1.settings.Settings;
 import io.github.tjheslin1.settings.TestSettings;
 import org.assertj.core.api.WithAssertions;

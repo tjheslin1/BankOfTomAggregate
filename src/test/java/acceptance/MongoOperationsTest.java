@@ -13,7 +13,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static io.github.tjheslin1.eventsourcedbanking.dao.MongoOperations.collectionCreateIfNotExistsForDatabase;
+import static io.github.tjheslin1.eventsourcedbanking.cqrs.MongoOperations.collectionCreateIfNotExistsForDatabase;
 
 public class MongoOperationsTest implements WithMockito, WithAssertions {
 

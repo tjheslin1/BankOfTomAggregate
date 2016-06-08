@@ -1,4 +1,4 @@
-package io.github.tjheslin1.eventsourcedbanking.dao;
+package io.github.tjheslin1.eventsourcedbanking.cqrs;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;

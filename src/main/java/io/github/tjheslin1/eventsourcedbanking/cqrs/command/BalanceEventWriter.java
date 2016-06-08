@@ -1,4 +1,4 @@
-package io.github.tjheslin1.eventsourcedbanking.dao.writing;
+package io.github.tjheslin1.eventsourcedbanking.cqrs.command;
 
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
@@ -7,8 +7,8 @@ import io.github.tjheslin1.eventsourcedbanking.events.BalanceEvent;
 import io.github.tjheslin1.settings.Settings;
 import org.bson.Document;
 
-import static io.github.tjheslin1.eventsourcedbanking.dao.MongoOperations.collectionCreateIfNotExistsForDatabase;
-import static io.github.tjheslin1.eventsourcedbanking.dao.MongoOperations.collectionNameForEvent;
+import static io.github.tjheslin1.eventsourcedbanking.cqrs.MongoOperations.collectionCreateIfNotExistsForDatabase;
+import static io.github.tjheslin1.eventsourcedbanking.cqrs.MongoOperations.collectionNameForEvent;
 
 public class BalanceEventWriter {
 

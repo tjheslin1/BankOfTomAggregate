@@ -1,4 +1,4 @@
-package io.github.tjheslin1.eventsourcedbanking.dao.reading;
+package io.github.tjheslin1.eventsourcedbanking.cqrs.query;
 
 import io.github.tjheslin1.eventsourcedbanking.events.DepositFundsBalanceEvent;
 import org.assertj.core.api.WithAssertions;

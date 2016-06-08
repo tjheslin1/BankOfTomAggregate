@@ -7,6 +7,7 @@ Deposits and withdrawals are written as events to a [MongoDB](https://www.mongod
 
 These *events* are then read from the database, ordered by time, to *project* the current state of the bank account.
 
-Example event:
+Useful links
 --------------
-Account **Y** has £**X** deposited into it at date/time **Z**.
+
+[Event Sourcing with MongoDB](https://www.mongodb.com/blog/post/event-sourcing-with-mongodb) *see video*.

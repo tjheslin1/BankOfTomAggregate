@@ -2,7 +2,7 @@ package io.github.tjheslin1.eventsourcedbanking.events;
 
 import java.time.LocalDateTime;
 
-import static io.github.tjheslin1.eventsourcedbanking.dao.MongoOperations.eventDatePattern;
+import static io.github.tjheslin1.eventsourcedbanking.cqrs.MongoOperations.eventDatePattern;
 
 public class WithdrawFundsBalanceEvent implements BalanceEvent {
 

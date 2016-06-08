@@ -1,4 +1,4 @@
-package io.github.tjheslin1.eventsourcedbanking.dao.reading;
+package io.github.tjheslin1.eventsourcedbanking.cqrs.query;
 
 import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;

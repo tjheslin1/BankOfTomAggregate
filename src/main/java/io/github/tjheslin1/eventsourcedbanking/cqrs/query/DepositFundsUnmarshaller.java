@@ -1,11 +1,11 @@
-package io.github.tjheslin1.eventsourcedbanking.dao.reading;
+package io.github.tjheslin1.eventsourcedbanking.cqrs.query;
 
 import io.github.tjheslin1.eventsourcedbanking.events.DepositFundsBalanceEvent;
 import org.bson.Document;
 
 import java.time.LocalDateTime;
 
-import static io.github.tjheslin1.eventsourcedbanking.dao.MongoOperations.eventDatePattern;
+import static io.github.tjheslin1.eventsourcedbanking.cqrs.MongoOperations.eventDatePattern;
 import static io.github.tjheslin1.eventsourcedbanking.events.DepositFundsBalanceEvent.depositFundsEvent;
 
 public class DepositFundsUnmarshaller implements BalanceEventJsonUnmarshaller {
