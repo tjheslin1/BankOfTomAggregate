@@ -11,7 +11,6 @@ public class DepositFundsUnmarshaller implements BalanceEventJsonUnmarshaller {
 
     @Override
     public DepositFundsBalanceEvent unmarshallBalanceEvent(Document document) {
-
         int accountId = Integer.parseInt(document.get("accountId").toString());
         int amount = Integer.parseInt(document.get("amount").toString());
 
