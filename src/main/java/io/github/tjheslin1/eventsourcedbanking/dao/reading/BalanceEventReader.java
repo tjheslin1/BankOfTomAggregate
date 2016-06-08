@@ -4,6 +4,12 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.MongoDatabase;
 import io.github.tjheslin1.eventsourcedbanking.events.BalanceEvent;
 import io.github.tjheslin1.settings.Settings;
+import org.bson.Document;
+
+import java.time.LocalDateTime;
+
+import static com.mongodb.client.model.Filters.and;
+import static com.mongodb.client.model.Filters.eq;
 
 public class BalanceEventReader {
 
@@ -16,10 +22,14 @@ public class BalanceEventReader {
     }
 
     // TODO get the database here or pass in?
-    public BalanceEvent read(BalanceEvent balanceEvent, BalanceEventJsonUnmarshaller jsonUnmarshaller) {
+    public BalanceEvent read(int accountId, LocalDateTime timeOfEvent, BalanceEventJsonUnmarshaller jsonUnmarshaller, String collectionName) {
         MongoDatabase eventStoreDb = mongoClient.getDatabase(settings.mongoDbName());
+        Document eventDoc = eventStoreDb.getCollection(collectionName)
+                .find(and(
+                        eq("accountId", accountId),
+                        eq("timeOfEvent", timeOfEvent.toString())))
+                .first();
 
-//        eventStoreDb.
-        return null;
+        return jsonUnmarshaller.unmarshallBalanceEvent(eventDoc);
     }
 }

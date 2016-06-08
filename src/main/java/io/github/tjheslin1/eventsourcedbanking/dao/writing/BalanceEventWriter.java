@@ -8,6 +8,7 @@ import io.github.tjheslin1.settings.Settings;
 import org.bson.Document;
 
 import static io.github.tjheslin1.eventsourcedbanking.dao.MongoOperations.collectionCreateIfNotExistsForDatabase;
+import static io.github.tjheslin1.eventsourcedbanking.dao.MongoOperations.collectionNameForEvent;
 
 public class BalanceEventWriter {
 
@@ -23,7 +24,9 @@ public class BalanceEventWriter {
     public void write(BalanceEvent balanceEvent, BalanceEventJsonMarshaller jsonMarshaller) {
         MongoDatabase eventStoreDb = mongoClient.getDatabase(settings.mongoDbName());
 
-        MongoCollection<Document> collection = collectionCreateIfNotExistsForDatabase(balanceEvent.collectionName(), eventStoreDb);
+        MongoCollection<Document> collection = collectionCreateIfNotExistsForDatabase(
+                collectionNameForEvent(balanceEvent.getClass()), eventStoreDb);
+
         Document balanceEventDoc = jsonMarshaller.marshallBalanceEvent(balanceEvent);
 
         collection.insertOne(balanceEventDoc);

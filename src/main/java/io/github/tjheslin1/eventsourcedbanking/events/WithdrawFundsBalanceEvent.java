@@ -1,7 +1,8 @@
 package io.github.tjheslin1.eventsourcedbanking.events;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+
+import static io.github.tjheslin1.eventsourcedbanking.dao.MongoOperations.eventDatePattern;
 
 public class WithdrawFundsBalanceEvent implements BalanceEvent {
 
@@ -30,16 +31,11 @@ public class WithdrawFundsBalanceEvent implements BalanceEvent {
 
     @Override
     public String timeOfEvent() {
-        return timeOfEvent.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss:SSS"));
+        return timeOfEvent.format(eventDatePattern());
     }
 
     @Override
     public void visit(BalanceEventVisitor balanceEventVisitor) {
         balanceEventVisitor.consider(this);
-    }
-
-    @Override
-    public String collectionName() {
-        return getClass().getSimpleName();
     }
 }

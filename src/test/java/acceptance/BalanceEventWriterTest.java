@@ -19,6 +19,7 @@ import org.junit.Test;
 import java.time.Clock;
 import java.time.LocalDateTime;
 
+import static io.github.tjheslin1.eventsourcedbanking.dao.MongoOperations.collectionNameForEvent;
 import static io.github.tjheslin1.eventsourcedbanking.events.DepositFundsBalanceEvent.depositFundsEvent;
 import static io.github.tjheslin1.eventsourcedbanking.events.WithdrawFundsBalanceEvent.withdrawFundsEvent;
 
@@ -41,10 +42,10 @@ public class BalanceEventWriterTest implements WithAssertions {
     @After
     public void after() {
         MongoCollection<Document> depositFundsEventsCollection = mongoClient.getDatabase(settings.mongoDbName())
-                .getCollection(DepositFundsBalanceEvent.class.getSimpleName());
+                .getCollection(collectionNameForEvent(DepositFundsBalanceEvent.class));
 
         MongoCollection<Document> withdrawFundsEventsCollection = mongoClient.getDatabase(settings.mongoDbName())
-                .getCollection(WithdrawFundsBalanceEvent.class.getSimpleName());
+                .getCollection(collectionNameForEvent(WithdrawFundsBalanceEvent.class));
 
         depositFundsEventsCollection.deleteMany(new Document());
         withdrawFundsEventsCollection.deleteMany(new Document());
@@ -56,7 +57,7 @@ public class BalanceEventWriterTest implements WithAssertions {
         eventWriter.write(depositFundsBalanceEvent, new DepositFundsMarshaller());
 
         assertThat(mongoClient.getDatabase(settings.mongoDbName())
-                .getCollection(depositFundsBalanceEvent.collectionName())
+                .getCollection(collectionNameForEvent(depositFundsBalanceEvent.getClass()))
                 .count())
                 .isEqualTo(1);
     }
@@ -67,7 +68,7 @@ public class BalanceEventWriterTest implements WithAssertions {
         eventWriter.write(withdrawFundsBalanceEvent, new WithdrawFundsMarshaller());
 
         assertThat(mongoClient.getDatabase(settings.mongoDbName())
-                .getCollection(withdrawFundsBalanceEvent.collectionName())
+                .getCollection(collectionNameForEvent(withdrawFundsBalanceEvent.getClass()))
                 .count())
                 .isEqualTo(1);
     }

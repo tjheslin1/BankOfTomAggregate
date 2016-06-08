@@ -7,6 +7,8 @@ import org.assertj.core.api.WithAssertions;
 import org.bson.Document;
 import org.junit.Test;
 
+import static io.github.tjheslin1.eventsourcedbanking.dao.MongoOperations.collectionNameForEvent;
+
 public class WithdrawFundsRendererTest implements WithMockito, WithAssertions {
 
     public static final String EXAMPLE_DATE = "1970-01-01T00:00:00:001";
@@ -17,7 +19,6 @@ public class WithdrawFundsRendererTest implements WithMockito, WithAssertions {
     public void renderWithdrawFundsEventTest() {
         when(withdrawFundsEvent.amount()).thenReturn(4);
         when(withdrawFundsEvent.timeOfEvent()).thenReturn(EXAMPLE_DATE);
-        when(withdrawFundsEvent.collectionName()).thenReturn(WithdrawFundsBalanceEvent.class.getSimpleName());
 
         Document expectedDbDoc = new Document("timeOfEvent", EXAMPLE_DATE);
         expectedDbDoc.append("amount", 4);

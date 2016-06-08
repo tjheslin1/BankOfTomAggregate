@@ -9,7 +9,11 @@ import java.util.stream.StreamSupport;
 
 public class MongoOperations {
 
-    public static  DateTimeFormatter eventDatePattern() {
+    public static String collectionNameForEvent(Class c) {
+        return c.getSimpleName();
+    }
+
+    public static DateTimeFormatter eventDatePattern() {
         return DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss:SSS");
     }
 
