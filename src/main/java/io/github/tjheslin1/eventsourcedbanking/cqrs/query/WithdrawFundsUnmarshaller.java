@@ -13,7 +13,7 @@ public class WithdrawFundsUnmarshaller implements BalanceEventJsonUnmarshaller {
     @Override
     public WithdrawFundsBalanceEvent unmarshallBalanceEvent(Document document) {
         int accountId = Integer.parseInt(document.get("accountId").toString());
-        int amount = Integer.parseInt(document.get("amount").toString());
+        double amount = Double.parseDouble(document.get("amount").toString());
 
         LocalDateTime timeOfEvent = LocalDateTime.parse(document.get("timeOfEvent").toString(), eventDatePattern());
 

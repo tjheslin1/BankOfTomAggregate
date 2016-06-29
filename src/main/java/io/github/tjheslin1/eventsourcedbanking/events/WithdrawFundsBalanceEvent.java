@@ -7,11 +7,11 @@ import static io.github.tjheslin1.eventsourcedbanking.cqrs.MongoOperations.event
 public class WithdrawFundsBalanceEvent implements BalanceEvent, Comparable {
 
     private final int accountId;
-    private final int amount;
+    private final double amount;
 
     private LocalDateTime timeOfEvent;
 
-    private WithdrawFundsBalanceEvent(int accountId, int amount, LocalDateTime timeOfEvent) {
+    private WithdrawFundsBalanceEvent(int accountId, double amount, LocalDateTime timeOfEvent) {
         this.accountId = accountId;
         this.amount = amount;
         this.timeOfEvent = timeOfEvent;
@@ -22,11 +22,11 @@ public class WithdrawFundsBalanceEvent implements BalanceEvent, Comparable {
         return accountId;
     }
 
-    public int amount() {
+    public double amount() {
         return amount;
     }
 
-    public static WithdrawFundsBalanceEvent withdrawFundsEvent(int accountId, int amount, LocalDateTime timeOfEvent) {
+    public static WithdrawFundsBalanceEvent withdrawFundsEvent(int accountId, double amount, LocalDateTime timeOfEvent) {
         return new WithdrawFundsBalanceEvent(accountId, amount, timeOfEvent);
     }
 
@@ -48,15 +48,18 @@ public class WithdrawFundsBalanceEvent implements BalanceEvent, Comparable {
         WithdrawFundsBalanceEvent that = (WithdrawFundsBalanceEvent) o;
 
         if (accountId != that.accountId) return false;
-        if (amount != that.amount) return false;
+        if (Double.compare(that.amount, amount) != 0) return false;
         return timeOfEvent.equals(that.timeOfEvent);
 
     }
 
     @Override
     public int hashCode() {
-        int result = accountId;
-        result = 31 * result + amount;
+        int result;
+        long temp;
+        result = accountId;
+        temp = Double.doubleToLongBits(amount);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + timeOfEvent.hashCode();
         return result;
     }

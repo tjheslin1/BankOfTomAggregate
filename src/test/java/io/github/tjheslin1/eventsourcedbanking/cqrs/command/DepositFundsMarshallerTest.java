@@ -25,11 +25,11 @@ public class DepositFundsMarshallerTest implements WithAssertions, WithMockito {
         when(depositFundsEvent.timeOfEvent())
                 .thenReturn(timeOfEvent.format(eventDatePattern()));
         when(depositFundsEvent.accountId()).thenReturn(20);
-        when(depositFundsEvent.amount()).thenReturn(30);
+        when(depositFundsEvent.amount()).thenReturn(30.0);
 
         Document expectedDocument = new Document("timeOfEvent", timeOfEvent.format(eventDatePattern()));
         expectedDocument.append("accountId", 20);
-        expectedDocument.append("amount", 30);
+        expectedDocument.append("amount", 30.0);
 
         assertThat(depositFundsMarshaller.marshallBalanceEvent(depositFundsEvent)).isEqualTo(expectedDocument);
     }

@@ -4,31 +4,32 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import io.github.tjheslin1.eventsourcedbanking.events.BalanceEvent;
-import io.github.tjheslin1.settings.Settings;
+import io.github.tjheslin1.eventsourcedbanking.events.EventWiring;
+import io.github.tjheslin1.settings.MongoSettings;
 import org.bson.Document;
 
 import static io.github.tjheslin1.eventsourcedbanking.cqrs.MongoOperations.collectionCreateIfNotExistsForDatabase;
-import static io.github.tjheslin1.eventsourcedbanking.cqrs.MongoOperations.collectionNameForEvent;
 
 public class BalanceEventWriter {
 
     private final MongoClient mongoClient;
-    private Settings settings;
+    private MongoSettings mongoSettings;
 
-    public BalanceEventWriter(MongoClient mongoClient, Settings settings) {
+    public BalanceEventWriter(MongoClient mongoClient, MongoSettings mongoSettings) {
         this.mongoClient = mongoClient;
-        this.settings = settings;
+        this.mongoSettings = mongoSettings;
     }
 
-    // TODO get the database here or pass in?
-    public void write(BalanceEvent balanceEvent, BalanceEventJsonMarshaller jsonMarshaller) {
-        MongoDatabase eventStoreDb = mongoClient.getDatabase(settings.mongoDbName());
+    public void write(BalanceEvent balanceEvent, EventWiring eventWiring) {
+        MongoDatabase eventStoreDb = mongoClient.getDatabase(mongoSettings.mongoDbName());
 
-        MongoCollection<Document> collection = collectionCreateIfNotExistsForDatabase(
-                collectionNameForEvent(balanceEvent.getClass()), eventStoreDb);
+        MongoCollection<Document> collection = collectionCreateIfNotExistsForDatabase(eventWiring.collectionName(), eventStoreDb);
+        Document balanceEventDoc = eventWiring.marshaller().marshallBalanceEvent(balanceEvent);
 
-        Document balanceEventDoc = jsonMarshaller.marshallBalanceEvent(balanceEvent);
-
-        collection.insertOne(balanceEventDoc);
+        try {
+            collection.insertOne(balanceEventDoc);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

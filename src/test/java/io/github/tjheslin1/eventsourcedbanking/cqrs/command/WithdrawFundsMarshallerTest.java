@@ -24,11 +24,11 @@ public class WithdrawFundsMarshallerTest implements WithAssertions, WithMockito 
         when(withdrawFundsEvent.timeOfEvent())
                 .thenReturn(timeOfEvent.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss:SSS")));
         when(withdrawFundsEvent.accountId()).thenReturn(20);
-        when(withdrawFundsEvent.amount()).thenReturn(28);
+        when(withdrawFundsEvent.amount()).thenReturn(28.0);
 
         Document expectedDocument = new Document("timeOfEvent", timeOfEvent.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss:SSS")));
         expectedDocument.append("accountId", 20);
-        expectedDocument.append("amount", 28);
+        expectedDocument.append("amount", 28.0);
 
         assertThat(withdrawFundsMarshaller.marshallBalanceEvent(withdrawFundsEvent)).isEqualTo(expectedDocument);
     }

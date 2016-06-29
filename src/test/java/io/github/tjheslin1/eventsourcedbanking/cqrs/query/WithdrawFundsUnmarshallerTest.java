@@ -18,7 +18,7 @@ public class WithdrawFundsUnmarshallerTest implements WithAssertions {
 
     @Test
     public void unmarshallEventToMongoReadyDocument() {
-        WithdrawFundsBalanceEvent expectedEvent = withdrawFundsEvent(20, 8, LocalDateTime.now(clock));
+        WithdrawFundsBalanceEvent expectedEvent = withdrawFundsEvent(20, 8.0, LocalDateTime.now(clock));
 
         Document eventDoc = new Document("timeOfEvent", expectedEvent.timeOfEvent());
         eventDoc.append("accountId", expectedEvent.accountId());

@@ -3,18 +3,18 @@ package io.github.tjheslin1.eventsourcedbanking.cqrs;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientOptions;
 import com.mongodb.ServerAddress;
-import io.github.tjheslin1.settings.Settings;
+import io.github.tjheslin1.settings.MongoSettings;
 
 public class MongoConnection {
 
-    private Settings settings;
+    private MongoSettings mongoSettings;
 
-    public MongoConnection(Settings settings) {
-        this.settings = settings;
+    public MongoConnection(MongoSettings mongoSettings) {
+        this.mongoSettings = mongoSettings;
     }
 
     public MongoClient connection() {
         MongoClientOptions.Builder mongoClientBuilder = MongoClientOptions.builder().connectTimeout(1000);
-        return new MongoClient(new ServerAddress("localhost", settings.mongoDbPort()), mongoClientBuilder.build());
+        return new MongoClient(new ServerAddress("localhost", mongoSettings.mongoDbPort()), mongoClientBuilder.build());
     }
 }

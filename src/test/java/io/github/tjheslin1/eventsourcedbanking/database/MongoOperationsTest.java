@@ -1,11 +1,11 @@
-package database;
+package io.github.tjheslin1.eventsourcedbanking.database;
 
 import com.mongodb.MongoClient;
 import com.mongodb.MongoNamespace;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import io.github.tjheslin1.WithMockito;
-import io.github.tjheslin1.settings.Settings;
+import io.github.tjheslin1.settings.MongoSettings;
 import io.github.tjheslin1.settings.TestSettings;
 import org.assertj.core.api.WithAssertions;
 import org.bson.Document;
@@ -20,9 +20,9 @@ public class MongoOperationsTest implements WithMockito, WithAssertions {
     private final String EXISTING_COLLECTION = "new_collection_1";
     private final String NON_EXISTENT_COLLECTION = "new_collection_2";
 
-    private Settings settings = new TestSettings();
-    private MongoClient mongoClient = new MongoClient("localhost", settings.mongoDbPort());
-    private MongoDatabase mongoDb = mongoClient.getDatabase(settings.mongoDbName());
+    private MongoSettings mongoSettings = new TestSettings();
+    private MongoClient mongoClient = new MongoClient("localhost", mongoSettings.mongoDbPort());
+    private MongoDatabase mongoDb = mongoClient.getDatabase(mongoSettings.mongoDbName());
 
     @Before
     public void before() {
