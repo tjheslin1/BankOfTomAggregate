@@ -32,19 +32,6 @@ public class App {
 
     }
 
-    private void loadTestData() {
-        settings = new Settings(new PropertiesReader("localhost"));
-
-        mongoConnection = new MongoConnection(settings);
-        mongoClient = mongoConnection.connection();
-
-        bankAccountRetriever = new BankAccountRetriever(mongoClient);
-    }
-
-    private BankAccount accountWithId(int accountId) {
-        return bankAccountRetriever.bankAccountProjectionWithId(accountId);
-    }
-
     public static void main(String[] args) {
         App app = new App();
         app.loadTestData();
@@ -77,14 +64,29 @@ public class App {
                 int accountId = (int) amountFromCommand(line);
                 bankAccountRetriever.sortedEvents(accountId, eventReader, depositEventWiring(), withdrawalEventWiring())
                         .forEach(System.out::println);
+                System.out.println("Finished print events.");
             } else if (exitCommand(line)) {
                 running = false;
             } else {
                 printInstructions();
             }
+            System.out.println("Enter a command:");
         }
 
         System.out.println(format("Account with Id '%s' exists", testAccount.accountId()));
+    }
+
+    private void loadTestData() {
+        settings = new Settings(new PropertiesReader("localhost"));
+
+        mongoConnection = new MongoConnection(settings);
+        mongoClient = mongoConnection.connection();
+
+        bankAccountRetriever = new BankAccountRetriever(mongoClient);
+    }
+
+    private BankAccount accountWithId(int accountId) {
+        return bankAccountRetriever.bankAccountProjectionWithId(accountId);
     }
 
     private static void printInstructions() {
