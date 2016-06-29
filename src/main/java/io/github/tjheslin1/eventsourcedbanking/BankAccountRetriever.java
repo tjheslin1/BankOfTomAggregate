@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
+import static io.github.tjheslin1.eventsourcedbanking.events.DepositEventWiring.depositEventWiring;
+import static io.github.tjheslin1.eventsourcedbanking.events.WithdrawEventWiring.withdrawalEventWiring;
 import static java.util.stream.Collectors.toList;
 
 public class BankAccountRetriever {
@@ -33,16 +35,15 @@ public class BankAccountRetriever {
 
     public BankAccount bankAccountProjectionWithId(int accountId) {
         BalanceEventReader balanceEventReader = new BalanceEventReader(mongoClient, mongoSettings);
-        List<BalanceEvent> sortedBalanceEvents = sortedEvents(accountId, balanceEventReader);
+        List<BalanceEvent> sortedBalanceEvents = sortedEvents(accountId, balanceEventReader,
+                depositEventWiring(),
+                withdrawalEventWiring());
 
         return new BankAccount(accountId, upToDateBalance(sortedBalanceEvents));
     }
 
     public List<BalanceEvent> sortedEvents(int accountId, BalanceEventReader balanceEventReader, EventWiring... eventWirings) {
-
-        Stream<Stream<BalanceEvent>> test = Stream.of(eventWirings).map(toBalanceEventStream(accountId, balanceEventReader));
-        return test
-                .reduce(Stream::concat).get()
+        return Stream.of(eventWirings).flatMap(toBalanceEventStream(accountId, balanceEventReader))
                 .sorted()
                 .collect(toList());
     }

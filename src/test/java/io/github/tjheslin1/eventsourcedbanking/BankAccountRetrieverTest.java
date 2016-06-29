@@ -56,4 +56,13 @@ public class BankAccountRetrieverTest implements WithAssertions, WithMockito {
                 secondWithdrawalFundsEvent
         );
     }
+
+    @Test
+    public void retrieverHandlesEmptyResults() {
+        when(balanceEventReader.retrieveSorted(ACCOUNT_ID, depositEventWiring())).thenReturn(Stream.empty());
+
+        List<BalanceEvent> sortedEvents = bankAccountRetriever.sortedEvents(ACCOUNT_ID, balanceEventReader, depositEventWiring());
+
+        assertThat(sortedEvents.isEmpty());
+    }
 }

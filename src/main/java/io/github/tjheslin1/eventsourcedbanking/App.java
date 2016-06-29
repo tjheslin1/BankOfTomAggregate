@@ -3,6 +3,8 @@ package io.github.tjheslin1.eventsourcedbanking;
 import com.mongodb.MongoClient;
 import io.github.tjheslin1.eventsourcedbanking.cqrs.MongoConnection;
 import io.github.tjheslin1.eventsourcedbanking.cqrs.command.BalanceEventWriter;
+import io.github.tjheslin1.eventsourcedbanking.cqrs.query.BalanceEventReader;
+import io.github.tjheslin1.eventsourcedbanking.events.Balance;
 import io.github.tjheslin1.settings.PropertiesReader;
 import io.github.tjheslin1.settings.Settings;
 
@@ -22,6 +24,7 @@ public class App {
     private static MongoConnection mongoConnection;
     private static MongoClient mongoClient;
     private static BalanceEventWriter eventWriter;
+    private static BalanceEventReader eventReader;
     private static BankAccountRetriever bankAccountRetriever;
     private static Settings settings;
 
@@ -47,6 +50,7 @@ public class App {
         app.loadTestData();
 
         eventWriter = new BalanceEventWriter(mongoClient, settings);
+        eventReader = new BalanceEventReader(mongoClient, settings);
 
         BankAccount testAccount = app.accountWithId(ACCOUNT_ID);
 
@@ -56,20 +60,23 @@ public class App {
         boolean running = true;
         while (running) {
             String line = scanner.nextLine();
-            double value = amountFromCommand(line);
-
 
             if (depositEvent(line)) {
-                eventWriter.write(depositFundsEvent(ACCOUNT_ID, value, LocalDateTime.now()), depositEventWiring());
-                System.out.println(format("deposit event written for account: %s, for amount: %s.", ACCOUNT_ID, value));
+                double amount = amountFromCommand(line);
+                eventWriter.write(depositFundsEvent(ACCOUNT_ID, amount, LocalDateTime.now()), depositEventWiring());
+                System.out.println(format("deposit event written for account: %s, for amount: %s.", ACCOUNT_ID, amount));
             } else if (withdrawEvent(line)) {
-                eventWriter.write(withdrawFundsEvent(ACCOUNT_ID, value, LocalDateTime.now()), withdrawalEventWiring());
-                System.out.println(format("withdrawal event written for account: %s, for amount: %s.", ACCOUNT_ID, value));
+                double amount = amountFromCommand(line);
+                eventWriter.write(withdrawFundsEvent(ACCOUNT_ID, amount, LocalDateTime.now()), withdrawalEventWiring());
+                System.out.println(format("withdrawal event written for account: %s, for amount: %s.", ACCOUNT_ID, amount));
             } else if (balanceCommand(line)) {
-                System.out.println(format("Balance for account %s is: %s", value, 0));
+                int accountId = (int) amountFromCommand(line);
+                Balance balance = bankAccountRetriever.bankAccountProjectionWithId(accountId).balance();
+                System.out.println(format("The current balance of account: %s is: %s.", accountId, balance.funds()));
             } else if (eventsCommand(line)) {
-                // specifiedEventsForAccountId
-                System.out.println("NYI");
+                int accountId = (int) amountFromCommand(line);
+                bankAccountRetriever.sortedEvents(accountId, eventReader, depositEventWiring(), withdrawalEventWiring())
+                        .forEach(System.out::println);
             } else if (exitCommand(line)) {
                 running = false;
             } else {

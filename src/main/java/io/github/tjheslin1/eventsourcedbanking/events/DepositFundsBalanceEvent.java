@@ -8,7 +8,6 @@ public class DepositFundsBalanceEvent implements BalanceEvent, Comparable {
 
     private final int accountId;
     private final double amount;
-
     private LocalDateTime timeOfEvent;
 
     private DepositFundsBalanceEvent(int accountId, double amount, LocalDateTime timeOfEvent) {
@@ -73,5 +72,12 @@ public class DepositFundsBalanceEvent implements BalanceEvent, Comparable {
         }
 
         return timeOfEvent.isBefore(timeOfSecondEvent) ? -1 : 1;
+    }
+
+    @Override
+    public String toString() {
+        return "accountId=" + accountId +
+                ", amount=" + amount +
+                ", timeOfEvent=" + timeOfEvent;
     }
 }
