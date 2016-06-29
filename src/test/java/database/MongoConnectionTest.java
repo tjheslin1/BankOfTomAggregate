@@ -1,4 +1,4 @@
-package acceptance;
+package database;
 
 import com.mongodb.MongoClient;
 import io.github.tjheslin1.eventsourcedbanking.cqrs.MongoConnection;
