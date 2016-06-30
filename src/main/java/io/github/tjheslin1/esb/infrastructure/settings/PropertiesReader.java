@@ -1,6 +1,5 @@
 package io.github.tjheslin1.esb.infrastructure.settings;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -24,14 +23,14 @@ public class PropertiesReader {
     }
 
     private void loadProperties() {
-        try (InputStream inputStream = new FileInputStream(propertiesFileName())) {
-            properties.load(inputStream);
+        try (InputStream resourceAsStream = this.getClass().getClassLoader().getResourceAsStream(propertiesFileName())) {
+            properties.load(resourceAsStream);
         } catch (IOException e) {
             throw new IllegalStateException("Unable to read file: " + propertiesFileName());
         }
     }
 
     private String propertiesFileName() {
-        return format("src/main/resources/%s.properties", environment);
+        return format("%s.properties", environment);
     }
 }
