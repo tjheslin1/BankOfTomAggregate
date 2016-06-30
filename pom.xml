@@ -35,6 +35,36 @@
                 </configuration>
             </plugin>
 
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.6</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.4.3</version>
+                <executions>
+                    <execution>
+                        <id>main-shade</id>
+                        <phase>package</phase>
+                        <configuration>
+                            <minimizeJar>true</minimizeJar>
+                            <transformers>
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>io.github.tjheslin1.esb.ui.App</mainClass>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
             <!-- mongo_build.sh -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -42,6 +72,7 @@
                 <version>1.8</version>
                 <executions>
                     <execution>
+                        <id>generate-resources</id>
                         <phase>generate-resources</phase>
                         <configuration>
                             <target>
@@ -60,10 +91,31 @@
                             <goal>run</goal>
                         </goals>
                     </execution>
+                    <execution>
+                        <id>install</id>
+                        <phase>install</phase>
+                        <configuration>
+                            <target>
+                                <mkdir dir="target/docker-ready"/>
+                                <copy todir="target/docker-ready">
+                                    <fileset dir="">
+                                        <include name="Dockerfile"/>
+                                    </fileset>
+                                    <fileset dir="target">
+                                        <include name="EventSourcedBanking-${version}.jar"/>
+                                    </fileset>
+                                </copy>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
                 </executions>
             </plugin>
         </plugins>
     </build>
+
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -86,19 +138,10 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- TODO com.mongodb.MongoSocketReadException: Prematurely reached end of stream
-            for EventWriterTest
-         -->
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongo-java-driver</artifactId>
             <version>3.2.1</version>
-        </dependency>
-
-        <dependency>
-            <groupId>de.flapdoodle.embed</groupId>
-            <artifactId>de.flapdoodle.embed.mongo</artifactId>
-            <version>1.50.5</version>
         </dependency>
     </dependencies>
 

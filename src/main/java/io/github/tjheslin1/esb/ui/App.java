@@ -33,8 +33,12 @@ public class App {
     private static Settings settings;
 
     public static void main(String[] args) {
+        settings = new Settings(new PropertiesReader("localhost"));
+
         eventWriter = new MongoBalanceEventWriter(mongoClient, settings);
         balanceEventReader = new MongoBalanceEventReader(mongoClient, settings);
+
+        System.out.println("settings.mongoDbName() = " + settings.mongoDbName());
 
         App app = new App();
         app.loadTestData();
