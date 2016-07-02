@@ -2,12 +2,10 @@ package io.github.tjheslin1.esb.ui;
 
 import com.mongodb.MongoClient;
 import io.github.tjheslin1.esb.application.BankAccountRetriever;
-import io.github.tjheslin1.esb.domain.BankAccount;
 import io.github.tjheslin1.esb.domain.events.Balance;
 import io.github.tjheslin1.esb.infrastructure.domain.cqrs.command.MongoBalanceEventWriter;
 import io.github.tjheslin1.esb.infrastructure.domain.cqrs.query.MongoBalanceEventReader;
 import io.github.tjheslin1.esb.infrastructure.mongo.MongoConnection;
-import io.github.tjheslin1.esb.infrastructure.settings.MongoSettings;
 import io.github.tjheslin1.esb.infrastructure.settings.PropertiesReader;
 import io.github.tjheslin1.esb.infrastructure.settings.Settings;
 
@@ -22,8 +20,6 @@ import static java.lang.String.format;
 
 public class App {
 
-    public static final int ACCOUNT_ID = 7;
-
     public static void main(String[] args) {
         Settings settings = new Settings(new PropertiesReader("localhost"));
 
@@ -33,11 +29,11 @@ public class App {
         MongoBalanceEventReader balanceEventReader = new MongoBalanceEventReader(mongoClient, settings);
 
         BankAccountRetriever bankAccountRetriever = new BankAccountRetriever();
-        BankAccount testAccount = bankAccountRetriever.bankAccountProjectionWithId(ACCOUNT_ID, balanceEventReader);
 
         printInstructions();
         Scanner scanner = new Scanner(System.in);
 
+        App app = new App();
         boolean running = true;
         while (running) {
             String line = scanner.nextLine();
@@ -45,29 +41,62 @@ public class App {
             if (exitCommand(line)) {
                 running = false;
             } else if (depositEvent(line)) {
+                int accountId = accountIdFromCommand(line);
                 double amount = amountFromCommand(line);
-                eventWriter.write(depositFundsEvent(ACCOUNT_ID, amount, LocalDateTime.now()), depositEventWiring());
-                System.out.println(format("deposit event written for account: %s, for amount: %s.", ACCOUNT_ID, amount));
+                app.deposit(eventWriter, accountId, amount);
             } else if (withdrawEvent(line)) {
+                int accountId = accountIdFromCommand(line);
                 double amount = amountFromCommand(line);
-                eventWriter.write(withdrawFundsEvent(ACCOUNT_ID, amount, LocalDateTime.now()), withdrawalEventWiring());
-                System.out.println(format("withdrawal event written for account: %s, for amount: %s.", ACCOUNT_ID, amount));
+                app.withdraw(eventWriter, accountId, amount);
             } else if (balanceCommand(line)) {
-                int accountId = (int) amountFromCommand(line);
-                Balance balance = bankAccountRetriever.bankAccountProjectionWithId(accountId, balanceEventReader).balance();
-                System.out.println(format("The current balance of account: %s is: %s.", accountId, balance.funds()));
+                int accountId = accountIdFromCommand(line);
+                app.balance(balanceEventReader, bankAccountRetriever, accountId);
             } else if (eventsCommand(line)) {
-                int accountId = (int) amountFromCommand(line);
-                bankAccountRetriever.sortedEvents(accountId, balanceEventReader, depositEventWiring(), withdrawalEventWiring())
-                        .forEach(System.out::println);
-                System.out.println("Finished print events.");
+                int accountId = accountIdFromCommand(line);
+                app.events(balanceEventReader, bankAccountRetriever, accountId);
             } else {
                 printInstructions();
             }
             System.out.println("Enter a command:");
         }
+    }
 
-        System.out.println(format("Account with Id '%s' exists", testAccount.accountId()));
+    public void deposit(MongoBalanceEventWriter eventWriter, int accountId, double amount) {
+        eventWriter.write(depositFundsEvent(accountId, amount, LocalDateTime.now()), depositEventWiring());
+        System.out.println(format("deposit event written for account: %s, for amount: %s.", accountId, amount));
+    }
+
+    public void withdraw(MongoBalanceEventWriter eventWriter, int accountId, double amount) {
+        eventWriter.write(withdrawFundsEvent(accountId, amount, LocalDateTime.now()), withdrawalEventWiring());
+        System.out.println(format("withdrawal event written for account: %s, for amount: %s.", accountId, amount));
+    }
+
+    public void balance(MongoBalanceEventReader balanceEventReader, BankAccountRetriever bankAccountRetriever, int accountId) {
+        Balance balance = bankAccountRetriever.bankAccountProjectionWithId(accountId, balanceEventReader).balance();
+        System.out.println(format("The current balance of account: %s is: %s.", accountId, balance.funds()));
+    }
+
+    public void events(MongoBalanceEventReader balanceEventReader, BankAccountRetriever bankAccountRetriever, int accountId) {
+        bankAccountRetriever.sortedEvents(accountId, balanceEventReader, depositEventWiring(), withdrawalEventWiring())
+                .forEach(event -> System.out.println(event.getClass().getSimpleName() + " -> " + event.toString()));
+        System.out.println("Finished print events.");
+    }
+
+    public static int accountIdFromCommand(String line) {
+        int startIndex = 1;
+        if (line.contains(",")) {
+            return Integer.parseInt(line.substring(startIndex, nextDelimiter(line, startIndex)));
+        }
+        return Integer.parseInt(line.substring(startIndex));
+    }
+
+    public static double amountFromCommand(String line) {
+        int startIndex = line.indexOf(",") + 1;
+        return Double.parseDouble(line.substring(startIndex));
+    }
+
+    private static int nextDelimiter(String line, int startIndex) {
+        return line.indexOf(",", startIndex);
     }
 
     private static void printInstructions() {
@@ -95,9 +124,5 @@ public class App {
 
     private static boolean withdrawEvent(String line) {
         return line.startsWith("w");
-    }
-
-    private static double amountFromCommand(String line) {
-        return Double.parseDouble(line.substring(1, line.length()));
     }
 }
