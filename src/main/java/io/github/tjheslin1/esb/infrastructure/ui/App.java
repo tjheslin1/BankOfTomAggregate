@@ -1,10 +1,10 @@
-package io.github.tjheslin1.esb.ui;
+package io.github.tjheslin1.esb.infrastructure.ui;
 
 import com.mongodb.MongoClient;
 import io.github.tjheslin1.esb.application.BankAccountRetriever;
 import io.github.tjheslin1.esb.domain.events.Balance;
-import io.github.tjheslin1.esb.infrastructure.domain.cqrs.command.MongoBalanceEventWriter;
-import io.github.tjheslin1.esb.infrastructure.domain.cqrs.query.MongoBalanceEventReader;
+import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.MongoBalanceEventWriter;
+import io.github.tjheslin1.esb.infrastructure.application.cqrs.query.MongoBalanceEventReader;
 import io.github.tjheslin1.esb.infrastructure.mongo.MongoConnection;
 import io.github.tjheslin1.esb.infrastructure.settings.PropertiesReader;
 import io.github.tjheslin1.esb.infrastructure.settings.Settings;

@@ -54,7 +54,7 @@
                             <transformers>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>io.github.tjheslin1.esb.ui.App</mainClass>
+                                    <mainClass>io.github.tjheslin1.esb.infrastructure.ui.App</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>

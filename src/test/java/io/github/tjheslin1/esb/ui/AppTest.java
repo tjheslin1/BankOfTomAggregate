@@ -1,6 +1,7 @@
 package io.github.tjheslin1.esb.ui;
 
 import io.github.tjheslin1.WithMockito;
+import io.github.tjheslin1.esb.infrastructure.ui.App;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 

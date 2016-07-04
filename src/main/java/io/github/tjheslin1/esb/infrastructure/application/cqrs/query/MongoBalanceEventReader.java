@@ -1,4 +1,4 @@
-package io.github.tjheslin1.esb.infrastructure.domain.cqrs.query;
+package io.github.tjheslin1.esb.infrastructure.application.cqrs.query;
 
 import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;

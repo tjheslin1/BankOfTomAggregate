@@ -4,7 +4,7 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import io.github.tjheslin1.esb.infrastructure.mongo.MongoConnection;
-import io.github.tjheslin1.esb.infrastructure.domain.cqrs.command.MongoBalanceEventWriter;
+import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.MongoBalanceEventWriter;
 import io.github.tjheslin1.esb.infrastructure.application.events.DepositFundsBalanceEvent;
 import io.github.tjheslin1.esb.infrastructure.application.events.WithdrawFundsBalanceEvent;
 import io.github.tjheslin1.esb.infrastructure.settings.MongoSettings;
