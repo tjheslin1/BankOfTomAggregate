@@ -1,7 +1,7 @@
 package io.github.tjheslin1.esb.application;
 
 import io.github.tjheslin1.esb.domain.BankAccount;
-import io.github.tjheslin1.esb.domain.cqrs.query.BalanceEventReader;
+import io.github.tjheslin1.esb.application.cqrs.query.BalanceEventReader;
 import io.github.tjheslin1.esb.domain.events.Balance;
 import io.github.tjheslin1.esb.domain.events.BalanceEvent;
 import io.github.tjheslin1.esb.domain.events.EventWiring;

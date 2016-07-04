@@ -4,7 +4,7 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Sorts;
-import io.github.tjheslin1.esb.domain.cqrs.query.BalanceEventReader;
+import io.github.tjheslin1.esb.application.cqrs.query.BalanceEventReader;
 import io.github.tjheslin1.esb.domain.events.BalanceEvent;
 import io.github.tjheslin1.esb.domain.events.EventWiring;
 import io.github.tjheslin1.esb.infrastructure.settings.MongoSettings;

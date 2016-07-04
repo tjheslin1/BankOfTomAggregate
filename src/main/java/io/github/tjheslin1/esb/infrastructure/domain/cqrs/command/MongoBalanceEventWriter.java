@@ -10,7 +10,7 @@ import org.bson.Document;
 
 import static io.github.tjheslin1.esb.infrastructure.mongo.MongoOperations.collectionCreateIfNotExistsForDatabase;
 
-public class MongoBalanceEventWriter implements io.github.tjheslin1.esb.domain.cqrs.command.BalanceEventWriter {
+public class MongoBalanceEventWriter implements io.github.tjheslin1.esb.application.cqrs.command.BalanceEventWriter {
 
     private final MongoClient mongoClient;
     private MongoSettings mongoSettings;

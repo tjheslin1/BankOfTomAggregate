@@ -1,6 +1,6 @@
 package io.github.tjheslin1.esb.infrastructure.application.cqrs.command;
 
-import io.github.tjheslin1.esb.domain.cqrs.command.EventJsonMarshaller;
+import io.github.tjheslin1.esb.application.cqrs.command.EventJsonMarshaller;
 import io.github.tjheslin1.esb.domain.events.BalanceEvent;
 import io.github.tjheslin1.esb.infrastructure.application.events.WithdrawFundsBalanceEvent;
 import org.bson.Document;

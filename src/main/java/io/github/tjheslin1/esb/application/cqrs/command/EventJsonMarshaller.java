@@ -1,4 +1,4 @@
-package io.github.tjheslin1.esb.domain.cqrs.command;
+package io.github.tjheslin1.esb.application.cqrs.command;
 
 import io.github.tjheslin1.esb.domain.events.BalanceEvent;
 import org.bson.Document;

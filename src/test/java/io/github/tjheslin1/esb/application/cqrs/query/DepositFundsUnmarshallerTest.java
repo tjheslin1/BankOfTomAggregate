@@ -1,4 +1,4 @@
-package io.github.tjheslin1.esb.domain.cqrs.query;
+package io.github.tjheslin1.esb.application.cqrs.query;
 
 import io.github.tjheslin1.esb.infrastructure.application.cqrs.query.DepositFundsUnmarshaller;
 import io.github.tjheslin1.esb.infrastructure.application.events.DepositFundsBalanceEvent;
