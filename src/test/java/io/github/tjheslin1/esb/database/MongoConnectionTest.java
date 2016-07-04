@@ -20,7 +20,7 @@ public class MongoConnectionTest implements WithAssertions {
             // TODO getAddress() takes 30 secs to detect container is not running - execute docker ps somehow?
             assertThat(mongoClient.getAddress()).isNotNull();
         } catch (Exception e) {
-            fail("Failed to connect to mongo io.github.tjheslin1.eventsourcedbanking.database.\nIs the container running?");
+            fail("Failed to connect to mongo database.\nIs the container running?");
         }
     }
 }

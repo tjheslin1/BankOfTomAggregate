@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import static io.github.tjheslin1.esb.infrastructure.mongo.MongoOperations.eventDatePattern;
 
 public class DepositFundsCommand implements BalanceEvent, Comparable {
-
+    // TODO referenced too much
     private final int accountId;
     private final double amount;
     private LocalDateTime timeOfEvent;
