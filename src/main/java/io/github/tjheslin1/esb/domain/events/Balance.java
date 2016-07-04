@@ -1,7 +1,7 @@
 package io.github.tjheslin1.esb.domain.events;
 
-import io.github.tjheslin1.esb.infrastructure.application.events.DepositFundsEvent;
-import io.github.tjheslin1.esb.infrastructure.application.events.WithdrawFundsEvent;
+import io.github.tjheslin1.esb.infrastructure.application.events.DepositFundsCommand;
+import io.github.tjheslin1.esb.infrastructure.application.events.WithdrawFundsCommand;
 
 public class Balance implements EventVisitor {
 
@@ -16,12 +16,12 @@ public class Balance implements EventVisitor {
     }
 
     @Override
-    public void consider(DepositFundsEvent depositFunds) {
+    public void consider(DepositFundsCommand depositFunds) {
         funds += depositFunds.amount();
     }
 
     @Override
-    public void consider(WithdrawFundsEvent withdrawFunds) {
+    public void consider(WithdrawFundsCommand withdrawFunds) {
         funds -= withdrawFunds.amount();
     }
 }

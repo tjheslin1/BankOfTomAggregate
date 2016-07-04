@@ -4,8 +4,8 @@ import io.github.tjheslin1.WithMockito;
 import io.github.tjheslin1.esb.domain.BankAccount;
 import io.github.tjheslin1.esb.application.cqrs.query.BalanceEventReader;
 import io.github.tjheslin1.esb.domain.events.BalanceEvent;
-import io.github.tjheslin1.esb.infrastructure.application.events.DepositFundsEvent;
-import io.github.tjheslin1.esb.infrastructure.application.events.WithdrawFundsEvent;
+import io.github.tjheslin1.esb.infrastructure.application.events.DepositFundsCommand;
+import io.github.tjheslin1.esb.infrastructure.application.events.WithdrawFundsCommand;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 
@@ -14,10 +14,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static io.github.tjheslin1.esb.application.events.DepositEventWiring.depositEventWiring;
-import static io.github.tjheslin1.esb.application.events.WithdrawEventWiring.withdrawalEventWiring;
-import static io.github.tjheslin1.esb.infrastructure.application.events.DepositFundsEvent.depositFundsEvent;
-import static io.github.tjheslin1.esb.infrastructure.application.events.WithdrawFundsEvent.withdrawFundsEvent;
+import static io.github.tjheslin1.esb.application.eventwiring.DepositEventWiring.depositEventWiring;
+import static io.github.tjheslin1.esb.application.eventwiring.WithdrawEventWiring.withdrawalEventWiring;
+import static io.github.tjheslin1.esb.infrastructure.application.events.DepositFundsCommand.depositFundsCommand;
+import static io.github.tjheslin1.esb.infrastructure.application.events.WithdrawFundsCommand.withdrawFundsCommand;
 
 public class BankAccountRetrieverTest implements WithAssertions, WithMockito {
 
@@ -26,12 +26,12 @@ public class BankAccountRetrieverTest implements WithAssertions, WithMockito {
     private final Clock clock = Clock.systemDefaultZone();
     private LocalDateTime timeOfFirstEvent = LocalDateTime.now(clock);
 
-    private DepositFundsEvent firstDepositFundsEvent = depositFundsEvent(ACCOUNT_ID, 10, timeOfFirstEvent);
-    private WithdrawFundsEvent firstWithdrawalFundsEvent = withdrawFundsEvent(ACCOUNT_ID, 5, timeOfFirstEvent.plusMinutes(1));
-    private DepositFundsEvent secondDepositFundsEvent = depositFundsEvent(ACCOUNT_ID, 40, timeOfFirstEvent.plusMinutes(2));
-    private DepositFundsEvent thirdDepositFundsEvent = depositFundsEvent(ACCOUNT_ID, 38, timeOfFirstEvent.plusMinutes(3));
-    private DepositFundsEvent fourthDepositFundsEvent = depositFundsEvent(ACCOUNT_ID, 1, timeOfFirstEvent.plusMinutes(4));
-    private WithdrawFundsEvent secondWithdrawalFundsEvent = withdrawFundsEvent(ACCOUNT_ID, 16, timeOfFirstEvent.plusMinutes(5));
+    private DepositFundsCommand firstDepositFundsCommand = depositFundsCommand(ACCOUNT_ID, 10, timeOfFirstEvent);
+    private WithdrawFundsCommand firstWithdrawalFundsEvent = withdrawFundsCommand(ACCOUNT_ID, 5, timeOfFirstEvent.plusMinutes(1));
+    private DepositFundsCommand secondDepositFundsCommand = depositFundsCommand(ACCOUNT_ID, 40, timeOfFirstEvent.plusMinutes(2));
+    private DepositFundsCommand thirdDepositFundsCommand = depositFundsCommand(ACCOUNT_ID, 38, timeOfFirstEvent.plusMinutes(3));
+    private DepositFundsCommand fourthDepositFundsCommand = depositFundsCommand(ACCOUNT_ID, 1, timeOfFirstEvent.plusMinutes(4));
+    private WithdrawFundsCommand secondWithdrawalFundsEvent = withdrawFundsCommand(ACCOUNT_ID, 16, timeOfFirstEvent.plusMinutes(5));
 
     private BalanceEventReader balanceEventReader = mock(BalanceEventReader.class);
 
@@ -40,18 +40,18 @@ public class BankAccountRetrieverTest implements WithAssertions, WithMockito {
     @Test
     public void retrievesBankAccount() {
         when(balanceEventReader.retrieveSortedEvents(ACCOUNT_ID, depositEventWiring())).thenReturn(Stream.of(
-                firstDepositFundsEvent));
+                firstDepositFundsCommand));
 
         BankAccount bankAccount = bankAccountRetriever.bankAccountProjectionWithId(ACCOUNT_ID, balanceEventReader);
 
-        double expectedBalance = firstDepositFundsEvent.amount();
+        double expectedBalance = firstDepositFundsCommand.amount();
         assertThat(bankAccount.balance().funds()).isEqualTo(expectedBalance);
     }
 
     @Test
     public void eventsAreRetrievedFromDatabaseAndSortedByDateTime() {
         when(balanceEventReader.retrieveSortedEvents(ACCOUNT_ID, depositEventWiring())).thenReturn(Stream.of(
-                firstDepositFundsEvent, secondDepositFundsEvent, thirdDepositFundsEvent, fourthDepositFundsEvent));
+                firstDepositFundsCommand, secondDepositFundsCommand, thirdDepositFundsCommand, fourthDepositFundsCommand));
 
         when(balanceEventReader.retrieveSortedEvents(ACCOUNT_ID, withdrawalEventWiring())).thenReturn(Stream.of(
                 firstWithdrawalFundsEvent, secondWithdrawalFundsEvent
@@ -60,11 +60,11 @@ public class BankAccountRetrieverTest implements WithAssertions, WithMockito {
         List<BalanceEvent> sortedEvents = bankAccountRetriever.sortedEvents(ACCOUNT_ID, balanceEventReader, depositEventWiring(), withdrawalEventWiring());
 
         assertThat(sortedEvents).containsExactly(
-                firstDepositFundsEvent,
+                firstDepositFundsCommand,
                 firstWithdrawalFundsEvent,
-                secondDepositFundsEvent,
-                thirdDepositFundsEvent,
-                fourthDepositFundsEvent,
+                secondDepositFundsCommand,
+                thirdDepositFundsCommand,
+                fourthDepositFundsCommand,
                 secondWithdrawalFundsEvent
         );
     }

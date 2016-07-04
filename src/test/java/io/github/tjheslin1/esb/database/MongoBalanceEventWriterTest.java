@@ -5,8 +5,8 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import io.github.tjheslin1.esb.infrastructure.mongo.MongoConnection;
 import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.MongoBalanceEventWriter;
-import io.github.tjheslin1.esb.infrastructure.application.events.DepositFundsEvent;
-import io.github.tjheslin1.esb.infrastructure.application.events.WithdrawFundsEvent;
+import io.github.tjheslin1.esb.infrastructure.application.events.DepositFundsCommand;
+import io.github.tjheslin1.esb.infrastructure.application.events.WithdrawFundsCommand;
 import io.github.tjheslin1.esb.infrastructure.settings.MongoSettings;
 import io.github.tjheslin1.esb.infrastructure.settings.TestSettings;
 import org.assertj.core.api.WithAssertions;
@@ -19,10 +19,10 @@ import java.time.Clock;
 import java.time.LocalDateTime;
 
 import static io.github.tjheslin1.esb.infrastructure.mongo.MongoOperations.collectionNameForEvent;
-import static io.github.tjheslin1.esb.application.events.DepositEventWiring.depositEventWiring;
-import static io.github.tjheslin1.esb.infrastructure.application.events.DepositFundsEvent.depositFundsEvent;
-import static io.github.tjheslin1.esb.application.events.WithdrawEventWiring.withdrawalEventWiring;
-import static io.github.tjheslin1.esb.infrastructure.application.events.WithdrawFundsEvent.withdrawFundsEvent;
+import static io.github.tjheslin1.esb.application.eventwiring.DepositEventWiring.depositEventWiring;
+import static io.github.tjheslin1.esb.infrastructure.application.events.DepositFundsCommand.depositFundsCommand;
+import static io.github.tjheslin1.esb.application.eventwiring.WithdrawEventWiring.withdrawalEventWiring;
+import static io.github.tjheslin1.esb.infrastructure.application.events.WithdrawFundsCommand.withdrawFundsCommand;
 
 public class MongoBalanceEventWriterTest implements WithAssertions {
 
@@ -45,10 +45,10 @@ public class MongoBalanceEventWriterTest implements WithAssertions {
         MongoDatabase database = mongoClient.getDatabase(mongoSettings.mongoDbName());
 
         MongoCollection<Document> depositFundsEventsCollection = database
-                .getCollection(collectionNameForEvent(DepositFundsEvent.class));
+                .getCollection(collectionNameForEvent(DepositFundsCommand.class));
 
         MongoCollection<Document> withdrawFundsEventsCollection = database
-                .getCollection(collectionNameForEvent(WithdrawFundsEvent.class));
+                .getCollection(collectionNameForEvent(WithdrawFundsCommand.class));
 
         depositFundsEventsCollection.deleteMany(new Document());
         withdrawFundsEventsCollection.deleteMany(new Document());
@@ -56,22 +56,22 @@ public class MongoBalanceEventWriterTest implements WithAssertions {
 
     @Test
     public void writeDepositFundsEventToDatabaseTest() throws Exception {
-        DepositFundsEvent depositFundsEvent = depositFundsEvent(20, 6, LocalDateTime.now(clock));
-        eventWriter.write(depositFundsEvent, depositEventWiring());
+        DepositFundsCommand depositFundsCommand = depositFundsCommand(20, 6, LocalDateTime.now(clock));
+        eventWriter.write(depositFundsCommand, depositEventWiring());
 
         assertThat(mongoClient.getDatabase(mongoSettings.mongoDbName())
-                .getCollection(collectionNameForEvent(depositFundsEvent.getClass()))
+                .getCollection(collectionNameForEvent(depositFundsCommand.getClass()))
                 .count())
                 .isEqualTo(1);
     }
 
     @Test
     public void writeWithdrawFundsEventToDatabaseTest() throws Exception {
-        WithdrawFundsEvent withdrawFundsEvent = withdrawFundsEvent(20, 6, LocalDateTime.now(clock));
-        eventWriter.write(withdrawFundsEvent, withdrawalEventWiring());
+        WithdrawFundsCommand withdrawFundsCommand = withdrawFundsCommand(20, 6, LocalDateTime.now(clock));
+        eventWriter.write(withdrawFundsCommand, withdrawalEventWiring());
 
         assertThat(mongoClient.getDatabase(mongoSettings.mongoDbName())
-                .getCollection(collectionNameForEvent(withdrawFundsEvent.getClass()))
+                .getCollection(collectionNameForEvent(withdrawFundsCommand.getClass()))
                 .count())
                 .isEqualTo(1);
     }

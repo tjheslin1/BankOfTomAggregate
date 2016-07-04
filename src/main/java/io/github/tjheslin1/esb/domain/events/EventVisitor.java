@@ -1,9 +1,9 @@
 package io.github.tjheslin1.esb.domain.events;
 
-import io.github.tjheslin1.esb.infrastructure.application.events.DepositFundsEvent;
-import io.github.tjheslin1.esb.infrastructure.application.events.WithdrawFundsEvent;
+import io.github.tjheslin1.esb.infrastructure.application.events.DepositFundsCommand;
+import io.github.tjheslin1.esb.infrastructure.application.events.WithdrawFundsCommand;
 
 public interface EventVisitor {
-    void consider(DepositFundsEvent depositFunds);
-    void consider(WithdrawFundsEvent withdrawFunds);
+    void consider(DepositFundsCommand depositFunds);
+    void consider(WithdrawFundsCommand withdrawFunds);
 }

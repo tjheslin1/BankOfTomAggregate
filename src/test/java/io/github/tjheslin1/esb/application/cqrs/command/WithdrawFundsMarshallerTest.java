@@ -2,7 +2,7 @@ package io.github.tjheslin1.esb.application.cqrs.command;
 
 import io.github.tjheslin1.WithMockito;
 import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.WithdrawFundsMarshaller;
-import io.github.tjheslin1.esb.infrastructure.application.events.WithdrawFundsEvent;
+import io.github.tjheslin1.esb.infrastructure.application.events.WithdrawFundsCommand;
 import org.assertj.core.api.WithAssertions;
 import org.bson.Document;
 import org.junit.Test;
@@ -16,21 +16,21 @@ public class WithdrawFundsMarshallerTest implements WithAssertions, WithMockito 
     private final Clock clock = Clock.systemDefaultZone();
     private final LocalDateTime timeOfEvent = LocalDateTime.now(clock);
 
-    private WithdrawFundsEvent withdrawFundsEvent = mock(WithdrawFundsEvent.class);
+    private WithdrawFundsCommand withdrawFundsCommand = mock(WithdrawFundsCommand.class);
     private WithdrawFundsMarshaller withdrawFundsMarshaller = new WithdrawFundsMarshaller();
 
     // TODO look at use of date pattern
     @Test
     public void marshallEventToMongoReadyDocument() {
-        when(withdrawFundsEvent.timeOfEvent())
+        when(withdrawFundsCommand.timeOfEvent())
                 .thenReturn(timeOfEvent.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss:SSS")));
-        when(withdrawFundsEvent.accountId()).thenReturn(20);
-        when(withdrawFundsEvent.amount()).thenReturn(28.0);
+        when(withdrawFundsCommand.accountId()).thenReturn(20);
+        when(withdrawFundsCommand.amount()).thenReturn(28.0);
 
         Document expectedDocument = new Document("timeOfEvent", timeOfEvent.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss:SSS")));
         expectedDocument.append("accountId", 20);
         expectedDocument.append("amount", 28.0);
 
-        assertThat(withdrawFundsMarshaller.marshallBalanceEvent(withdrawFundsEvent)).isEqualTo(expectedDocument);
+        assertThat(withdrawFundsMarshaller.marshallBalanceEvent(withdrawFundsCommand)).isEqualTo(expectedDocument);
     }
 }

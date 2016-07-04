@@ -7,13 +7,13 @@ import java.time.LocalDateTime;
 
 import static io.github.tjheslin1.esb.infrastructure.mongo.MongoOperations.eventDatePattern;
 
-public class DepositFundsEvent implements BalanceEvent, Comparable {
+public class DepositFundsCommand implements BalanceEvent, Comparable {
 
     private final int accountId;
     private final double amount;
     private LocalDateTime timeOfEvent;
 
-    private DepositFundsEvent(int accountId, double amount, LocalDateTime timeOfEvent) {
+    private DepositFundsCommand(int accountId, double amount, LocalDateTime timeOfEvent) {
         this.accountId = accountId;
         this.amount = amount;
         this.timeOfEvent = timeOfEvent;
@@ -28,8 +28,8 @@ public class DepositFundsEvent implements BalanceEvent, Comparable {
         return amount;
     }
 
-    public static DepositFundsEvent depositFundsEvent(int accountId, double amount, LocalDateTime timeOfEvent) {
-        return new DepositFundsEvent(accountId, amount, timeOfEvent);
+    public static DepositFundsCommand depositFundsCommand(int accountId, double amount, LocalDateTime timeOfEvent) {
+        return new DepositFundsCommand(accountId, amount, timeOfEvent);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class DepositFundsEvent implements BalanceEvent, Comparable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        DepositFundsEvent that = (DepositFundsEvent) o;
+        DepositFundsCommand that = (DepositFundsCommand) o;
 
         if (accountId != that.accountId) return false;
         if (Double.compare(that.amount, amount) != 0) return false;

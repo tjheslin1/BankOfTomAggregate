@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import static io.github.tjheslin1.esb.application.events.DepositEventWiring.depositEventWiring;
-import static io.github.tjheslin1.esb.application.events.WithdrawEventWiring.withdrawalEventWiring;
+import static io.github.tjheslin1.esb.application.eventwiring.DepositEventWiring.depositEventWiring;
+import static io.github.tjheslin1.esb.application.eventwiring.WithdrawEventWiring.withdrawalEventWiring;
 import static java.util.stream.Collectors.toList;
 
 public class BankAccountRetriever {

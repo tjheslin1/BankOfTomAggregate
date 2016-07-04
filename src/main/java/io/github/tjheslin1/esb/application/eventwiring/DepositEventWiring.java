@@ -1,11 +1,11 @@
-package io.github.tjheslin1.esb.application.events;
+package io.github.tjheslin1.esb.application.eventwiring;
 
 import io.github.tjheslin1.esb.application.cqrs.command.EventJsonMarshaller;
 import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.DepositFundsMarshaller;
 import io.github.tjheslin1.esb.application.cqrs.query.EventJsonUnmarshaller;
 import io.github.tjheslin1.esb.infrastructure.application.cqrs.query.DepositFundsUnmarshaller;
 import io.github.tjheslin1.esb.domain.events.EventWiring;
-import io.github.tjheslin1.esb.infrastructure.application.events.DepositFundsEvent;
+import io.github.tjheslin1.esb.infrastructure.application.events.DepositFundsCommand;
 
 import static io.github.tjheslin1.esb.infrastructure.mongo.MongoOperations.collectionNameForEvent;
 
@@ -23,7 +23,7 @@ public class DepositEventWiring implements EventWiring {
 
     @Override
     public String collectionName() {
-        return collectionNameForEvent(DepositFundsEvent.class);
+        return collectionNameForEvent(DepositFundsCommand.class);
     }
 
     @Override

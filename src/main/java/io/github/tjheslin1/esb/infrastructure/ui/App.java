@@ -12,10 +12,10 @@ import io.github.tjheslin1.esb.infrastructure.settings.Settings;
 import java.time.LocalDateTime;
 import java.util.Scanner;
 
-import static io.github.tjheslin1.esb.application.events.DepositEventWiring.depositEventWiring;
-import static io.github.tjheslin1.esb.application.events.WithdrawEventWiring.withdrawalEventWiring;
-import static io.github.tjheslin1.esb.infrastructure.application.events.DepositFundsEvent.depositFundsEvent;
-import static io.github.tjheslin1.esb.infrastructure.application.events.WithdrawFundsEvent.withdrawFundsEvent;
+import static io.github.tjheslin1.esb.application.eventwiring.DepositEventWiring.depositEventWiring;
+import static io.github.tjheslin1.esb.application.eventwiring.WithdrawEventWiring.withdrawalEventWiring;
+import static io.github.tjheslin1.esb.infrastructure.application.events.DepositFundsCommand.depositFundsCommand;
+import static io.github.tjheslin1.esb.infrastructure.application.events.WithdrawFundsCommand.withdrawFundsCommand;
 import static java.lang.String.format;
 
 public class App {
@@ -62,12 +62,12 @@ public class App {
     }
 
     public void deposit(MongoBalanceEventWriter eventWriter, int accountId, double amount) {
-        eventWriter.write(depositFundsEvent(accountId, amount, LocalDateTime.now()), depositEventWiring());
+        eventWriter.write(depositFundsCommand(accountId, amount, LocalDateTime.now()), depositEventWiring());
         System.out.println(format("deposit event written for account: %s, for amount: %s.", accountId, amount));
     }
 
     public void withdraw(MongoBalanceEventWriter eventWriter, int accountId, double amount) {
-        eventWriter.write(withdrawFundsEvent(accountId, amount, LocalDateTime.now()), withdrawalEventWiring());
+        eventWriter.write(withdrawFundsCommand(accountId, amount, LocalDateTime.now()), withdrawalEventWiring());
         System.out.println(format("withdrawal event written for account: %s, for amount: %s.", accountId, amount));
     }
 
