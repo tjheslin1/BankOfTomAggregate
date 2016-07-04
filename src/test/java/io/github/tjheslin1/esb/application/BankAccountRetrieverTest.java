@@ -4,8 +4,8 @@ import io.github.tjheslin1.WithMockito;
 import io.github.tjheslin1.esb.domain.BankAccount;
 import io.github.tjheslin1.esb.application.cqrs.query.BalanceEventReader;
 import io.github.tjheslin1.esb.domain.events.BalanceEvent;
-import io.github.tjheslin1.esb.infrastructure.application.events.DepositFundsBalanceEvent;
-import io.github.tjheslin1.esb.infrastructure.application.events.WithdrawFundsBalanceEvent;
+import io.github.tjheslin1.esb.infrastructure.application.events.DepositFundsEvent;
+import io.github.tjheslin1.esb.infrastructure.application.events.WithdrawFundsEvent;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 
@@ -16,8 +16,8 @@ import java.util.stream.Stream;
 
 import static io.github.tjheslin1.esb.application.events.DepositEventWiring.depositEventWiring;
 import static io.github.tjheslin1.esb.application.events.WithdrawEventWiring.withdrawalEventWiring;
-import static io.github.tjheslin1.esb.infrastructure.application.events.DepositFundsBalanceEvent.depositFundsEvent;
-import static io.github.tjheslin1.esb.infrastructure.application.events.WithdrawFundsBalanceEvent.withdrawFundsEvent;
+import static io.github.tjheslin1.esb.infrastructure.application.events.DepositFundsEvent.depositFundsEvent;
+import static io.github.tjheslin1.esb.infrastructure.application.events.WithdrawFundsEvent.withdrawFundsEvent;
 
 public class BankAccountRetrieverTest implements WithAssertions, WithMockito {
 
@@ -26,12 +26,12 @@ public class BankAccountRetrieverTest implements WithAssertions, WithMockito {
     private final Clock clock = Clock.systemDefaultZone();
     private LocalDateTime timeOfFirstEvent = LocalDateTime.now(clock);
 
-    private DepositFundsBalanceEvent firstDepositFundsEvent = depositFundsEvent(ACCOUNT_ID, 10, timeOfFirstEvent);
-    private WithdrawFundsBalanceEvent firstWithdrawalFundsEvent = withdrawFundsEvent(ACCOUNT_ID, 5, timeOfFirstEvent.plusMinutes(1));
-    private DepositFundsBalanceEvent secondDepositFundsEvent = depositFundsEvent(ACCOUNT_ID, 40, timeOfFirstEvent.plusMinutes(2));
-    private DepositFundsBalanceEvent thirdDepositFundsEvent = depositFundsEvent(ACCOUNT_ID, 38, timeOfFirstEvent.plusMinutes(3));
-    private DepositFundsBalanceEvent fourthDepositFundsEvent = depositFundsEvent(ACCOUNT_ID, 1, timeOfFirstEvent.plusMinutes(4));
-    private WithdrawFundsBalanceEvent secondWithdrawalFundsEvent = withdrawFundsEvent(ACCOUNT_ID, 16, timeOfFirstEvent.plusMinutes(5));
+    private DepositFundsEvent firstDepositFundsEvent = depositFundsEvent(ACCOUNT_ID, 10, timeOfFirstEvent);
+    private WithdrawFundsEvent firstWithdrawalFundsEvent = withdrawFundsEvent(ACCOUNT_ID, 5, timeOfFirstEvent.plusMinutes(1));
+    private DepositFundsEvent secondDepositFundsEvent = depositFundsEvent(ACCOUNT_ID, 40, timeOfFirstEvent.plusMinutes(2));
+    private DepositFundsEvent thirdDepositFundsEvent = depositFundsEvent(ACCOUNT_ID, 38, timeOfFirstEvent.plusMinutes(3));
+    private DepositFundsEvent fourthDepositFundsEvent = depositFundsEvent(ACCOUNT_ID, 1, timeOfFirstEvent.plusMinutes(4));
+    private WithdrawFundsEvent secondWithdrawalFundsEvent = withdrawFundsEvent(ACCOUNT_ID, 16, timeOfFirstEvent.plusMinutes(5));
 
     private BalanceEventReader balanceEventReader = mock(BalanceEventReader.class);
 

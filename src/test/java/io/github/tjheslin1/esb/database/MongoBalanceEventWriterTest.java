@@ -5,8 +5,8 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import io.github.tjheslin1.esb.infrastructure.mongo.MongoConnection;
 import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.MongoBalanceEventWriter;
-import io.github.tjheslin1.esb.infrastructure.application.events.DepositFundsBalanceEvent;
-import io.github.tjheslin1.esb.infrastructure.application.events.WithdrawFundsBalanceEvent;
+import io.github.tjheslin1.esb.infrastructure.application.events.DepositFundsEvent;
+import io.github.tjheslin1.esb.infrastructure.application.events.WithdrawFundsEvent;
 import io.github.tjheslin1.esb.infrastructure.settings.MongoSettings;
 import io.github.tjheslin1.esb.infrastructure.settings.TestSettings;
 import org.assertj.core.api.WithAssertions;
@@ -20,9 +20,9 @@ import java.time.LocalDateTime;
 
 import static io.github.tjheslin1.esb.infrastructure.mongo.MongoOperations.collectionNameForEvent;
 import static io.github.tjheslin1.esb.application.events.DepositEventWiring.depositEventWiring;
-import static io.github.tjheslin1.esb.infrastructure.application.events.DepositFundsBalanceEvent.depositFundsEvent;
+import static io.github.tjheslin1.esb.infrastructure.application.events.DepositFundsEvent.depositFundsEvent;
 import static io.github.tjheslin1.esb.application.events.WithdrawEventWiring.withdrawalEventWiring;
-import static io.github.tjheslin1.esb.infrastructure.application.events.WithdrawFundsBalanceEvent.withdrawFundsEvent;
+import static io.github.tjheslin1.esb.infrastructure.application.events.WithdrawFundsEvent.withdrawFundsEvent;
 
 public class MongoBalanceEventWriterTest implements WithAssertions {
 
@@ -45,10 +45,10 @@ public class MongoBalanceEventWriterTest implements WithAssertions {
         MongoDatabase database = mongoClient.getDatabase(mongoSettings.mongoDbName());
 
         MongoCollection<Document> depositFundsEventsCollection = database
-                .getCollection(collectionNameForEvent(DepositFundsBalanceEvent.class));
+                .getCollection(collectionNameForEvent(DepositFundsEvent.class));
 
         MongoCollection<Document> withdrawFundsEventsCollection = database
-                .getCollection(collectionNameForEvent(WithdrawFundsBalanceEvent.class));
+                .getCollection(collectionNameForEvent(WithdrawFundsEvent.class));
 
         depositFundsEventsCollection.deleteMany(new Document());
         withdrawFundsEventsCollection.deleteMany(new Document());
@@ -56,22 +56,22 @@ public class MongoBalanceEventWriterTest implements WithAssertions {
 
     @Test
     public void writeDepositFundsEventToDatabaseTest() throws Exception {
-        DepositFundsBalanceEvent depositFundsBalanceEvent = depositFundsEvent(20, 6, LocalDateTime.now(clock));
-        eventWriter.write(depositFundsBalanceEvent, depositEventWiring());
+        DepositFundsEvent depositFundsEvent = depositFundsEvent(20, 6, LocalDateTime.now(clock));
+        eventWriter.write(depositFundsEvent, depositEventWiring());
 
         assertThat(mongoClient.getDatabase(mongoSettings.mongoDbName())
-                .getCollection(collectionNameForEvent(depositFundsBalanceEvent.getClass()))
+                .getCollection(collectionNameForEvent(depositFundsEvent.getClass()))
                 .count())
                 .isEqualTo(1);
     }
 
     @Test
     public void writeWithdrawFundsEventToDatabaseTest() throws Exception {
-        WithdrawFundsBalanceEvent withdrawFundsBalanceEvent = withdrawFundsEvent(20, 6, LocalDateTime.now(clock));
-        eventWriter.write(withdrawFundsBalanceEvent, withdrawalEventWiring());
+        WithdrawFundsEvent withdrawFundsEvent = withdrawFundsEvent(20, 6, LocalDateTime.now(clock));
+        eventWriter.write(withdrawFundsEvent, withdrawalEventWiring());
 
         assertThat(mongoClient.getDatabase(mongoSettings.mongoDbName())
-                .getCollection(collectionNameForEvent(withdrawFundsBalanceEvent.getClass()))
+                .getCollection(collectionNameForEvent(withdrawFundsEvent.getClass()))
                 .count())
                 .isEqualTo(1);
     }

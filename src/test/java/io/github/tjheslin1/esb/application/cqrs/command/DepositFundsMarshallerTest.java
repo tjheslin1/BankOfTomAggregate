@@ -2,7 +2,7 @@ package io.github.tjheslin1.esb.application.cqrs.command;
 
 import io.github.tjheslin1.WithMockito;
 import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.DepositFundsMarshaller;
-import io.github.tjheslin1.esb.infrastructure.application.events.DepositFundsBalanceEvent;
+import io.github.tjheslin1.esb.infrastructure.application.events.DepositFundsEvent;
 import org.assertj.core.api.WithAssertions;
 import org.bson.Document;
 import org.junit.Test;
@@ -17,7 +17,7 @@ public class DepositFundsMarshallerTest implements WithAssertions, WithMockito {
     private final Clock clock = Clock.systemDefaultZone();
     private final LocalDateTime timeOfEvent = LocalDateTime.now(clock);
 
-    private DepositFundsBalanceEvent depositFundsEvent = mock(DepositFundsBalanceEvent.class);
+    private DepositFundsEvent depositFundsEvent = mock(DepositFundsEvent.class);
     private DepositFundsMarshaller depositFundsMarshaller = new DepositFundsMarshaller();
 
     // TODO look at use of date pattern

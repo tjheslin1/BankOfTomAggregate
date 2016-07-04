@@ -1,7 +1,7 @@
 package io.github.tjheslin1.esb.application.cqrs.query;
 
 import io.github.tjheslin1.esb.infrastructure.application.cqrs.query.DepositFundsUnmarshaller;
-import io.github.tjheslin1.esb.infrastructure.application.events.DepositFundsBalanceEvent;
+import io.github.tjheslin1.esb.infrastructure.application.events.DepositFundsEvent;
 import org.assertj.core.api.WithAssertions;
 import org.bson.Document;
 import org.junit.Test;
@@ -9,7 +9,7 @@ import org.junit.Test;
 import java.time.Clock;
 import java.time.LocalDateTime;
 
-import static io.github.tjheslin1.esb.infrastructure.application.events.DepositFundsBalanceEvent.depositFundsEvent;
+import static io.github.tjheslin1.esb.infrastructure.application.events.DepositFundsEvent.depositFundsEvent;
 
 public class DepositFundsUnmarshallerTest implements WithAssertions {
 
@@ -20,13 +20,13 @@ public class DepositFundsUnmarshallerTest implements WithAssertions {
     @Test
     public void unmarshallEventToMongoReadyDocument() {
 
-        DepositFundsBalanceEvent expectedEvent = depositFundsEvent(20, 8, LocalDateTime.now(clock));
+        DepositFundsEvent expectedEvent = depositFundsEvent(20, 8, LocalDateTime.now(clock));
 
         Document eventDoc = new Document("timeOfEvent", expectedEvent.timeOfEvent());
         eventDoc.append("accountId", expectedEvent.accountId());
         eventDoc.append("amount", expectedEvent.amount());
 
-        DepositFundsBalanceEvent actualEvent = depositFundsUnmarshaller.unmarshallBalanceEvent(eventDoc);
+        DepositFundsEvent actualEvent = depositFundsUnmarshaller.unmarshallBalanceEvent(eventDoc);
 
         assertThat(actualEvent).isEqualTo(expectedEvent);
     }

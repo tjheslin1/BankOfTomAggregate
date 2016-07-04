@@ -14,8 +14,8 @@ import java.util.Scanner;
 
 import static io.github.tjheslin1.esb.application.events.DepositEventWiring.depositEventWiring;
 import static io.github.tjheslin1.esb.application.events.WithdrawEventWiring.withdrawalEventWiring;
-import static io.github.tjheslin1.esb.infrastructure.application.events.DepositFundsBalanceEvent.depositFundsEvent;
-import static io.github.tjheslin1.esb.infrastructure.application.events.WithdrawFundsBalanceEvent.withdrawFundsEvent;
+import static io.github.tjheslin1.esb.infrastructure.application.events.DepositFundsEvent.depositFundsEvent;
+import static io.github.tjheslin1.esb.infrastructure.application.events.WithdrawFundsEvent.withdrawFundsEvent;
 import static java.lang.String.format;
 
 public class App {
@@ -77,9 +77,10 @@ public class App {
     }
 
     public void events(MongoBalanceEventReader balanceEventReader, BankAccountRetriever bankAccountRetriever, int accountId) {
+        // TODO write event to say that balance events have been requested.
         bankAccountRetriever.sortedEvents(accountId, balanceEventReader, depositEventWiring(), withdrawalEventWiring())
                 .forEach(event -> System.out.println(event.getClass().getSimpleName() + " -> " + event.toString()));
-        System.out.println("Finished print events.");
+        System.out.println("Finished printing events.");
     }
 
     public static int accountIdFromCommand(String line) {

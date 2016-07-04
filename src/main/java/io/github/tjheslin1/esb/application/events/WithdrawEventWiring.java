@@ -5,7 +5,7 @@ import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.WithdrawF
 import io.github.tjheslin1.esb.application.cqrs.query.EventJsonUnmarshaller;
 import io.github.tjheslin1.esb.infrastructure.application.cqrs.query.WithdrawFundsUnmarshaller;
 import io.github.tjheslin1.esb.domain.events.EventWiring;
-import io.github.tjheslin1.esb.infrastructure.application.events.WithdrawFundsBalanceEvent;
+import io.github.tjheslin1.esb.infrastructure.application.events.WithdrawFundsEvent;
 
 import static io.github.tjheslin1.esb.infrastructure.mongo.MongoOperations.collectionNameForEvent;
 
@@ -24,7 +24,7 @@ public class WithdrawEventWiring implements EventWiring {
 
     @Override
     public String collectionName() {
-        return collectionNameForEvent(WithdrawFundsBalanceEvent.class);
+        return collectionNameForEvent(WithdrawFundsEvent.class);
     }
 
     @Override
