@@ -1,17 +1,17 @@
 package io.github.tjheslin1.esb.domain.events;
 
-import io.github.tjheslin1.esb.infrastructure.application.events.DepositFundsCommand;
-import io.github.tjheslin1.esb.infrastructure.application.events.WithdrawFundsCommand;
+import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.DepositFundsCommand;
+import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.WithdrawFundsCommand;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
 
-import static io.github.tjheslin1.esb.infrastructure.application.events.DepositFundsCommand.depositFundsCommand;
-import static io.github.tjheslin1.esb.infrastructure.application.events.WithdrawFundsCommand.withdrawFundsCommand;
+import static io.github.tjheslin1.esb.infrastructure.application.cqrs.command.DepositFundsCommand.depositFundsCommand;
+import static io.github.tjheslin1.esb.infrastructure.application.cqrs.command.WithdrawFundsCommand.withdrawFundsCommand;
 
-public class BalanceEventTest implements WithAssertions {
+public class BalanceCommandTest implements WithAssertions {
 
     private final Clock clock = Clock.systemDefaultZone();
     private final LocalDateTime timeOfFirstEvent = LocalDateTime.now(clock);

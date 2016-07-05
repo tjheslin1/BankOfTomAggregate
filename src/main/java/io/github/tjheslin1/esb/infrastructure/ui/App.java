@@ -1,8 +1,7 @@
 package io.github.tjheslin1.esb.infrastructure.ui;
 
 import com.mongodb.MongoClient;
-import io.github.tjheslin1.esb.application.BankAccountRetriever;
-import io.github.tjheslin1.esb.domain.events.Balance;
+import io.github.tjheslin1.esb.domain.BankAccount;
 import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.MongoBalanceEventWriter;
 import io.github.tjheslin1.esb.infrastructure.application.cqrs.query.MongoBalanceEventReader;
 import io.github.tjheslin1.esb.infrastructure.mongo.MongoConnection;
@@ -14,8 +13,10 @@ import java.util.Scanner;
 
 import static io.github.tjheslin1.esb.application.eventwiring.DepositEventWiring.depositEventWiring;
 import static io.github.tjheslin1.esb.application.eventwiring.WithdrawEventWiring.withdrawalEventWiring;
-import static io.github.tjheslin1.esb.infrastructure.application.events.DepositFundsCommand.depositFundsCommand;
-import static io.github.tjheslin1.esb.infrastructure.application.events.WithdrawFundsCommand.withdrawFundsCommand;
+import static io.github.tjheslin1.esb.infrastructure.application.cqrs.command.DepositFundsCommand.depositFundsCommand;
+import static io.github.tjheslin1.esb.infrastructure.application.cqrs.command.WithdrawFundsCommand.withdrawFundsCommand;
+import static io.github.tjheslin1.esb.infrastructure.application.cqrs.query.ProjectBankAccountQuery.projectBankAccountQuery;
+import static io.github.tjheslin1.esb.infrastructure.application.cqrs.query.ProjectBankAccountQuery.sortedEvents;
 import static java.lang.String.format;
 
 public class App {
@@ -27,8 +28,6 @@ public class App {
         MongoClient mongoClient = mongoConnection.connection();
         MongoBalanceEventWriter eventWriter = new MongoBalanceEventWriter(mongoClient, settings);
         MongoBalanceEventReader balanceEventReader = new MongoBalanceEventReader(mongoClient, settings);
-
-        BankAccountRetriever bankAccountRetriever = new BankAccountRetriever();
 
         printInstructions();
         Scanner scanner = new Scanner(System.in);
@@ -50,10 +49,10 @@ public class App {
                 app.withdraw(eventWriter, accountId, amount);
             } else if (balanceCommand(line)) {
                 int accountId = accountIdFromCommand(line);
-                app.balance(balanceEventReader, bankAccountRetriever, accountId);
+                app.balance(accountId, balanceEventReader);
             } else if (eventsCommand(line)) {
                 int accountId = accountIdFromCommand(line);
-                app.events(balanceEventReader, bankAccountRetriever, accountId);
+                app.events(accountId, balanceEventReader);
             } else {
                 printInstructions();
             }
@@ -71,14 +70,14 @@ public class App {
         System.out.println(format("withdrawal event written for account: %s, for amount: %s.", accountId, amount));
     }
 
-    public void balance(MongoBalanceEventReader balanceEventReader, BankAccountRetriever bankAccountRetriever, int accountId) {
-        Balance balance = bankAccountRetriever.bankAccountProjectionWithId(accountId, balanceEventReader).balance();
-        System.out.println(format("The current balance of account: %s is: %s.", accountId, balance.funds()));
+    public void balance(int accountId, MongoBalanceEventReader balanceEventReader) {
+        BankAccount bankAccount = projectBankAccountQuery(accountId, balanceEventReader);
+        System.out.println(format("The current balance of account: %s is: %s.", accountId, bankAccount.balance().funds()));
     }
 
-    public void events(MongoBalanceEventReader balanceEventReader, BankAccountRetriever bankAccountRetriever, int accountId) {
+    public void events(int accountId, MongoBalanceEventReader balanceEventReader) {
         // TODO write event to say that balance events have been requested.
-        bankAccountRetriever.sortedEvents(accountId, balanceEventReader, depositEventWiring(), withdrawalEventWiring())
+        sortedEvents(accountId, balanceEventReader, depositEventWiring(), withdrawalEventWiring())
                 .forEach(event -> System.out.println(event.getClass().getSimpleName() + " -> " + event.toString()));
         System.out.println("Finished printing events.");
     }

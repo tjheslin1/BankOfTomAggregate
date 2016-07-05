@@ -1,7 +1,7 @@
 package io.github.tjheslin1.esb.application.cqrs.query;
 
-import io.github.tjheslin1.esb.infrastructure.application.cqrs.query.DepositFundsUnmarshaller;
-import io.github.tjheslin1.esb.infrastructure.application.events.DepositFundsCommand;
+import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.DepositFundsCommand;
+import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.DepositFundsUnmarshaller;
 import org.assertj.core.api.WithAssertions;
 import org.bson.Document;
 import org.junit.Test;
@@ -9,7 +9,7 @@ import org.junit.Test;
 import java.time.Clock;
 import java.time.LocalDateTime;
 
-import static io.github.tjheslin1.esb.infrastructure.application.events.DepositFundsCommand.depositFundsCommand;
+import static io.github.tjheslin1.esb.infrastructure.application.cqrs.command.DepositFundsCommand.depositFundsCommand;
 
 public class DepositFundsUnmarshallerTest implements WithAssertions {
 

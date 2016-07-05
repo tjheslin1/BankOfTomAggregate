@@ -1,7 +1,5 @@
 package io.github.tjheslin1.esb.domain;
 
-import io.github.tjheslin1.esb.domain.events.Balance;
-
 public class BankAccount {
 
     private final int accountId;

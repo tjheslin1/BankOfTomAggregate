@@ -1,23 +1,22 @@
-package io.github.tjheslin1.esb.infrastructure.application.cqrs.query;
+package io.github.tjheslin1.esb.infrastructure.application.cqrs.command;
 
-import io.github.tjheslin1.esb.infrastructure.application.events.DepositFundsCommand;
 import io.github.tjheslin1.esb.application.cqrs.query.EventJsonUnmarshaller;
 import org.bson.Document;
 
 import java.time.LocalDateTime;
 
+import static io.github.tjheslin1.esb.infrastructure.application.cqrs.command.WithdrawFundsCommand.withdrawFundsCommand;
 import static io.github.tjheslin1.esb.infrastructure.mongo.MongoOperations.eventDatePattern;
-import static io.github.tjheslin1.esb.infrastructure.application.events.DepositFundsCommand.depositFundsCommand;
 
-public class DepositFundsUnmarshaller implements EventJsonUnmarshaller {
+public class WithdrawFundsUnmarshaller implements EventJsonUnmarshaller {
 
     @Override
-    public DepositFundsCommand unmarshallBalanceEvent(Document document) {
+    public WithdrawFundsCommand unmarshallBalanceEvent(Document document) {
         int accountId = Integer.parseInt(document.get("accountId").toString());
         double amount = Double.parseDouble(document.get("amount").toString());
 
         LocalDateTime timeOfEvent = LocalDateTime.parse(document.get("timeOfEvent").toString(), eventDatePattern());
 
-        return depositFundsCommand(accountId, amount, timeOfEvent);
+        return withdrawFundsCommand(accountId, amount, timeOfEvent);
     }
 }

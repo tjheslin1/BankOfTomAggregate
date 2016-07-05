@@ -3,10 +3,10 @@ package io.github.tjheslin1.esb.database;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import io.github.tjheslin1.esb.infrastructure.mongo.MongoConnection;
+import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.DepositFundsCommand;
 import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.MongoBalanceEventWriter;
-import io.github.tjheslin1.esb.infrastructure.application.events.DepositFundsCommand;
-import io.github.tjheslin1.esb.infrastructure.application.events.WithdrawFundsCommand;
+import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.WithdrawFundsCommand;
+import io.github.tjheslin1.esb.infrastructure.mongo.MongoConnection;
 import io.github.tjheslin1.esb.infrastructure.settings.MongoSettings;
 import io.github.tjheslin1.esb.infrastructure.settings.TestSettings;
 import org.assertj.core.api.WithAssertions;
@@ -18,13 +18,13 @@ import org.junit.Test;
 import java.time.Clock;
 import java.time.LocalDateTime;
 
-import static io.github.tjheslin1.esb.infrastructure.mongo.MongoOperations.collectionNameForEvent;
 import static io.github.tjheslin1.esb.application.eventwiring.DepositEventWiring.depositEventWiring;
-import static io.github.tjheslin1.esb.infrastructure.application.events.DepositFundsCommand.depositFundsCommand;
 import static io.github.tjheslin1.esb.application.eventwiring.WithdrawEventWiring.withdrawalEventWiring;
-import static io.github.tjheslin1.esb.infrastructure.application.events.WithdrawFundsCommand.withdrawFundsCommand;
+import static io.github.tjheslin1.esb.infrastructure.application.cqrs.command.DepositFundsCommand.depositFundsCommand;
+import static io.github.tjheslin1.esb.infrastructure.application.cqrs.command.WithdrawFundsCommand.withdrawFundsCommand;
+import static io.github.tjheslin1.esb.infrastructure.mongo.MongoOperations.collectionNameForEvent;
 
-public class MongoBalanceEventWriterTest implements WithAssertions {
+public class MongoBalanceCommandWriterTest implements WithAssertions {
 
     private MongoSettings mongoSettings = new TestSettings();
     private MongoConnection mongoConnection = new MongoConnection(mongoSettings);

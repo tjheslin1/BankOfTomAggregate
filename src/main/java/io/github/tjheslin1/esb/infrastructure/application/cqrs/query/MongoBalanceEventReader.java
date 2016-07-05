@@ -5,7 +5,7 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Sorts;
 import io.github.tjheslin1.esb.application.cqrs.query.BalanceEventReader;
-import io.github.tjheslin1.esb.domain.events.BalanceEvent;
+import io.github.tjheslin1.esb.domain.events.BalanceCommand;
 import io.github.tjheslin1.esb.domain.events.EventWiring;
 import io.github.tjheslin1.esb.infrastructure.settings.MongoSettings;
 import org.bson.Document;
@@ -26,7 +26,7 @@ public class MongoBalanceEventReader implements BalanceEventReader {
     }
 
     @Override
-    public Stream<BalanceEvent> retrieveSortedEvents(int accountId, EventWiring eventWiring) {
+    public Stream<BalanceCommand> retrieveSortedEvents(int accountId, EventWiring eventWiring) {
         MongoDatabase eventStoreDb = mongoClient.getDatabase(mongoSettings.mongoDbName());
 
         FindIterable<Document> events = eventStoreDb.getCollection(eventWiring.collectionName())

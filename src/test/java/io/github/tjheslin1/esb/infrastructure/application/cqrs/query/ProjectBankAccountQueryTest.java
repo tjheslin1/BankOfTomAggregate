@@ -1,11 +1,11 @@
-package io.github.tjheslin1.esb.application;
+package io.github.tjheslin1.esb.infrastructure.application.cqrs.query;
 
 import io.github.tjheslin1.WithMockito;
-import io.github.tjheslin1.esb.domain.BankAccount;
 import io.github.tjheslin1.esb.application.cqrs.query.BalanceEventReader;
-import io.github.tjheslin1.esb.domain.events.BalanceEvent;
-import io.github.tjheslin1.esb.infrastructure.application.events.DepositFundsCommand;
-import io.github.tjheslin1.esb.infrastructure.application.events.WithdrawFundsCommand;
+import io.github.tjheslin1.esb.domain.BankAccount;
+import io.github.tjheslin1.esb.domain.events.BalanceCommand;
+import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.DepositFundsCommand;
+import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.WithdrawFundsCommand;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 
@@ -16,11 +16,12 @@ import java.util.stream.Stream;
 
 import static io.github.tjheslin1.esb.application.eventwiring.DepositEventWiring.depositEventWiring;
 import static io.github.tjheslin1.esb.application.eventwiring.WithdrawEventWiring.withdrawalEventWiring;
-import static io.github.tjheslin1.esb.infrastructure.application.events.DepositFundsCommand.depositFundsCommand;
-import static io.github.tjheslin1.esb.infrastructure.application.events.WithdrawFundsCommand.withdrawFundsCommand;
+import static io.github.tjheslin1.esb.infrastructure.application.cqrs.command.DepositFundsCommand.depositFundsCommand;
+import static io.github.tjheslin1.esb.infrastructure.application.cqrs.command.WithdrawFundsCommand.withdrawFundsCommand;
+import static io.github.tjheslin1.esb.infrastructure.application.cqrs.query.ProjectBankAccountQuery.projectBankAccountQuery;
+import static io.github.tjheslin1.esb.infrastructure.application.cqrs.query.ProjectBankAccountQuery.sortedEvents;
 
-public class BankAccountRetrieverTest implements WithAssertions, WithMockito {
-
+public class ProjectBankAccountQueryTest implements WithAssertions, WithMockito {
     public static final int ACCOUNT_ID = 20;
 
     private final Clock clock = Clock.systemDefaultZone();
@@ -35,14 +36,12 @@ public class BankAccountRetrieverTest implements WithAssertions, WithMockito {
 
     private BalanceEventReader balanceEventReader = mock(BalanceEventReader.class);
 
-    private BankAccountRetriever bankAccountRetriever = new BankAccountRetriever();
-
     @Test
     public void retrievesBankAccount() {
         when(balanceEventReader.retrieveSortedEvents(ACCOUNT_ID, depositEventWiring())).thenReturn(Stream.of(
                 firstDepositFundsCommand));
 
-        BankAccount bankAccount = bankAccountRetriever.bankAccountProjectionWithId(ACCOUNT_ID, balanceEventReader);
+        BankAccount bankAccount = projectBankAccountQuery(ACCOUNT_ID, balanceEventReader);
 
         double expectedBalance = firstDepositFundsCommand.amount();
         assertThat(bankAccount.balance().funds()).isEqualTo(expectedBalance);
@@ -57,7 +56,7 @@ public class BankAccountRetrieverTest implements WithAssertions, WithMockito {
                 firstWithdrawalFundsEvent, secondWithdrawalFundsEvent
         ));
 
-        List<BalanceEvent> sortedEvents = bankAccountRetriever.sortedEvents(ACCOUNT_ID, balanceEventReader, depositEventWiring(), withdrawalEventWiring());
+        List<BalanceCommand> sortedEvents = sortedEvents(ACCOUNT_ID, balanceEventReader, depositEventWiring(), withdrawalEventWiring());
 
         assertThat(sortedEvents).containsExactly(
                 firstDepositFundsCommand,
@@ -73,7 +72,7 @@ public class BankAccountRetrieverTest implements WithAssertions, WithMockito {
     public void retrieverHandlesEmptyResults() {
         when(balanceEventReader.retrieveSortedEvents(ACCOUNT_ID, depositEventWiring())).thenReturn(Stream.empty());
 
-        List<BalanceEvent> sortedEvents = bankAccountRetriever.sortedEvents(ACCOUNT_ID, balanceEventReader, depositEventWiring());
+        List<BalanceCommand> sortedEvents = sortedEvents(ACCOUNT_ID, balanceEventReader, depositEventWiring());
 
         assertThat(sortedEvents.isEmpty());
     }

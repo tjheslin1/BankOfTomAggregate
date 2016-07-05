@@ -1,13 +1,13 @@
-package io.github.tjheslin1.esb.infrastructure.application.events;
+package io.github.tjheslin1.esb.infrastructure.application.cqrs.command;
 
-import io.github.tjheslin1.esb.domain.events.BalanceEvent;
+import io.github.tjheslin1.esb.domain.events.BalanceCommand;
 import io.github.tjheslin1.esb.domain.events.EventVisitor;
 
 import java.time.LocalDateTime;
 
 import static io.github.tjheslin1.esb.infrastructure.mongo.MongoOperations.eventDatePattern;
 
-public class DepositFundsCommand implements BalanceEvent, Comparable {
+public class DepositFundsCommand implements BalanceCommand, Comparable {
     // TODO referenced too much
     private final int accountId;
     private final double amount;
@@ -68,9 +68,9 @@ public class DepositFundsCommand implements BalanceEvent, Comparable {
 
     @Override
     public int compareTo(Object o) {
-        BalanceEvent secondBalanceEvent = (BalanceEvent) o;
-        LocalDateTime timeOfSecondEvent = LocalDateTime.parse(secondBalanceEvent.timeOfEvent(), eventDatePattern());
-        if (timeOfEvent.isEqual(timeOfSecondEvent) && accountId == secondBalanceEvent.accountId()) {
+        BalanceCommand secondBalanceCommand = (BalanceCommand) o;
+        LocalDateTime timeOfSecondEvent = LocalDateTime.parse(secondBalanceCommand.timeOfEvent(), eventDatePattern());
+        if (timeOfEvent.isEqual(timeOfSecondEvent) && accountId == secondBalanceCommand.accountId()) {
             throw new IllegalStateException("Two BalanceEvents for the same account cannot have the same 'timeOfEvent'");
         }
 
