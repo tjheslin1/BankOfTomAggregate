@@ -122,7 +122,7 @@
                         <param>io.github.tjheslin1.esb.*</param>
                     </targetClasses>
                     <targetTests>
-                        <param>io.github.tjheslin1.esb</param>
+                        <param>io.github.tjheslin1.esb.*</param>
                     </targetTests>
                 </configuration>
             </plugin>

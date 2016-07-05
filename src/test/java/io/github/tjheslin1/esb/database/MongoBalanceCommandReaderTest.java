@@ -3,13 +3,13 @@ package io.github.tjheslin1.esb.database;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import io.github.tjheslin1.esb.application.cqrs.command.BalanceEventWriter;
-import io.github.tjheslin1.esb.application.cqrs.query.BalanceEventReader;
+import io.github.tjheslin1.esb.application.cqrs.command.BalanceCommandWriter;
+import io.github.tjheslin1.esb.application.cqrs.query.BalanceCommandReader;
 import io.github.tjheslin1.esb.domain.events.BalanceCommand;
 import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.DepositFundsCommand;
-import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.MongoBalanceEventWriter;
+import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.MongoBalanceCommandWriter;
 import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.WithdrawFundsCommand;
-import io.github.tjheslin1.esb.infrastructure.application.cqrs.query.MongoBalanceEventReader;
+import io.github.tjheslin1.esb.infrastructure.application.cqrs.query.MongoBalanceCommandReader;
 import io.github.tjheslin1.esb.infrastructure.mongo.MongoConnection;
 import io.github.tjheslin1.esb.infrastructure.settings.MongoSettings;
 import io.github.tjheslin1.esb.infrastructure.settings.TestSettings;
@@ -35,8 +35,8 @@ public class MongoBalanceCommandReaderTest implements WithAssertions {
     private MongoSettings mongoSettings = new TestSettings();
     private MongoConnection mongoConnection = new MongoConnection(mongoSettings);
 
-    private BalanceEventWriter eventWriter;
-    private BalanceEventReader balanceEventReader;
+    private BalanceCommandWriter eventWriter;
+    private BalanceCommandReader balanceCommandReader;
     private MongoClient mongoClient;
 
     private final Clock clock = Clock.systemDefaultZone();
@@ -50,8 +50,8 @@ public class MongoBalanceCommandReaderTest implements WithAssertions {
     @Before
     public void before() {
         mongoClient = mongoConnection.connection();
-        eventWriter = new MongoBalanceEventWriter(mongoClient, mongoSettings);
-        balanceEventReader = new MongoBalanceEventReader(mongoClient, mongoSettings);
+        eventWriter = new MongoBalanceCommandWriter(mongoClient, mongoSettings);
+        balanceCommandReader = new MongoBalanceCommandReader(mongoClient, mongoSettings);
 
         eventWriter.write(firstDepositFundsCommand, depositEventWiring());
         eventWriter.write(secondDepositFundsCommand, depositEventWiring());
@@ -76,14 +76,14 @@ public class MongoBalanceCommandReaderTest implements WithAssertions {
 
     @Test
     public void readDepositFundsEventsFromDatabaseInTimeOrder() throws Exception {
-        List<BalanceCommand> actualBalanceCommands = balanceEventReader.retrieveSortedEvents(20, depositEventWiring()).collect(Collectors.toList());
+        List<BalanceCommand> actualBalanceCommands = balanceCommandReader.retrieveSortedEvents(20, depositEventWiring()).collect(Collectors.toList());
 
         assertThat(actualBalanceCommands).containsExactly(firstDepositFundsCommand, secondDepositFundsCommand);
     }
 
     @Test
     public void readWithdrawalFundsEventsFromDatabaseInTimeOrder() throws Exception {
-        List<BalanceCommand> actualBalanceCommands = balanceEventReader.retrieveSortedEvents(20, withdrawalEventWiring()).collect(Collectors.toList());
+        List<BalanceCommand> actualBalanceCommands = balanceCommandReader.retrieveSortedEvents(20, withdrawalEventWiring()).collect(Collectors.toList());
 
         assertThat(actualBalanceCommands).containsExactly(firstWithdrawFundsCommand, secondWithdrawFundsCommand);
     }

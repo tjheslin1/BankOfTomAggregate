@@ -4,7 +4,7 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.DepositFundsCommand;
-import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.MongoBalanceEventWriter;
+import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.MongoBalanceCommandWriter;
 import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.WithdrawFundsCommand;
 import io.github.tjheslin1.esb.infrastructure.mongo.MongoConnection;
 import io.github.tjheslin1.esb.infrastructure.settings.MongoSettings;
@@ -29,7 +29,7 @@ public class MongoBalanceCommandWriterTest implements WithAssertions {
     private MongoSettings mongoSettings = new TestSettings();
     private MongoConnection mongoConnection = new MongoConnection(mongoSettings);
 
-    private MongoBalanceEventWriter eventWriter;
+    private MongoBalanceCommandWriter eventWriter;
     private MongoClient mongoClient;
 
     private final Clock clock = Clock.systemDefaultZone();
@@ -37,7 +37,7 @@ public class MongoBalanceCommandWriterTest implements WithAssertions {
     @Before
     public void before() {
         mongoClient = mongoConnection.connection();
-        eventWriter = new MongoBalanceEventWriter(mongoClient, mongoSettings);
+        eventWriter = new MongoBalanceCommandWriter(mongoClient, mongoSettings);
     }
 
     @After

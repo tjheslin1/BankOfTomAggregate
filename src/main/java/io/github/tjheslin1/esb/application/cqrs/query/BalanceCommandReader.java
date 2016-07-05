@@ -5,6 +5,6 @@ import io.github.tjheslin1.esb.domain.events.EventWiring;
 
 import java.util.stream.Stream;
 
-public interface BalanceEventReader {
+public interface BalanceCommandReader {
     Stream<BalanceCommand> retrieveSortedEvents(int accountId, EventWiring eventWiring);
 }
