@@ -6,7 +6,7 @@ import io.github.tjheslin1.esb.domain.BankAccount;
 import io.github.tjheslin1.esb.domain.events.EventStore;
 import io.github.tjheslin1.esb.infrastructure.application.MongoEventStore;
 import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.MongoBalanceCommandWriter;
-import io.github.tjheslin1.esb.infrastructure.application.cqrs.query.MongoBalanceCommandReader;
+import io.github.tjheslin1.esb.infrastructure.application.cqrs.query.MongoBalanceQueryReader;
 import io.github.tjheslin1.esb.infrastructure.mongo.MongoConnection;
 import io.github.tjheslin1.esb.infrastructure.settings.PropertiesReader;
 import io.github.tjheslin1.esb.infrastructure.settings.Settings;
@@ -33,7 +33,7 @@ public class App {
         MongoConnection mongoConnection = new MongoConnection(settings);
         MongoClient mongoClient = mongoConnection.connection();
         MongoBalanceCommandWriter balanceCommandWriter = new MongoBalanceCommandWriter(mongoClient, settings);
-        MongoBalanceCommandReader balanceCommandReader = new MongoBalanceCommandReader(mongoClient, settings);
+        MongoBalanceQueryReader balanceCommandReader = new MongoBalanceQueryReader(mongoClient, settings);
 
         App app = new App(new MongoEventStore(balanceCommandWriter, balanceCommandReader));
         BankingGateway bankingGateway = new BankingGateway(app.eventStore);

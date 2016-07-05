@@ -1,7 +1,7 @@
 package io.github.tjheslin1.esb.infrastructure.application;
 
 import io.github.tjheslin1.esb.application.cqrs.command.BalanceCommandWriter;
-import io.github.tjheslin1.esb.application.cqrs.query.BalanceCommandReader;
+import io.github.tjheslin1.esb.application.cqrs.query.BalanceQueryReader;
 import io.github.tjheslin1.esb.domain.events.BalanceCommand;
 import io.github.tjheslin1.esb.domain.events.EventStore;
 import io.github.tjheslin1.esb.domain.events.EventWiring;
@@ -12,9 +12,9 @@ import java.util.stream.Stream;
 public class MongoEventStore implements EventStore {
 
     private BalanceCommandWriter commandWriter;
-    private BalanceCommandReader commandReader;
+    private BalanceQueryReader commandReader;
 
-    public MongoEventStore(BalanceCommandWriter commandWriter, BalanceCommandReader commandReader) {
+    public MongoEventStore(BalanceCommandWriter commandWriter, BalanceQueryReader commandReader) {
         this.commandWriter = commandWriter;
         this.commandReader = commandReader;
     }

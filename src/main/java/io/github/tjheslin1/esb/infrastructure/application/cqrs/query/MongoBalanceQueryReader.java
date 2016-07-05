@@ -4,7 +4,7 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Sorts;
-import io.github.tjheslin1.esb.application.cqrs.query.BalanceCommandReader;
+import io.github.tjheslin1.esb.application.cqrs.query.BalanceQueryReader;
 import io.github.tjheslin1.esb.domain.events.BalanceCommand;
 import io.github.tjheslin1.esb.domain.events.EventWiring;
 import io.github.tjheslin1.esb.infrastructure.settings.MongoSettings;
@@ -15,12 +15,12 @@ import java.util.stream.StreamSupport;
 
 import static com.mongodb.client.model.Filters.eq;
 
-public class MongoBalanceCommandReader implements BalanceCommandReader {
+public class MongoBalanceQueryReader implements BalanceQueryReader {
 
     private final MongoClient mongoClient;
     private MongoSettings mongoSettings;
 
-    public MongoBalanceCommandReader(MongoClient mongoClient, MongoSettings mongoSettings) {
+    public MongoBalanceQueryReader(MongoClient mongoClient, MongoSettings mongoSettings) {
         this.mongoClient = mongoClient;
         this.mongoSettings = mongoSettings;
     }

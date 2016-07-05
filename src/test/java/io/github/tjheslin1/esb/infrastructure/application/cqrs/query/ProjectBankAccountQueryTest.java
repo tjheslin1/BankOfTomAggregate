@@ -48,7 +48,7 @@ public class ProjectBankAccountQueryTest implements WithAssertions, WithMockito 
         assertThat(bankAccount.balance().funds()).isEqualTo(expectedBalance);
     }
 
-    @Ignore // TODO as the implementation has changed testing the ordering will have to work differently. Maybe move to BalanceCommandReader
+    @Ignore // TODO as the implementation has changed testing the ordering will have to work differently. Maybe move to BalanceQueryReader
     @Test
     public void eventsAreRetrievedFromDatabaseAndSortedByDateTime() {
         when(eventStore.eventsSortedByTime(ACCOUNT_ID, depositEventWiring(), withdrawalEventWiring())).thenReturn(Stream.of(
