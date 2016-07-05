@@ -3,7 +3,7 @@ package io.github.tjheslin1.esb.infrastructure.application.cqrs.query;
 import io.github.tjheslin1.WithMockito;
 import io.github.tjheslin1.esb.domain.BankAccount;
 import io.github.tjheslin1.esb.domain.events.BalanceCommand;
-import io.github.tjheslin1.esb.domain.events.EventStore;
+import io.github.tjheslin1.esb.domain.events.EventView;
 import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.DepositFundsCommand;
 import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.WithdrawFundsCommand;
 import org.assertj.core.api.WithAssertions;
@@ -35,14 +35,14 @@ public class ProjectBankAccountQueryTest implements WithAssertions, WithMockito 
     private DepositFundsCommand fourthDepositFundsCommand = depositFundsCommand(ACCOUNT_ID, 1, timeOfFirstEvent.plusMinutes(4));
     private WithdrawFundsCommand secondWithdrawalFundsEvent = withdrawFundsCommand(ACCOUNT_ID, 16, timeOfFirstEvent.plusMinutes(5));
 
-    private EventStore eventStore = mock(EventStore.class);
+    private EventView eventView = mock(EventView.class);
 
     @Test
     public void retrievesBankAccount() {
-        when(eventStore.eventsSortedByTime(ACCOUNT_ID, depositEventWiring(), withdrawalEventWiring())).thenReturn(Stream.of(
+        when(eventView.eventsSortedByTime(ACCOUNT_ID, depositEventWiring(), withdrawalEventWiring())).thenReturn(Stream.of(
                 firstDepositFundsCommand));
 
-        BankAccount bankAccount = projectBankAccountQuery(ACCOUNT_ID, eventStore);
+        BankAccount bankAccount = projectBankAccountQuery(ACCOUNT_ID, eventView);
 
         double expectedBalance = firstDepositFundsCommand.amount();
         assertThat(bankAccount.balance().funds()).isEqualTo(expectedBalance);
@@ -51,13 +51,13 @@ public class ProjectBankAccountQueryTest implements WithAssertions, WithMockito 
     @Ignore // TODO as the implementation has changed testing the ordering will have to work differently. Maybe move to BalanceQueryReader
     @Test
     public void eventsAreRetrievedFromDatabaseAndSortedByDateTime() {
-        when(eventStore.eventsSortedByTime(ACCOUNT_ID, depositEventWiring(), withdrawalEventWiring())).thenReturn(Stream.of(
+        when(eventView.eventsSortedByTime(ACCOUNT_ID, depositEventWiring(), withdrawalEventWiring())).thenReturn(Stream.of(
                 firstDepositFundsCommand, secondDepositFundsCommand, thirdDepositFundsCommand, fourthDepositFundsCommand));
 
-        when(eventStore.eventsSortedByTime(ACCOUNT_ID, withdrawalEventWiring())).thenReturn(Stream.of(
+        when(eventView.eventsSortedByTime(ACCOUNT_ID, withdrawalEventWiring())).thenReturn(Stream.of(
                 firstWithdrawalFundsEvent, secondWithdrawalFundsEvent));
 
-        List<BalanceCommand> sortedEvents = eventStore.eventsSortedByTime(ACCOUNT_ID, depositEventWiring(), withdrawalEventWiring())
+        List<BalanceCommand> sortedEvents = eventView.eventsSortedByTime(ACCOUNT_ID, depositEventWiring(), withdrawalEventWiring())
                 .collect(Collectors.toList());
 
         assertThat(sortedEvents).containsExactly(
@@ -72,9 +72,9 @@ public class ProjectBankAccountQueryTest implements WithAssertions, WithMockito 
 
     @Test
     public void retrieverHandlesEmptyResults() {
-        when(eventStore.eventsSortedByTime(ACCOUNT_ID, depositEventWiring())).thenReturn(Stream.empty());
+        when(eventView.eventsSortedByTime(ACCOUNT_ID, depositEventWiring())).thenReturn(Stream.empty());
 
-        List<BalanceCommand> sortedEvents = eventStore.eventsSortedByTime(ACCOUNT_ID, depositEventWiring())
+        List<BalanceCommand> sortedEvents = eventView.eventsSortedByTime(ACCOUNT_ID, depositEventWiring())
                 .collect(Collectors.toList());
 
         assertThat(sortedEvents.isEmpty());

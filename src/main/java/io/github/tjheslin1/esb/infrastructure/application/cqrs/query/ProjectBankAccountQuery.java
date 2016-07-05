@@ -4,7 +4,7 @@ import io.github.tjheslin1.esb.domain.Balance;
 import io.github.tjheslin1.esb.domain.BankAccount;
 import io.github.tjheslin1.esb.domain.events.BalanceCommand;
 import io.github.tjheslin1.esb.domain.events.BalanceEventVisitor;
-import io.github.tjheslin1.esb.domain.events.EventStore;
+import io.github.tjheslin1.esb.domain.events.EventView;
 
 import java.util.stream.Stream;
 
@@ -13,8 +13,8 @@ import static io.github.tjheslin1.esb.application.eventwiring.WithdrawEventWirin
 
 public class ProjectBankAccountQuery {
 
-    public static BankAccount projectBankAccountQuery(int accountId, EventStore eventStore) {
-        Stream<BalanceCommand> balanceCommands = eventStore.eventsSortedByTime(accountId, depositEventWiring(), withdrawalEventWiring());
+    public static BankAccount projectBankAccountQuery(int accountId, EventView eventView) {
+        Stream<BalanceCommand> balanceCommands = eventView.eventsSortedByTime(accountId, depositEventWiring(), withdrawalEventWiring());
         return new BankAccount(accountId, upToDateBalance(balanceCommands));
     }
 

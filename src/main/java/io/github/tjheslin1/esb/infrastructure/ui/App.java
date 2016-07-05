@@ -4,7 +4,9 @@ import com.mongodb.MongoClient;
 import io.github.tjheslin1.esb.application.BankingGateway;
 import io.github.tjheslin1.esb.domain.BankAccount;
 import io.github.tjheslin1.esb.domain.events.EventStore;
+import io.github.tjheslin1.esb.domain.events.EventView;
 import io.github.tjheslin1.esb.infrastructure.application.MongoEventStore;
+import io.github.tjheslin1.esb.infrastructure.application.cqrs.MongoEventView;
 import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.MongoBalanceCommandWriter;
 import io.github.tjheslin1.esb.infrastructure.application.cqrs.query.MongoBalanceQueryReader;
 import io.github.tjheslin1.esb.infrastructure.mongo.MongoConnection;
@@ -22,9 +24,11 @@ import static java.lang.String.format;
 public class App {
 
     private EventStore eventStore;
+    private EventView eventView;
 
-    public App(EventStore eventStore) {
+    public App(EventStore eventStore, EventView eventView) {
         this.eventStore = eventStore;
+        this.eventView = eventView;
     }
 
     public static void main(String[] args) {
@@ -33,10 +37,10 @@ public class App {
         MongoConnection mongoConnection = new MongoConnection(settings);
         MongoClient mongoClient = mongoConnection.connection();
         MongoBalanceCommandWriter balanceCommandWriter = new MongoBalanceCommandWriter(mongoClient, settings);
-        MongoBalanceQueryReader balanceCommandReader = new MongoBalanceQueryReader(mongoClient, settings);
+        MongoBalanceQueryReader mongoBalanceQueryReader = new MongoBalanceQueryReader(mongoClient, settings);
 
-        App app = new App(new MongoEventStore(balanceCommandWriter, balanceCommandReader));
-        BankingGateway bankingGateway = new BankingGateway(app.eventStore);
+        App app = new App(new MongoEventStore(balanceCommandWriter), new MongoEventView(mongoBalanceQueryReader));
+        BankingGateway bankingGateway = new BankingGateway(app.eventStore, app.eventView);
 
         printInstructions();
         Scanner scanner = new Scanner(System.in);
@@ -71,13 +75,13 @@ public class App {
     }
 
     public void balance(int accountId) {
-        BankAccount bankAccount = projectBankAccountQuery(accountId, eventStore);
+        BankAccount bankAccount = projectBankAccountQuery(accountId, eventView);
         System.out.println(format("The current balance of account: %s is: %s.", accountId, bankAccount.balance().funds()));
     }
 
     public void events(int accountId) {
         // TODO write event to say that balance events have been requested.
-        eventStore.eventsSortedByTime(accountId, depositEventWiring(), withdrawalEventWiring())
+        eventView.eventsSortedByTime(accountId, depositEventWiring(), withdrawalEventWiring())
                 .forEach(event -> System.out.println(event.getClass().getSimpleName() + " -> " + event.toString()));
         System.out.println("Finished printing events.");
     }
