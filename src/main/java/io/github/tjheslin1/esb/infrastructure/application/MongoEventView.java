@@ -1,4 +1,4 @@
-package io.github.tjheslin1.esb.infrastructure.application.cqrs;
+package io.github.tjheslin1.esb.infrastructure.application;
 
 import io.github.tjheslin1.esb.application.cqrs.query.BalanceQueryReader;
 import io.github.tjheslin1.esb.domain.events.BalanceCommand;

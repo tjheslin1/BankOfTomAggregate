@@ -6,7 +6,7 @@ import io.github.tjheslin1.esb.domain.BankAccount;
 import io.github.tjheslin1.esb.domain.events.EventStore;
 import io.github.tjheslin1.esb.domain.events.EventView;
 import io.github.tjheslin1.esb.infrastructure.application.MongoEventStore;
-import io.github.tjheslin1.esb.infrastructure.application.cqrs.MongoEventView;
+import io.github.tjheslin1.esb.infrastructure.application.MongoEventView;
 import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.MongoBalanceCommandWriter;
 import io.github.tjheslin1.esb.infrastructure.application.cqrs.query.MongoBalanceQueryReader;
 import io.github.tjheslin1.esb.infrastructure.mongo.MongoConnection;
