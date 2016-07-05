@@ -113,6 +113,19 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.pitest</groupId>
+                <artifactId>pitest-maven</artifactId>
+                <version>1.1.10</version>
+                <configuration>
+                    <targetClasses>
+                        <param>io.github.tjheslin1.esb.*</param>
+                    </targetClasses>
+                    <targetTests>
+                        <param>io.github.tjheslin1.esb</param>
+                    </targetTests>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
