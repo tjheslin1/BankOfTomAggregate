@@ -8,8 +8,8 @@ import io.github.tjheslin1.esb.domain.events.EventView;
 
 import java.util.stream.Stream;
 
-import static io.github.tjheslin1.esb.application.eventwiring.DepositEventWiring.depositEventWiring;
-import static io.github.tjheslin1.esb.application.eventwiring.WithdrawEventWiring.withdrawalEventWiring;
+import static io.github.tjheslin1.esb.application.cqrs.command.DepositEventWiring.depositEventWiring;
+import static io.github.tjheslin1.esb.application.cqrs.command.WithdrawEventWiring.withdrawalEventWiring;
 
 public class ProjectBankAccountQuery {
 

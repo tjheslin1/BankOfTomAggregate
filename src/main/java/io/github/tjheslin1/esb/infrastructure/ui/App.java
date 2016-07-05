@@ -5,10 +5,10 @@ import io.github.tjheslin1.esb.application.BankingGateway;
 import io.github.tjheslin1.esb.domain.BankAccount;
 import io.github.tjheslin1.esb.domain.events.EventStore;
 import io.github.tjheslin1.esb.domain.events.EventView;
-import io.github.tjheslin1.esb.infrastructure.application.MongoEventStore;
-import io.github.tjheslin1.esb.infrastructure.application.MongoEventView;
 import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.MongoBalanceCommandWriter;
+import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.MongoEventStore;
 import io.github.tjheslin1.esb.infrastructure.application.cqrs.query.MongoBalanceQueryReader;
+import io.github.tjheslin1.esb.infrastructure.application.cqrs.query.MongoEventView;
 import io.github.tjheslin1.esb.infrastructure.mongo.MongoConnection;
 import io.github.tjheslin1.esb.infrastructure.settings.PropertiesReader;
 import io.github.tjheslin1.esb.infrastructure.settings.Settings;
@@ -16,8 +16,8 @@ import io.github.tjheslin1.esb.infrastructure.settings.Settings;
 import java.time.LocalDateTime;
 import java.util.Scanner;
 
-import static io.github.tjheslin1.esb.application.eventwiring.DepositEventWiring.depositEventWiring;
-import static io.github.tjheslin1.esb.application.eventwiring.WithdrawEventWiring.withdrawalEventWiring;
+import static io.github.tjheslin1.esb.application.cqrs.command.DepositEventWiring.depositEventWiring;
+import static io.github.tjheslin1.esb.application.cqrs.command.WithdrawEventWiring.withdrawalEventWiring;
 import static io.github.tjheslin1.esb.infrastructure.application.cqrs.query.ProjectBankAccountQuery.projectBankAccountQuery;
 import static java.lang.String.format;
 
