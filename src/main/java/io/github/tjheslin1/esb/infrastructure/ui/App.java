@@ -40,7 +40,7 @@ public class App {
         MongoBalanceQueryReader mongoBalanceQueryReader = new MongoBalanceQueryReader(mongoClient, settings);
 
         App app = new App(new MongoEventStore(balanceCommandWriter), new MongoEventView(mongoBalanceQueryReader));
-        BankingGateway bankingGateway = new BankingGateway(app.eventStore, app.eventView);
+        BankingGateway bankingGateway = new BankingGateway(app.eventStore);
 
         printInstructions();
         Scanner scanner = new Scanner(System.in);
@@ -75,7 +75,12 @@ public class App {
     }
 
     public void balance(int accountId) {
-        BankAccount bankAccount = projectBankAccountQuery(accountId, eventView);
+        BankAccount bankAccount = null;
+        try {
+            bankAccount = projectBankAccountQuery(accountId, eventView);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
         System.out.println(format("The current balance of account: %s is: %s.", accountId, bankAccount.balance().funds()));
     }
 

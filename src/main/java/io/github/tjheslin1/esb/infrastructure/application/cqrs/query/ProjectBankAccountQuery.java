@@ -13,7 +13,7 @@ import static io.github.tjheslin1.esb.application.cqrs.command.WithdrawEventWiri
 
 public class ProjectBankAccountQuery {
 
-    public static BankAccount projectBankAccountQuery(int accountId, EventView eventView) {
+    public static BankAccount projectBankAccountQuery(int accountId, EventView eventView) throws Exception {
         Stream<BalanceCommand> balanceCommands = eventView.eventsSortedByTime(accountId, depositEventWiring(), withdrawalEventWiring());
         return new BankAccount(accountId, upToDateBalance(balanceCommands));
     }

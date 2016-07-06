@@ -3,12 +3,9 @@ package io.github.tjheslin1.simian;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import io.github.tjheslin1.esb.domain.events.BalanceCommand;
 import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.DepositFundsCommand;
 import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.MongoBalanceCommandWriter;
 import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.WithdrawFundsCommand;
-import io.github.tjheslin1.esb.infrastructure.application.cqrs.query.MongoBalanceQueryReader;
-import io.github.tjheslin1.esb.infrastructure.application.cqrs.query.MongoEventView;
 import io.github.tjheslin1.esb.infrastructure.mongo.MongoConnection;
 import io.github.tjheslin1.esb.infrastructure.settings.MongoSettings;
 import io.github.tjheslin1.esb.infrastructure.settings.TestSettings;
@@ -21,7 +18,6 @@ import org.junit.Test;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
-import java.util.stream.Stream;
 
 import static io.github.tjheslin1.esb.application.cqrs.command.DepositEventWiring.depositEventWiring;
 import static io.github.tjheslin1.esb.infrastructure.application.cqrs.command.DepositFundsCommand.depositFundsCommand;
@@ -35,14 +31,12 @@ public class EventStoreFailsTest implements WithAssertions {
     private MongoClient mongoClient;
 
     private MongoBalanceCommandWriter eventWriter;
-    private MongoEventView mongoEventView = new MongoEventView(new MongoBalanceQueryReader(mongoClient, settings));
 
     private final Clock clock = Clock.systemDefaultZone();
 
     @Before
     public void before() {
         mongoClient = mongoConnection.connection();
-
         eventWriter = new MongoBalanceCommandWriter(mongoClient, settings);
     }
 
@@ -63,12 +57,15 @@ public class EventStoreFailsTest implements WithAssertions {
     @Ignore
     @Test
     public void writesTheSameEventTwice() throws Exception {
-        DepositFundsCommand depositFundsCommand = depositFundsCommand(ACCOUNT_ID, 6, LocalDateTime.now(clock));
+        int depositAmount = 6;
+        DepositFundsCommand depositFundsCommand = depositFundsCommand(ACCOUNT_ID, depositAmount, LocalDateTime.now(clock));
 
         eventWriter.write(depositFundsCommand, depositEventWiring());
         eventWriter.write(depositFundsCommand, depositEventWiring());
 
-        Stream<BalanceCommand> depositBalanceCommands = mongoEventView.eventsSortedByTime(ACCOUNT_ID, depositEventWiring());
-//        fail("");
+//        Throwable thrown = catchThrowable(projectBankAccountQuery(ACCOUNT_ID, mongoEventView));
+//        assertThatThrownBy((ThrowableAssert.ThrowingCallable) thrown)
+//                .hasCauseInstanceOf(IllegalStateException.class)
+//                .hasMessage("");
     }
 }

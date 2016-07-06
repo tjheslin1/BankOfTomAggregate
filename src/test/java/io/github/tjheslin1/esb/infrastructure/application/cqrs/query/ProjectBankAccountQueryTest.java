@@ -38,7 +38,7 @@ public class ProjectBankAccountQueryTest implements WithAssertions, WithMockito 
     private EventView eventView = mock(EventView.class);
 
     @Test
-    public void retrievesBankAccount() {
+    public void retrievesBankAccount() throws Exception {
         when(eventView.eventsSortedByTime(ACCOUNT_ID, depositEventWiring(), withdrawalEventWiring())).thenReturn(Stream.of(
                 firstDepositFundsCommand));
 
@@ -78,5 +78,12 @@ public class ProjectBankAccountQueryTest implements WithAssertions, WithMockito 
                 .collect(Collectors.toList());
 
         assertThat(sortedEvents.isEmpty());
+    }
+
+    @Ignore
+    @Test
+    public void blowsUpForDuplicateEvents() {
+        // TODO blowsUpForDuplicateEvents
+        fail("");
     }
 }
