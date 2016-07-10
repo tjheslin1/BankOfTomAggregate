@@ -22,16 +22,12 @@ public class MongoBalanceCommandWriter implements BalanceCommandWriter {
     }
 
     @Override
-    public void write(BalanceCommand balanceCommand, EventWiring eventWiring) {
+    public void write(BalanceCommand balanceCommand, EventWiring eventWiring) throws Exception {
         MongoDatabase eventStoreDb = mongoClient.getDatabase(mongoSettings.mongoDbName());
 
         MongoCollection<Document> collection = collectionCreateIfNotExistsForDatabase(eventWiring.collectionName(), eventStoreDb);
         Document balanceEventDoc = eventWiring.marshaller().marshallBalanceEvent(balanceCommand);
 
-        try {
-            collection.insertOne(balanceEventDoc);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        collection.insertOne(balanceEventDoc);
     }
 }

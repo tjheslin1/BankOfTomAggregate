@@ -14,6 +14,14 @@ public class DepositRequest implements Request {
         this.amount = amount;
     }
 
+    public int accountId() {
+        return this.accountId;
+    }
+
+    public double amount() {
+        return this.amount;
+    }
+
     @Override
     public String toJson() {
         return format("{\"accountId\": \"%s\", \"amount\": \"%s\"}", accountId, amount);

@@ -28,8 +28,8 @@ public class DepositFundsCommand implements BalanceCommand, Comparable {
         return amount;
     }
 
-    public static DepositFundsCommand depositFundsCommand(int accountId, double amount, LocalDateTime timeOfEvent) {
-        return new DepositFundsCommand(accountId, amount, timeOfEvent);
+    public static DepositFundsCommand depositFundsCommand(int accountId, double amount, LocalDateTime timeOfCommand) {
+        return new DepositFundsCommand(accountId, amount, timeOfCommand);
     }
 
     @Override

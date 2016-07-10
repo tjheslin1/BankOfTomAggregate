@@ -48,7 +48,7 @@ public class MongoBalanceQueryReaderTest implements WithAssertions {
     private final WithdrawFundsCommand secondWithdrawFundsCommand = withdrawFundsCommand(20, 4.0, LocalDateTime.now(clock).plusHours(1).plusMinutes(5));
 
     @Before
-    public void before() {
+    public void before() throws Exception {
         mongoClient = mongoConnection.connection();
         eventWriter = new MongoBalanceCommandWriter(mongoClient, mongoSettings);
         balanceQueryReader = new MongoBalanceQueryReader(mongoClient, mongoSettings);

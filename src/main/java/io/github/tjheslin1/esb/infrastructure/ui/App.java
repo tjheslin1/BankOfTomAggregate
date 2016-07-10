@@ -54,12 +54,20 @@ public class App {
             } else if (depositEvent(line)) {
                 int accountId = accountIdFromCommand(line);
                 double amount = amountFromCommand(line);
-                bankingGateway.depositFunds(accountId, amount, LocalDateTime.now());
+                try {
+                    bankingGateway.depositFunds(accountId, amount, LocalDateTime.now());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 System.out.println(format("deposit event written for account: %s, for amount: %s.", accountId, amount));
             } else if (withdrawEvent(line)) {
                 int accountId = accountIdFromCommand(line);
                 double amount = amountFromCommand(line);
-                bankingGateway.withdrawFunds(accountId, amount, LocalDateTime.now());
+                try {
+                    bankingGateway.withdrawFunds(accountId, amount, LocalDateTime.now());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 System.out.println(format("withdrawal event written for account: %s, for amount: %s.", accountId, amount));
             } else if (balanceCommand(line)) {
                 int accountId = accountIdFromCommand(line);

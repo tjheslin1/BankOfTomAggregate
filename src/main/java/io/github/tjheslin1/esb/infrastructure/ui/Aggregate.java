@@ -13,8 +13,14 @@ public class Aggregate {
         BankingEventServer bankingEventServer = new BankingEventServer(settings)
                 .withContext(DepositServlet.class, "/deposit");
 
-        bankingEventServer.start();
-        Thread.sleep(1000);
-        bankingEventServer.stop();
+        try {
+            bankingEventServer.start();
+
+            while (true) {
+            }
+        } finally {
+            bankingEventServer.stop();
+            System.out.println("Server stopped.");
+        }
     }
 }

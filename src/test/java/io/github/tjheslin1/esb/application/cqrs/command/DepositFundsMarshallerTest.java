@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import static io.github.tjheslin1.esb.infrastructure.mongo.MongoOperations.eventDatePattern;
 
@@ -28,7 +29,11 @@ public class DepositFundsMarshallerTest implements WithAssertions, WithMockito {
         when(depositFundsCommand.accountId()).thenReturn(20);
         when(depositFundsCommand.amount()).thenReturn(30.0);
 
-        Document expectedDocument = new Document("timeOfEvent", timeOfEvent.format(eventDatePattern()));
+        String formatTime = timeOfEvent.format(eventDatePattern());
+        String seed = formatTime + 20 + 30.0;
+
+        Document expectedDocument = new Document("_id", UUID.nameUUIDFromBytes(seed.getBytes()));
+        expectedDocument.append("timeOfEvent", formatTime);
         expectedDocument.append("accountId", 20);
         expectedDocument.append("amount", 30.0);
 

@@ -14,7 +14,7 @@ public class MongoEventStore implements EventStore {
     }
 
     @Override
-    public void store(BalanceCommand balanceCommand, EventWiring eventWiring) {
+    public void store(BalanceCommand balanceCommand, EventWiring eventWiring) throws Exception {
         commandWriter.write(balanceCommand, eventWiring);
     }
 }

@@ -116,15 +116,48 @@
             <plugin>
                 <groupId>org.pitest</groupId>
                 <artifactId>pitest-maven</artifactId>
-                <version>1.1.10</version>
+                <version>1.1.9</version>
                 <configuration>
+                    <reportsDirectory>${project.build.directory}/pit-output</reportsDirectory>
+                    <skip>${skipTests}</skip>
+                    <threads>4</threads>
+                    <withHistory>false</withHistory>
+                    <mutationThreshold>100</mutationThreshold>
+                    <timestampedReports>false</timestampedReports>
+                    <failWhenNoMutations>true</failWhenNoMutations>
+                    <timeoutFactor>1.25</timeoutFactor>
+                    <timeoutConstant>3000</timeoutConstant>
+                    <mutators>
+                        <mutator>INVERT_NEGS</mutator>
+                        <mutator>RETURN_VALS</mutator>
+                        <mutator>MATH</mutator>
+                        <mutator>VOID_METHOD_CALLS</mutator>
+                        <mutator>NEGATE_CONDITIONALS</mutator>
+                        <mutator>CONDITIONALS_BOUNDARY</mutator>
+                        <mutator>INCREMENTS</mutator>
+                        <mutator>REMOVE_CONDITIONALS</mutator>
+                    </mutators>
+                    <parseSurefireConfig>false</parseSurefireConfig>
                     <targetClasses>
                         <param>io.github.tjheslin1.esb.*</param>
                     </targetClasses>
                     <targetTests>
-                        <param>io.github.tjheslin1.esb.*</param>
+                        <param>iio.github.tjheslin1.esb.*</param>
+                        <param>acceptancetests*</param>
                     </targetTests>
+                    <jvmArgs>
+                        <jvmArg>-Dsilent.process.errors=true</jvmArg>
+                    </jvmArgs>
+                    <exportLineCoverage>true</exportLineCoverage>
                 </configuration>
+                <executions>
+                    <execution>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>mutationCoverage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

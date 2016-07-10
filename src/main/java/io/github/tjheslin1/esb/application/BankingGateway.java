@@ -17,11 +17,11 @@ public class BankingGateway {
         this.eventStore = eventStore;
     }
 
-    public void depositFunds(int accountId, double amount, LocalDateTime now) {
+    public void depositFunds(int accountId, double amount, LocalDateTime now) throws Exception {
         eventStore.store(depositFundsCommand(accountId, amount, now), depositEventWiring());
     }
 
-    public void withdrawFunds(int accountId, double amount, LocalDateTime now) {
+    public void withdrawFunds(int accountId, double amount, LocalDateTime now) throws Exception {
         eventStore.store(withdrawFundsCommand(accountId, amount, now), withdrawalEventWiring());
     }
 }
