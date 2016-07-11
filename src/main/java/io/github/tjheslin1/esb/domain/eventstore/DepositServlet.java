@@ -1,7 +1,6 @@
 package io.github.tjheslin1.esb.domain.eventstore;
 
-import io.github.tjheslin1.esb.application.usecases.UseCase;
-import io.github.tjheslin1.esb.infrastructure.application.usecases.DepositFundsUseCase;
+import io.github.tjheslin1.esb.application.usecases.DepositFundsUseCase;
 import io.github.tjheslin1.esb.infrastructure.application.web.DepositRequest;
 import io.github.tjheslin1.esb.infrastructure.application.web.DepositRequestJsonUnmarshaller;
 
@@ -16,11 +15,11 @@ import static java.util.stream.Collectors.joining;
 public class DepositServlet extends HttpServlet {
 
     private DepositRequestJsonUnmarshaller unmarshaller;
-    private UseCase useCase;
+    private DepositFundsUseCase depositFundsUseCase;
 
-    public DepositServlet(DepositRequestJsonUnmarshaller unmarshaller, UseCase useCase) {
+    public DepositServlet(DepositRequestJsonUnmarshaller unmarshaller, DepositFundsUseCase depositFundsUseCase) {
         this.unmarshaller = unmarshaller;
-        this.useCase = useCase;
+        this.depositFundsUseCase = depositFundsUseCase;
     }
 
     @Override
@@ -31,7 +30,7 @@ public class DepositServlet extends HttpServlet {
         response.setContentType("application/json");
 
         try {
-            ((DepositFundsUseCase) useCase).depositFunds(depositRequest, LocalDateTime.now());
+            depositFundsUseCase.depositFunds(depositRequest, LocalDateTime.now());
             response.setStatus(HttpServletResponse.SC_OK);
         } catch (Exception e) {
             e.printStackTrace();

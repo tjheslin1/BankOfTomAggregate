@@ -2,7 +2,7 @@ package io.github.tjheslin1.esb.infrastructure;
 
 import com.mongodb.MongoClient;
 import io.github.tjheslin1.esb.application.cqrs.command.BalanceCommandWriter;
-import io.github.tjheslin1.esb.infrastructure.application.usecases.DepositFundsUseCase;
+import io.github.tjheslin1.esb.application.usecases.DepositFundsUseCase;
 import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.MongoBalanceCommandWriter;
 import io.github.tjheslin1.esb.infrastructure.settings.Settings;
 
