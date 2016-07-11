@@ -10,10 +10,10 @@ import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.MongoEven
 import io.github.tjheslin1.esb.infrastructure.application.cqrs.query.MongoBalanceQueryReader;
 import io.github.tjheslin1.esb.infrastructure.application.cqrs.query.MongoEventView;
 import io.github.tjheslin1.esb.infrastructure.mongo.MongoConnection;
-import io.github.tjheslin1.esb.infrastructure.settings.PropertiesReader;
 import io.github.tjheslin1.esb.infrastructure.settings.Settings;
 
 import java.time.LocalDateTime;
+import java.util.Properties;
 import java.util.Scanner;
 
 import static io.github.tjheslin1.esb.application.cqrs.command.DepositEventWiring.depositEventWiring;
@@ -32,7 +32,8 @@ public class App {
     }
 
     public static void main(String[] args) {
-        Settings settings = new Settings(new PropertiesReader("localhost"));
+        Properties properties = Aggregate.loadProperties("localhost");
+        Settings settings = new Settings(properties);
 
         MongoConnection mongoConnection = new MongoConnection(settings);
         MongoClient mongoClient = mongoConnection.connection();

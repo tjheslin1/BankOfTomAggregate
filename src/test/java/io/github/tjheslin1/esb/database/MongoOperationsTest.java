@@ -5,8 +5,6 @@ import com.mongodb.MongoNamespace;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import io.github.tjheslin1.WithMockito;
-import io.github.tjheslin1.esb.infrastructure.settings.MongoSettings;
-import io.github.tjheslin1.esb.infrastructure.settings.TestSettings;
 import org.assertj.core.api.WithAssertions;
 import org.bson.Document;
 import org.junit.After;
@@ -20,12 +18,14 @@ public class MongoOperationsTest implements WithMockito, WithAssertions {
     private final String EXISTING_COLLECTION = "new_collection_1";
     private final String NON_EXISTENT_COLLECTION = "new_collection_2";
 
-    private MongoSettings mongoSettings = new TestSettings();
-    private MongoClient mongoClient = new MongoClient("localhost", mongoSettings.mongoDbPort());
-    private MongoDatabase mongoDb = mongoClient.getDatabase(mongoSettings.mongoDbName());
+    private MongoClient mongoClient;
+    private MongoDatabase mongoDb;
 
     @Before
     public void before() {
+        mongoClient = new MongoClient("localhost", 27017);
+        mongoDb = mongoClient.getDatabase("events_store");
+
         mongoDb.createCollection(EXISTING_COLLECTION);
     }
 

@@ -2,6 +2,7 @@ package io.github.tjheslin1.esb.infrastructure.ui;
 
 import io.github.tjheslin1.esb.domain.eventstore.DepositServlet;
 import io.github.tjheslin1.esb.infrastructure.Wiring;
+import io.github.tjheslin1.esb.infrastructure.application.web.DepositRequestJsonUnmarshaller;
 import io.github.tjheslin1.esb.infrastructure.domain.eventstore.BankingEventServer;
 import io.github.tjheslin1.esb.infrastructure.settings.Settings;
 
@@ -19,7 +20,7 @@ public class Aggregate {
         Wiring wiring = new Wiring(settings);
 
         BankingEventServer bankingEventServer = new BankingEventServer(settings)
-                .withContext(DepositServlet.class, "/deposit");
+                .withServlet(new DepositServlet(new DepositRequestJsonUnmarshaller(), wiring.depositFundsUseCase()), "/deposit");
 
         try {
             bankingEventServer.start();
@@ -32,7 +33,7 @@ public class Aggregate {
         }
     }
 
-    private static Properties loadProperties(String environment) {
+    static Properties loadProperties(String environment) {
         try (InputStream resourceAsStream = Aggregate.class.getClassLoader().getResourceAsStream(propertiesFileName(environment))) {
             Properties properties = new Properties();
             properties.load(resourceAsStream);

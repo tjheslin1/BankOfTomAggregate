@@ -1,6 +1,7 @@
-package io.github.tjheslin1.esb.application.usecases;
+package io.github.tjheslin1.esb.infrastructure.application.usecases;
 
 import io.github.tjheslin1.esb.application.cqrs.command.BalanceCommandWriter;
+import io.github.tjheslin1.esb.application.usecases.UseCase;
 import io.github.tjheslin1.esb.infrastructure.application.web.DepositRequest;
 
 import java.time.LocalDateTime;
@@ -8,7 +9,7 @@ import java.time.LocalDateTime;
 import static io.github.tjheslin1.esb.application.cqrs.command.DepositEventWiring.depositEventWiring;
 import static io.github.tjheslin1.esb.infrastructure.application.cqrs.command.DepositFundsCommand.depositFundsCommand;
 
-public class DepositFundsUseCase {
+public class DepositFundsUseCase implements UseCase {
 
     private BalanceCommandWriter commandWriter;
 

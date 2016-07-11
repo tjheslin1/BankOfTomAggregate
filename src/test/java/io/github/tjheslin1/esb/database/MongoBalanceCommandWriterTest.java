@@ -3,12 +3,13 @@ package io.github.tjheslin1.esb.database;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import io.github.tjheslin1.WithMockito;
 import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.DepositFundsCommand;
 import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.MongoBalanceCommandWriter;
 import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.WithdrawFundsCommand;
 import io.github.tjheslin1.esb.infrastructure.mongo.MongoConnection;
 import io.github.tjheslin1.esb.infrastructure.settings.MongoSettings;
-import io.github.tjheslin1.esb.infrastructure.settings.TestSettings;
+import io.github.tjheslin1.esb.infrastructure.settings.Settings;
 import org.assertj.core.api.WithAssertions;
 import org.bson.Document;
 import org.junit.After;
@@ -24,10 +25,10 @@ import static io.github.tjheslin1.esb.infrastructure.application.cqrs.command.De
 import static io.github.tjheslin1.esb.infrastructure.application.cqrs.command.WithdrawFundsCommand.withdrawFundsCommand;
 import static io.github.tjheslin1.esb.infrastructure.mongo.MongoOperations.collectionNameForEvent;
 
-public class MongoBalanceCommandWriterTest implements WithAssertions {
+public class MongoBalanceCommandWriterTest implements WithAssertions, WithMockito {
 
-    private MongoSettings mongoSettings = new TestSettings();
-    private MongoConnection mongoConnection = new MongoConnection(mongoSettings);
+    private MongoSettings settings = mock(Settings.class);
+    private MongoConnection mongoConnection;
 
     private MongoBalanceCommandWriter eventWriter;
     private MongoClient mongoClient;
@@ -36,13 +37,18 @@ public class MongoBalanceCommandWriterTest implements WithAssertions {
 
     @Before
     public void before() {
+        when(settings.mongoDbPort()).thenReturn(27017);
+        when(settings.mongoDbName()).thenReturn("events_store");
+
+        mongoConnection = new MongoConnection(settings);
         mongoClient = mongoConnection.connection();
-        eventWriter = new MongoBalanceCommandWriter(mongoClient, mongoSettings);
+
+        eventWriter = new MongoBalanceCommandWriter(mongoClient, settings);
     }
 
     @After
     public void after() {
-        MongoDatabase database = mongoClient.getDatabase(mongoSettings.mongoDbName());
+        MongoDatabase database = mongoClient.getDatabase(settings.mongoDbName());
 
         MongoCollection<Document> depositFundsEventsCollection = database
                 .getCollection(collectionNameForEvent(DepositFundsCommand.class));
@@ -59,7 +65,7 @@ public class MongoBalanceCommandWriterTest implements WithAssertions {
         DepositFundsCommand depositFundsCommand = depositFundsCommand(20, 6, LocalDateTime.now(clock));
         eventWriter.write(depositFundsCommand, depositEventWiring());
 
-        assertThat(mongoClient.getDatabase(mongoSettings.mongoDbName())
+        assertThat(mongoClient.getDatabase(settings.mongoDbName())
                 .getCollection(collectionNameForEvent(depositFundsCommand.getClass()))
                 .count())
                 .isEqualTo(1);
@@ -70,7 +76,7 @@ public class MongoBalanceCommandWriterTest implements WithAssertions {
         WithdrawFundsCommand withdrawFundsCommand = withdrawFundsCommand(20, 6, LocalDateTime.now(clock));
         eventWriter.write(withdrawFundsCommand, withdrawalEventWiring());
 
-        assertThat(mongoClient.getDatabase(mongoSettings.mongoDbName())
+        assertThat(mongoClient.getDatabase(settings.mongoDbName())
                 .getCollection(collectionNameForEvent(withdrawFundsCommand.getClass()))
                 .count())
                 .isEqualTo(1);

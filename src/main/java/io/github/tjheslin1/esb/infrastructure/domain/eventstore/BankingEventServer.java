@@ -3,6 +3,7 @@ package io.github.tjheslin1.esb.infrastructure.domain.eventstore;
 import io.github.tjheslin1.esb.infrastructure.settings.Settings;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
 
 import javax.servlet.http.HttpServlet;
 
@@ -13,11 +14,13 @@ public class BankingEventServer {
 
     public BankingEventServer(Settings settings) {
         this.server = new Server(settings.serverPort());
+
         this.context = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
+        this.context.setContextPath("/");
     }
 
-    public BankingEventServer withContext(Class<? extends HttpServlet> servletClass, String path) {
-        context.addServlet(servletClass, path);
+    public BankingEventServer withServlet(HttpServlet servlet, String path) {
+        context.addServlet(new ServletHolder(servlet), path);
         return this;
     }
 

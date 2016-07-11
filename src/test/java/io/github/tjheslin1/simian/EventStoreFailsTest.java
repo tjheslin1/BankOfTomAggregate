@@ -3,12 +3,13 @@ package io.github.tjheslin1.simian;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import io.github.tjheslin1.WithMockito;
 import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.DepositFundsCommand;
 import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.MongoBalanceCommandWriter;
 import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.WithdrawFundsCommand;
 import io.github.tjheslin1.esb.infrastructure.mongo.MongoConnection;
 import io.github.tjheslin1.esb.infrastructure.settings.MongoSettings;
-import io.github.tjheslin1.esb.infrastructure.settings.TestSettings;
+import io.github.tjheslin1.esb.infrastructure.settings.Settings;
 import org.assertj.core.api.WithAssertions;
 import org.bson.Document;
 import org.junit.After;
@@ -23,11 +24,11 @@ import static io.github.tjheslin1.esb.application.cqrs.command.DepositEventWirin
 import static io.github.tjheslin1.esb.infrastructure.application.cqrs.command.DepositFundsCommand.depositFundsCommand;
 import static io.github.tjheslin1.esb.infrastructure.mongo.MongoOperations.collectionNameForEvent;
 
-public class EventStoreFailsTest implements WithAssertions {
+public class EventStoreFailsTest implements WithAssertions, WithMockito {
 
     public static final int ACCOUNT_ID = 20;
-    private MongoSettings settings = new TestSettings();
-    private MongoConnection mongoConnection = new MongoConnection(settings);
+    private MongoSettings settings = mock(Settings.class);
+    private MongoConnection mongoConnection;
     private MongoClient mongoClient;
 
     private MongoBalanceCommandWriter eventWriter;
@@ -36,6 +37,10 @@ public class EventStoreFailsTest implements WithAssertions {
 
     @Before
     public void before() {
+        when(settings.mongoDbPort()).thenReturn(27017);
+        when(settings.mongoDbName()).thenReturn("events_store");
+
+        mongoConnection = new MongoConnection(settings);
         mongoClient = mongoConnection.connection();
         eventWriter = new MongoBalanceCommandWriter(mongoClient, settings);
     }

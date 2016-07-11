@@ -1,7 +1,7 @@
 package io.github.tjheslin1.esb.domain.eventstore;
 
 import io.github.tjheslin1.WithMockito;
-import io.github.tjheslin1.esb.application.usecases.DepositFundsUseCase;
+import io.github.tjheslin1.esb.infrastructure.application.usecases.DepositFundsUseCase;
 import io.github.tjheslin1.esb.infrastructure.application.web.DepositRequest;
 import io.github.tjheslin1.esb.infrastructure.application.web.DepositRequestJsonUnmarshaller;
 import org.assertj.core.api.WithAssertions;
@@ -27,7 +27,7 @@ public class DepositServletTest implements WithAssertions, WithMockito {
 
     private final BufferedReader bufferedReader = mock(BufferedReader.class);
 
-    private DepositServlet depositServlet = new DepositServlet();
+    private DepositServlet depositServlet = new DepositServlet(unmarshaller, depositFundsUseCase);
 
     @Ignore
     @Test
