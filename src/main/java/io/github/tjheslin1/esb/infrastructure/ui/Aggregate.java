@@ -1,14 +1,22 @@
 package io.github.tjheslin1.esb.infrastructure.ui;
 
 import io.github.tjheslin1.esb.domain.eventstore.DepositServlet;
+import io.github.tjheslin1.esb.infrastructure.Wiring;
 import io.github.tjheslin1.esb.infrastructure.domain.eventstore.BankingEventServer;
-import io.github.tjheslin1.esb.infrastructure.settings.PropertiesReader;
 import io.github.tjheslin1.esb.infrastructure.settings.Settings;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
+import static java.lang.String.format;
 
 public class Aggregate {
 
     public static void main(String[] args) throws Exception {
-        Settings settings = new Settings(new PropertiesReader("localhost"));
+        Properties properties = loadProperties("localhost");
+        Settings settings = new Settings(properties);
+        Wiring wiring = new Wiring(settings);
 
         BankingEventServer bankingEventServer = new BankingEventServer(settings)
                 .withContext(DepositServlet.class, "/deposit");
@@ -22,5 +30,19 @@ public class Aggregate {
             bankingEventServer.stop();
             System.out.println("Server stopped.");
         }
+    }
+
+    private static Properties loadProperties(String environment) {
+        try (InputStream resourceAsStream = Aggregate.class.getClassLoader().getResourceAsStream(propertiesFileName(environment))) {
+            Properties properties = new Properties();
+            properties.load(resourceAsStream);
+            return properties;
+        } catch (IOException e) {
+            throw new IllegalStateException("Unable to read file: " + propertiesFileName(environment));
+        }
+    }
+
+    private static String propertiesFileName(String environment) {
+        return format("%s.properties", environment);
     }
 }

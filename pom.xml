@@ -207,6 +207,17 @@
             <artifactId>json</artifactId>
             <version>20160212</version>
         </dependency>
+
+        <dependency>
+            <groupId>net.bytebuddy</groupId>
+            <artifactId>byte-buddy</artifactId>
+            <version>RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>net.bytebuddy</groupId>
+            <artifactId>byte-buddy-agent</artifactId>
+            <version>RELEASE</version>
+        </dependency>
     </dependencies>
 
     <profiles>
