@@ -1,6 +1,6 @@
 package io.github.tjheslin1.esb.infrastructure.ui;
 
-import io.github.tjheslin1.esb.domain.eventstore.DepositServlet;
+import io.github.tjheslin1.esb.infrastructure.application.web.DepositServlet;
 import io.github.tjheslin1.esb.infrastructure.Wiring;
 import io.github.tjheslin1.esb.infrastructure.application.web.DepositRequestJsonUnmarshaller;
 import io.github.tjheslin1.esb.infrastructure.domain.eventstore.BankingEventServer;

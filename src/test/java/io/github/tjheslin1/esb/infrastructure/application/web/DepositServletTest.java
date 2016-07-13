@@ -1,9 +1,7 @@
-package io.github.tjheslin1.esb.domain.eventstore;
+package io.github.tjheslin1.esb.infrastructure.application.web;
 
 import io.github.tjheslin1.WithMockito;
 import io.github.tjheslin1.esb.application.usecases.DepositFundsUseCase;
-import io.github.tjheslin1.esb.infrastructure.application.web.DepositRequest;
-import io.github.tjheslin1.esb.infrastructure.application.web.DepositRequestJsonUnmarshaller;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 
@@ -12,6 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.time.LocalDateTime;
 import java.util.stream.Stream;
+
+import static java.lang.String.format;
 
 public class DepositServletTest implements WithAssertions, WithMockito {
 
@@ -29,7 +29,7 @@ public class DepositServletTest implements WithAssertions, WithMockito {
 
     @Test
     public void callsUseCaseSuccessfullyAndReturns200() throws Exception {
-        String body = "{ \"accountId\": \"" + ACCOUNT_ID + "\", \"amount\": \"" + 45.0 + "\"}";
+        String body = format("{ \"accountId\": \"%s\", \"amount\": \"%s\"}", ACCOUNT_ID, 45.0);
         when(unmarshaller.unmarshall(body)).thenReturn(depositRequest);
 
         when(request.getReader()).thenReturn(bufferedReader);
