@@ -54,7 +54,7 @@ public class EventStoreFailsTest implements WithAssertions, WithMockito {
                 .getCollection(collectionNameForEvent(WithdrawFundsCommand.class));
 
         depositFundsEventsCollection.deleteMany(new Document("accountId", ACCOUNT_ID));
-        withdrawFundsEventsCollection.deleteMany(new Document());
+        withdrawFundsEventsCollection.deleteMany(new Document("accountId", ACCOUNT_ID));
     }
 
     @Test(expected = MongoWriteException.class)

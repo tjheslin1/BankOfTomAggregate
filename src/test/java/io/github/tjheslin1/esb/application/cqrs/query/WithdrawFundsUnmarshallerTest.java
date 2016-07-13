@@ -29,5 +29,4 @@ public class WithdrawFundsUnmarshallerTest implements WithAssertions {
 
         assertThat(actualEvent).isEqualTo(expectedEvent);
     }
-
 }
