@@ -2,8 +2,8 @@ package io.github.tjheslin1.esb.infrastructure.domain.eventstore;
 
 import io.github.tjheslin1.WithMockito;
 import io.github.tjheslin1.esb.application.cqrs.command.BalanceCommandWriter;
-import io.github.tjheslin1.esb.domain.eventstore.DepositServlet;
 import io.github.tjheslin1.esb.application.usecases.DepositFundsUseCase;
+import io.github.tjheslin1.esb.domain.eventstore.DepositServlet;
 import io.github.tjheslin1.esb.infrastructure.application.web.DepositRequest;
 import io.github.tjheslin1.esb.infrastructure.application.web.DepositRequestJsonUnmarshaller;
 import io.github.tjheslin1.esb.infrastructure.settings.Settings;

@@ -5,7 +5,6 @@ import io.github.tjheslin1.esb.application.usecases.DepositFundsUseCase;
 import io.github.tjheslin1.esb.infrastructure.application.web.DepositRequest;
 import io.github.tjheslin1.esb.infrastructure.application.web.DepositRequestJsonUnmarshaller;
 import org.assertj.core.api.WithAssertions;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,16 +19,14 @@ public class DepositServletTest implements WithAssertions, WithMockito {
 
     private final DepositRequestJsonUnmarshaller unmarshaller = mock(DepositRequestJsonUnmarshaller.class);
     private final DepositFundsUseCase depositFundsUseCase = mock(DepositFundsUseCase.class);
-    private final DepositRequest depositRequest = mock(DepositRequest.class);
-
-    private final HttpServletRequest request = mock(HttpServletRequest.class);
-    private final HttpServletResponse response = mock(HttpServletResponse.class);
-
-    private final BufferedReader bufferedReader = mock(BufferedReader.class);
 
     private DepositServlet depositServlet = new DepositServlet(unmarshaller, depositFundsUseCase);
 
-    @Ignore
+    private final DepositRequest depositRequest = mock(DepositRequest.class);
+    private final HttpServletRequest request = mock(HttpServletRequest.class);
+    private final HttpServletResponse response = mock(HttpServletResponse.class);
+    private final BufferedReader bufferedReader = mock(BufferedReader.class);
+
     @Test
     public void callsUseCaseSuccessfullyAndReturns200() throws Exception {
         String body = "{ \"accountId\": \"" + ACCOUNT_ID + "\", \"amount\": \"" + 45.0 + "\"}";
@@ -40,7 +37,7 @@ public class DepositServletTest implements WithAssertions, WithMockito {
 
         depositServlet.doPost(request, response);
 
-        verify(depositFundsUseCase).depositFunds(depositRequest, (LocalDateTime) any());
+        verify(depositFundsUseCase).depositFunds(eq(depositRequest), (LocalDateTime) any());
         verify(response).setStatus(HttpServletResponse.SC_OK);
     }
 }

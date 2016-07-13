@@ -9,7 +9,6 @@ import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.MongoBala
 import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.MongoEventStore;
 import io.github.tjheslin1.esb.infrastructure.application.cqrs.query.MongoBalanceQueryReader;
 import io.github.tjheslin1.esb.infrastructure.application.cqrs.query.MongoEventView;
-import io.github.tjheslin1.esb.infrastructure.mongo.MongoConnection;
 import io.github.tjheslin1.esb.infrastructure.settings.Settings;
 
 import java.time.LocalDateTime;
@@ -19,6 +18,7 @@ import java.util.Scanner;
 import static io.github.tjheslin1.esb.application.cqrs.command.DepositEventWiring.depositEventWiring;
 import static io.github.tjheslin1.esb.application.cqrs.command.WithdrawEventWiring.withdrawalEventWiring;
 import static io.github.tjheslin1.esb.infrastructure.application.cqrs.query.ProjectBankAccountQuery.projectBankAccountQuery;
+import static io.github.tjheslin1.esb.infrastructure.mongo.MongoConnection.mongoClient;
 import static java.lang.String.format;
 
 public class App {
@@ -35,8 +35,7 @@ public class App {
         Properties properties = Aggregate.loadProperties("localhost");
         Settings settings = new Settings(properties);
 
-        MongoConnection mongoConnection = new MongoConnection(settings);
-        MongoClient mongoClient = mongoConnection.connection();
+        MongoClient mongoClient = mongoClient(settings);
         MongoBalanceCommandWriter balanceCommandWriter = new MongoBalanceCommandWriter(mongoClient, settings);
         MongoBalanceQueryReader mongoBalanceQueryReader = new MongoBalanceQueryReader(mongoClient, settings);
 

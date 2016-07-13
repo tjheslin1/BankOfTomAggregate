@@ -24,4 +24,8 @@ public interface WithMockito {
     default Object any() {
         return Mockito.any();
     }
+
+    default <T> T eq(T value) {
+        return Mockito.eq(value);
+    }
 }

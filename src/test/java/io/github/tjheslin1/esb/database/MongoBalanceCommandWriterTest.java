@@ -23,6 +23,7 @@ import static io.github.tjheslin1.esb.application.cqrs.command.DepositEventWirin
 import static io.github.tjheslin1.esb.application.cqrs.command.WithdrawEventWiring.withdrawalEventWiring;
 import static io.github.tjheslin1.esb.infrastructure.application.cqrs.command.DepositFundsCommand.depositFundsCommand;
 import static io.github.tjheslin1.esb.infrastructure.application.cqrs.command.WithdrawFundsCommand.withdrawFundsCommand;
+import static io.github.tjheslin1.esb.infrastructure.mongo.MongoConnection.mongoClient;
 import static io.github.tjheslin1.esb.infrastructure.mongo.MongoOperations.collectionNameForEvent;
 
 public class MongoBalanceCommandWriterTest implements WithAssertions, WithMockito {
@@ -40,8 +41,7 @@ public class MongoBalanceCommandWriterTest implements WithAssertions, WithMockit
         when(settings.mongoDbPort()).thenReturn(27017);
         when(settings.mongoDbName()).thenReturn("events_store");
 
-        mongoConnection = new MongoConnection(settings);
-        mongoClient = mongoConnection.connection();
+        mongoClient = mongoClient(settings);
 
         eventWriter = new MongoBalanceCommandWriter(mongoClient, settings);
     }

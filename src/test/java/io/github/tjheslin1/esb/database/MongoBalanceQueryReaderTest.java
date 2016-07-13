@@ -29,12 +29,12 @@ import static io.github.tjheslin1.esb.application.cqrs.command.DepositEventWirin
 import static io.github.tjheslin1.esb.application.cqrs.command.WithdrawEventWiring.withdrawalEventWiring;
 import static io.github.tjheslin1.esb.infrastructure.application.cqrs.command.DepositFundsCommand.depositFundsCommand;
 import static io.github.tjheslin1.esb.infrastructure.application.cqrs.command.WithdrawFundsCommand.withdrawFundsCommand;
+import static io.github.tjheslin1.esb.infrastructure.mongo.MongoConnection.mongoClient;
 import static io.github.tjheslin1.esb.infrastructure.mongo.MongoOperations.collectionNameForEvent;
 
 public class MongoBalanceQueryReaderTest implements WithAssertions, WithMockito {
 
-    private MongoSettings mongoSettings = mock(Settings.class);
-    private MongoConnection mongoConnection;
+    private MongoSettings settings = mock(Settings.class);
 
     private BalanceCommandWriter eventWriter;
     private BalanceQueryReader balanceQueryReader;
@@ -50,14 +50,13 @@ public class MongoBalanceQueryReaderTest implements WithAssertions, WithMockito 
 
     @Before
     public void before() throws Exception {
-        when(mongoSettings.mongoDbPort()).thenReturn(27017);
-        when(mongoSettings.mongoDbName()).thenReturn("events_store");
+        when(settings.mongoDbPort()).thenReturn(27017);
+        when(settings.mongoDbName()).thenReturn("events_store");
 
-        mongoConnection = new MongoConnection(mongoSettings);
-        mongoClient = mongoConnection.connection();
+        mongoClient = mongoClient(settings);
 
-        eventWriter = new MongoBalanceCommandWriter(mongoClient, mongoSettings);
-        balanceQueryReader = new MongoBalanceQueryReader(mongoClient, mongoSettings);
+        eventWriter = new MongoBalanceCommandWriter(mongoClient, settings);
+        balanceQueryReader = new MongoBalanceQueryReader(mongoClient, settings);
 
         eventWriter.write(firstDepositFundsCommand, depositEventWiring());
         eventWriter.write(secondDepositFundsCommand, depositEventWiring());
@@ -68,7 +67,7 @@ public class MongoBalanceQueryReaderTest implements WithAssertions, WithMockito 
 
     @After
     public void after() {
-        MongoDatabase database = mongoClient.getDatabase(mongoSettings.mongoDbName());
+        MongoDatabase database = mongoClient.getDatabase(settings.mongoDbName());
 
         MongoCollection<Document> depositFundsEventsCollection = database
                 .getCollection(collectionNameForEvent(DepositFundsCommand.class));
