@@ -24,6 +24,7 @@
     </properties>
 
     <build>
+        <defaultGoal>clean test org.pitest:pitest-maven:mutationCoverage</defaultGoal>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -102,7 +103,7 @@
                                         <include name="Dockerfile"/>
                                     </fileset>
                                     <fileset dir="target">
-                                        <include name="BankOfTomAggregate-${version}.jar"/>
+                                        <include name="BankOfTomAggregate-${project.version}.jar"/>
                                     </fileset>
                                 </copy>
                             </target>
@@ -142,7 +143,7 @@
                         <param>io.github.tjheslin1.esb.*</param>
                     </targetClasses>
                     <targetTests>
-                        <param>iio.github.tjheslin1.esb.*</param>
+                        <param>io.github.tjheslin1.esb.*</param>
                         <param>acceptancetests*</param>
                     </targetTests>
                     <jvmArgs>
