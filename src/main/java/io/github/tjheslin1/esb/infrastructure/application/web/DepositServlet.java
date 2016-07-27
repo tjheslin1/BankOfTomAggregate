@@ -23,11 +23,11 @@ public class DepositServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String body = request.getReader().lines().collect(joining(System.lineSeparator()));
-        DepositRequest depositRequest = unmarshaller.unmarshall(body);
 
         response.setContentType("application/json");
 
         try {
+            DepositRequest depositRequest = unmarshaller.unmarshall(body);
             depositFundsUseCase.depositFunds(depositRequest, LocalDateTime.now());
             response.setStatus(HttpServletResponse.SC_OK);
         } catch (Exception e) {

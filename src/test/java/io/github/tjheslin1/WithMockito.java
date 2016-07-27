@@ -2,6 +2,7 @@ package io.github.tjheslin1;
 
 import org.mockito.Mockito;
 import org.mockito.stubbing.OngoingStubbing;
+import org.mockito.verification.VerificationMode;
 
 public interface WithMockito {
 
@@ -17,6 +18,14 @@ public interface WithMockito {
         return Mockito.verify(mock);
     }
 
+    default <T> T verify(T mock, VerificationMode mode) {
+        return Mockito.verify(mock, mode);
+    }
+
+    default VerificationMode times(int numOfInvocations) {
+        return Mockito.times(numOfInvocations);
+    }
+
     default String anyString() {
         return Mockito.anyString();
     }
@@ -27,5 +36,9 @@ public interface WithMockito {
 
     default <T> T eq(T value) {
         return Mockito.eq(value);
+    }
+
+    default <T> T spy(T object) {
+        return Mockito.spy(object);
     }
 }

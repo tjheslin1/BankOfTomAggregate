@@ -8,7 +8,7 @@ import io.github.tjheslin1.esb.infrastructure.settings.Settings;
 
 public class Wiring {
 
-    private Settings settings;
+    public final Settings settings;
 
     public Wiring(Settings settings) {
         this.settings = settings;

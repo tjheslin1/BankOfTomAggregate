@@ -25,7 +25,7 @@ public class PropertiesReader {
     private void loadProperties() {
         try (InputStream resourceAsStream = this.getClass().getClassLoader().getResourceAsStream(propertiesFileName())) {
             properties.load(resourceAsStream);
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new IllegalStateException("Unable to read file: " + propertiesFileName());
         }
     }

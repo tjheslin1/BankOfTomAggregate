@@ -19,31 +19,38 @@ public class MongoOperationsTest implements WithMockito, WithAssertions {
     private final String NON_EXISTENT_COLLECTION = "new_collection_2";
 
     private MongoClient mongoClient;
-    private MongoDatabase mongoDb;
+    private MongoDatabase eventStoreDb;
+    private MongoDatabase eventStoreDbSpy;
 
     @Before
     public void before() {
         mongoClient = new MongoClient("localhost", 27017);
-        mongoDb = mongoClient.getDatabase("events_store");
+        eventStoreDb = mongoClient.getDatabase("events_store");
 
-        mongoDb.createCollection(EXISTING_COLLECTION);
+        eventStoreDb.createCollection(EXISTING_COLLECTION);
+        eventStoreDbSpy = spy(eventStoreDb);
     }
 
     @After
     public void after() {
-        mongoDb.getCollection(EXISTING_COLLECTION).drop();
-        mongoDb.getCollection(NON_EXISTENT_COLLECTION).drop();
+        eventStoreDb.getCollection(EXISTING_COLLECTION).drop();
+        eventStoreDb.getCollection(NON_EXISTENT_COLLECTION).drop();
     }
 
     @Test
     public void retrieveExistingCollectionTest() {
-        MongoCollection<Document> existingCollection = collectionCreateIfNotExistsForDatabase(EXISTING_COLLECTION, mongoDb);
+        MongoCollection<Document> existingCollection = collectionCreateIfNotExistsForDatabase(EXISTING_COLLECTION, eventStoreDbSpy);
         assertThat(existingCollection.getNamespace()).isEqualTo(new MongoNamespace("events_store.new_collection_1"));
+
+        verify(eventStoreDbSpy).getCollection(EXISTING_COLLECTION);
+        verify(eventStoreDbSpy, times(0)).createCollection(EXISTING_COLLECTION);
     }
 
     @Test
     public void createAndRetrieveNewCollectionTest() {
-        MongoCollection<Document> existingCollection = collectionCreateIfNotExistsForDatabase(NON_EXISTENT_COLLECTION, mongoDb);
+        MongoCollection<Document> existingCollection = collectionCreateIfNotExistsForDatabase(NON_EXISTENT_COLLECTION, eventStoreDbSpy);
         assertThat(existingCollection.getNamespace()).isEqualTo(new MongoNamespace("events_store.new_collection_2"));
+
+        verify(eventStoreDbSpy).createCollection(NON_EXISTENT_COLLECTION);
     }
 }
