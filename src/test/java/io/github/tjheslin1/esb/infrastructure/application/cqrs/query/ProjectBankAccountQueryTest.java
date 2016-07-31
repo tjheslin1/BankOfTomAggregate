@@ -39,8 +39,8 @@ public class ProjectBankAccountQueryTest implements WithAssertions, WithMockito 
 
     @Test
     public void retrievesBankAccount() throws Exception {
-        when(eventView.eventsSortedByTime(ACCOUNT_ID, depositEventWiring(), withdrawalEventWiring())).thenReturn(Stream.of(
-                firstDepositFundsCommand));
+        when(eventView.eventsSortedByTime(ACCOUNT_ID, depositEventWiring(), withdrawalEventWiring()))
+                .thenReturn(Stream.of(firstDepositFundsCommand));
 
         BankAccount bankAccount = projectBankAccountQuery(ACCOUNT_ID, eventView);
 

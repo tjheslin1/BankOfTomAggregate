@@ -153,6 +153,7 @@
                     <excludedClasses>
                         <excludedClass>io.github.tjheslin1.esb.infrastructure.ui.Aggregate</excludedClass>
                         <excludedClass>io.github.tjheslin1.esb.infrastructure.ui.App</excludedClass>
+                        <excludedClass>io.github.tjheslin1.esb.infrastructure.Wiring</excludedClass>
                     </excludedClasses>
                     <excludedMethods>
                         <excludedMethod>equals</excludedMethod>

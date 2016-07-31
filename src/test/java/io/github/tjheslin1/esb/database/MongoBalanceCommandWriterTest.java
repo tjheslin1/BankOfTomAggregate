@@ -29,7 +29,6 @@ import static io.github.tjheslin1.esb.infrastructure.mongo.MongoOperations.colle
 public class MongoBalanceCommandWriterTest implements WithAssertions, WithMockito {
 
     private MongoSettings settings = mock(Settings.class);
-    private MongoConnection mongoConnection;
 
     private MongoBalanceCommandWriter eventWriter;
     private MongoClient mongoClient;
