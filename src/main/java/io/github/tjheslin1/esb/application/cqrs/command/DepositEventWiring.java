@@ -10,9 +10,9 @@ import static io.github.tjheslin1.esb.infrastructure.mongo.MongoOperations.colle
 
 public class DepositEventWiring implements EventWiring {
 
-    private static EventWiring instance;
+    private static DepositEventWiring instance;
 
-    public static EventWiring depositEventWiring() {
+    public static DepositEventWiring depositEventWiring() {
         if (instance == null) {
             instance = new DepositEventWiring();
         }

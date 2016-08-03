@@ -20,13 +20,12 @@ public class DepositFundsUseCaseTest implements WithAssertions, WithMockito {
     private BalanceCommandWriter commandWriter = mock(MongoBalanceCommandWriter.class);
 
     private Clock clock = Clock.systemDefaultZone();
-    private LocalDateTime now = LocalDateTime.now(clock);
 
     private DepositFundsUseCase depositFundsUseCase = new DepositFundsUseCase(commandWriter);
 
     @Test
     public void writesCommandToDatabase() throws Exception {
-        now = LocalDateTime.now(clock);
+        LocalDateTime now = LocalDateTime.now(clock);
         depositFundsUseCase.depositFunds(new DepositRequest(ACCOUNT_ID, 50.0), now);
 
         verify(commandWriter).write(DepositFundsCommand.depositFundsCommand(ACCOUNT_ID, 50.0, now), depositEventWiring());
