@@ -1,4 +1,4 @@
-Event Sourced Banking
+Bank of Tom Aggregate
 ==============
 
 Banking use case to  try out [Event Sourcing](https://www.youtube.com/watch?v=JHGkaShoyNs).
