@@ -20,6 +20,10 @@ public class DepositEventWiring implements EventWiring {
         return instance;
     }
 
+    public static void clearInstance() {
+        instance = null;
+    }
+
     @Override
     public String collectionName() {
         return collectionNameForEvent(DepositFundsCommand.class);

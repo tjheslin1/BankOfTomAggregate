@@ -10,15 +10,21 @@ import static io.github.tjheslin1.esb.infrastructure.mongo.MongoOperations.colle
 
 public class WithdrawEventWiring implements EventWiring {
 
-    private static WithdrawEventWiring instance;
+    private static volatile WithdrawEventWiring instance;
 
-
-    public static WithdrawEventWiring withdrawalEventWiring() {
+    public static synchronized WithdrawEventWiring withdrawalEventWiring() {
         if (instance == null) {
             instance = new WithdrawEventWiring();
         }
 
         return instance;
+    }
+
+    /**
+     * For testing
+     */
+    public static void clearInstance() {
+        instance = null;
     }
 
     @Override
