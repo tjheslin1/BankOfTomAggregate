@@ -12,7 +12,7 @@ public class WithdrawEventWiringTest implements WithAssertions, WithMockito {
 
     @Before
     public void before() {
-//        clearInstance();
+        clearInstance();
     }
 
     @Test
