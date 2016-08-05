@@ -220,14 +220,9 @@
         </dependency>
 
         <dependency>
-            <groupId>net.bytebuddy</groupId>
-            <artifactId>byte-buddy</artifactId>
-            <version>RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>net.bytebuddy</groupId>
-            <artifactId>byte-buddy-agent</artifactId>
-            <version>RELEASE</version>
+            <groupId>io.github.theangrydev</groupId>
+            <artifactId>business-flows</artifactId>
+            <version>2.2.0</version>
         </dependency>
     </dependencies>
 
