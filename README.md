@@ -1,11 +1,12 @@
-Bank of Tom Aggregate
+Bank of Tom
 ==============
 
-Banking use case to  try out [Event Sourcing](https://www.youtube.com/watch?v=JHGkaShoyNs).
+Creating a dummy banking system using a microservice architecture with [Event Sourcing](https://www.youtube.com/watch?v=JHGkaShoyNs).
+
+Bank of Tom Aggregate (this app)
+--------------
 
 Deposits and withdrawals are written as events to a [MongoDB](https://www.mongodb.com/) database running in a [Docker](https://www.docker.com/) container.
-
-These *events* are then read from the database, ordered by time, to *project* the current state of the bank account.
 
 Useful links
 --------------
