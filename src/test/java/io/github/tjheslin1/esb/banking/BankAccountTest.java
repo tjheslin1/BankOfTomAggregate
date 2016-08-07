@@ -1,6 +1,8 @@
-package io.github.tjheslin1.esb.domain;
+package io.github.tjheslin1.esb.banking;
 
 import io.github.tjheslin1.WithMockito;
+import io.github.tjheslin1.esb.domain.banking.Balance;
+import io.github.tjheslin1.esb.domain.banking.BankAccount;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 

@@ -1,6 +1,6 @@
 package io.github.tjheslin1.esb.domain.events;
 
-import io.github.tjheslin1.esb.domain.Balance;
+import io.github.tjheslin1.esb.domain.banking.Balance;
 import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.DepositFundsCommand;
 import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.WithdrawFundsCommand;
 

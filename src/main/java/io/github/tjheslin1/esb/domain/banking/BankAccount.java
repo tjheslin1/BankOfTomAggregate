@@ -1,4 +1,4 @@
-package io.github.tjheslin1.esb.domain;
+package io.github.tjheslin1.esb.domain.banking;
 
 public class BankAccount {
 

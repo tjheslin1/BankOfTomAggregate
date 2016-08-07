@@ -1,7 +1,7 @@
 package io.github.tjheslin1.esb.infrastructure.application.cqrs.query;
 
 import io.github.tjheslin1.WithMockito;
-import io.github.tjheslin1.esb.domain.BankAccount;
+import io.github.tjheslin1.esb.domain.banking.BankAccount;
 import io.github.tjheslin1.esb.domain.events.BalanceCommand;
 import io.github.tjheslin1.esb.domain.events.EventView;
 import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.DepositFundsCommand;
