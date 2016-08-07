@@ -12,7 +12,7 @@ import java.util.Properties;
 
 import static java.lang.String.format;
 
-public class Aggregate {
+public class AggregateTest {
 
     public static void main(String[] args) {
         Properties properties = loadProperties("localhost");
@@ -35,7 +35,7 @@ public class Aggregate {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            System.out.println("Server stopped.");
+            System.out.println("Test server stopped.");
         }
     }
 
