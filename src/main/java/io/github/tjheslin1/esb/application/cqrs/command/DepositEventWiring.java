@@ -2,9 +2,9 @@ package io.github.tjheslin1.esb.application.cqrs.command;
 
 import io.github.tjheslin1.esb.application.cqrs.query.EventJsonUnmarshaller;
 import io.github.tjheslin1.esb.domain.events.EventWiring;
-import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.DepositFundsCommand;
-import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.DepositFundsMarshaller;
-import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.DepositFundsUnmarshaller;
+import io.github.tjheslin1.esb.infrastructure.application.cqrs.deposit.DepositFundsCommand;
+import io.github.tjheslin1.esb.infrastructure.application.cqrs.deposit.DepositFundsMarshaller;
+import io.github.tjheslin1.esb.infrastructure.application.cqrs.deposit.DepositFundsUnmarshaller;
 
 import static io.github.tjheslin1.esb.infrastructure.mongo.MongoOperations.collectionNameForEvent;
 

@@ -1,16 +1,16 @@
 package io.github.tjheslin1.esb.domain.events;
 
 import io.github.tjheslin1.esb.domain.banking.Balance;
-import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.DepositFundsCommand;
-import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.WithdrawFundsCommand;
+import io.github.tjheslin1.esb.infrastructure.application.cqrs.deposit.DepositFundsCommand;
+import io.github.tjheslin1.esb.infrastructure.application.cqrs.withdraw.WithdrawFundsCommand;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
 
-import static io.github.tjheslin1.esb.infrastructure.application.cqrs.command.DepositFundsCommand.depositFundsCommand;
-import static io.github.tjheslin1.esb.infrastructure.application.cqrs.command.WithdrawFundsCommand.withdrawFundsCommand;
+import static io.github.tjheslin1.esb.infrastructure.application.cqrs.deposit.DepositFundsCommand.depositFundsCommand;
+import static io.github.tjheslin1.esb.infrastructure.application.cqrs.withdraw.WithdrawFundsCommand.withdrawFundsCommand;
 
 public class BalanceEventVisitorTest implements WithAssertions {
 

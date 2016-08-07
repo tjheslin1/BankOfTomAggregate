@@ -1,4 +1,4 @@
-package io.github.tjheslin1.esb.application.cqrs.command;
+package io.github.tjheslin1.esb.infrastructure.application.cqrs.withdraw;
 
 import io.github.tjheslin1.WithMockito;
 import org.assertj.core.api.WithAssertions;

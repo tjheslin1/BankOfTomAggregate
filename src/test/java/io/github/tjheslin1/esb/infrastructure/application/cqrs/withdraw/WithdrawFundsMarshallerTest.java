@@ -1,8 +1,6 @@
-package io.github.tjheslin1.esb.application.cqrs.command;
+package io.github.tjheslin1.esb.infrastructure.application.cqrs.withdraw;
 
 import io.github.tjheslin1.WithMockito;
-import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.WithdrawFundsCommand;
-import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.WithdrawFundsMarshaller;
 import org.assertj.core.api.WithAssertions;
 import org.bson.Document;
 import org.junit.Test;

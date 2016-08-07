@@ -6,8 +6,8 @@ import java.time.LocalDateTime;
 
 import static io.github.tjheslin1.esb.application.cqrs.command.DepositEventWiring.depositEventWiring;
 import static io.github.tjheslin1.esb.application.cqrs.command.WithdrawEventWiring.withdrawalEventWiring;
-import static io.github.tjheslin1.esb.infrastructure.application.cqrs.command.DepositFundsCommand.depositFundsCommand;
-import static io.github.tjheslin1.esb.infrastructure.application.cqrs.command.WithdrawFundsCommand.withdrawFundsCommand;
+import static io.github.tjheslin1.esb.infrastructure.application.cqrs.deposit.DepositFundsCommand.depositFundsCommand;
+import static io.github.tjheslin1.esb.infrastructure.application.cqrs.withdraw.WithdrawFundsCommand.withdrawFundsCommand;
 
 public class BankingGateway {
 

@@ -1,4 +1,4 @@
-package io.github.tjheslin1.esb.infrastructure.application.cqrs.command;
+package io.github.tjheslin1.esb.infrastructure.application.cqrs;
 
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;

@@ -1,11 +1,9 @@
-package io.github.tjheslin1.esb.infrastructure.application.cqrs.command;
+package io.github.tjheslin1.esb.infrastructure.application.cqrs.deposit;
 
 import io.github.tjheslin1.esb.domain.events.BalanceCommand;
 import io.github.tjheslin1.esb.domain.events.EventVisitor;
 
 import java.time.LocalDateTime;
-
-import static io.github.tjheslin1.esb.infrastructure.mongo.MongoOperations.eventDatePattern;
 
 public class DepositFundsCommand extends BalanceCommand {
 

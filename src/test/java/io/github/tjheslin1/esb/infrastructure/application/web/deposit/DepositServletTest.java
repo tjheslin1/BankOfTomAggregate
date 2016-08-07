@@ -1,9 +1,8 @@
-package io.github.tjheslin1.esb.infrastructure.application.web;
+package io.github.tjheslin1.esb.infrastructure.application.web.deposit;
 
 import io.github.tjheslin1.WithMockito;
 import io.github.tjheslin1.esb.application.usecases.DepositFundsUseCase;
 import org.assertj.core.api.WithAssertions;
-import org.json.JSONException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

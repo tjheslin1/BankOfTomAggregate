@@ -1,4 +1,4 @@
-package io.github.tjheslin1.esb.infrastructure.application.web;
+package io.github.tjheslin1.esb.infrastructure.application.web.deposit;
 
 import io.github.tjheslin1.esb.application.web.Request;
 

@@ -3,9 +3,9 @@ package io.github.tjheslin1.esb.infrastructure.application.usecases;
 import io.github.tjheslin1.WithMockito;
 import io.github.tjheslin1.esb.application.cqrs.command.BalanceCommandWriter;
 import io.github.tjheslin1.esb.application.usecases.DepositFundsUseCase;
-import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.DepositFundsCommand;
-import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.MongoBalanceCommandWriter;
-import io.github.tjheslin1.esb.infrastructure.application.web.DepositRequest;
+import io.github.tjheslin1.esb.infrastructure.application.cqrs.deposit.DepositFundsCommand;
+import io.github.tjheslin1.esb.infrastructure.application.cqrs.MongoBalanceCommandWriter;
+import io.github.tjheslin1.esb.infrastructure.application.web.deposit.DepositRequest;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 

@@ -1,11 +1,11 @@
-package io.github.tjheslin1.esb.infrastructure.application.cqrs.query;
+package io.github.tjheslin1.esb.infrastructure.application.cqrs;
 
 import io.github.tjheslin1.WithMockito;
 import io.github.tjheslin1.esb.domain.banking.BankAccount;
 import io.github.tjheslin1.esb.domain.events.BalanceCommand;
 import io.github.tjheslin1.esb.domain.events.EventView;
-import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.DepositFundsCommand;
-import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.WithdrawFundsCommand;
+import io.github.tjheslin1.esb.infrastructure.application.cqrs.deposit.DepositFundsCommand;
+import io.github.tjheslin1.esb.infrastructure.application.cqrs.withdraw.WithdrawFundsCommand;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -18,9 +18,9 @@ import java.util.stream.Stream;
 
 import static io.github.tjheslin1.esb.application.cqrs.command.DepositEventWiring.depositEventWiring;
 import static io.github.tjheslin1.esb.application.cqrs.command.WithdrawEventWiring.withdrawalEventWiring;
-import static io.github.tjheslin1.esb.infrastructure.application.cqrs.command.DepositFundsCommand.depositFundsCommand;
-import static io.github.tjheslin1.esb.infrastructure.application.cqrs.command.WithdrawFundsCommand.withdrawFundsCommand;
-import static io.github.tjheslin1.esb.infrastructure.application.cqrs.query.ProjectBankAccountQuery.projectBankAccountQuery;
+import static io.github.tjheslin1.esb.infrastructure.application.cqrs.deposit.DepositFundsCommand.depositFundsCommand;
+import static io.github.tjheslin1.esb.infrastructure.application.cqrs.withdraw.WithdrawFundsCommand.withdrawFundsCommand;
+import static io.github.tjheslin1.esb.infrastructure.application.cqrs.ProjectBankAccountQuery.projectBankAccountQuery;
 
 public class ProjectBankAccountQueryTest implements WithAssertions, WithMockito {
     public static final int ACCOUNT_ID = 20;

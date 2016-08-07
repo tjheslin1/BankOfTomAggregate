@@ -1,9 +1,10 @@
-package io.github.tjheslin1.esb.infrastructure.application.cqrs.command;
+package io.github.tjheslin1.esb.infrastructure.application.cqrs;
 
 import io.github.tjheslin1.WithMockito;
 import io.github.tjheslin1.esb.application.cqrs.command.BalanceCommandWriter;
 import io.github.tjheslin1.esb.domain.events.BalanceCommand;
 import io.github.tjheslin1.esb.domain.events.EventWiring;
+import io.github.tjheslin1.esb.infrastructure.application.cqrs.MongoEventStore;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
 

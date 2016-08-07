@@ -1,8 +1,6 @@
-package io.github.tjheslin1.esb.application.cqrs.command;
+package io.github.tjheslin1.esb.infrastructure.application.cqrs.deposit;
 
 import io.github.tjheslin1.WithMockito;
-import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.DepositFundsCommand;
-import io.github.tjheslin1.esb.infrastructure.application.cqrs.command.DepositFundsMarshaller;
 import org.assertj.core.api.WithAssertions;
 import org.bson.Document;
 import org.junit.Test;
