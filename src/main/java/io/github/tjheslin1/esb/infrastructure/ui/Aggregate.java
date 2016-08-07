@@ -3,6 +3,8 @@ package io.github.tjheslin1.esb.infrastructure.ui;
 import io.github.tjheslin1.esb.infrastructure.Wiring;
 import io.github.tjheslin1.esb.infrastructure.application.web.deposit.DepositRequestJsonUnmarshaller;
 import io.github.tjheslin1.esb.infrastructure.application.web.deposit.DepositServlet;
+import io.github.tjheslin1.esb.infrastructure.application.web.status.StatusResponseJsonMarshaller;
+import io.github.tjheslin1.esb.infrastructure.application.web.status.StatusServlet;
 import io.github.tjheslin1.esb.infrastructure.domain.eventstore.BankingEventServer;
 import io.github.tjheslin1.esb.infrastructure.settings.Settings;
 
@@ -20,7 +22,8 @@ public class Aggregate {
         Wiring wiring = new Wiring(settings);
 
         BankingEventServer bankingEventServer = new BankingEventServer(settings)
-                .withServlet(new DepositServlet(new DepositRequestJsonUnmarshaller(), wiring.depositFundsUseCase()), "/deposit");
+                .withServlet(new DepositServlet(new DepositRequestJsonUnmarshaller(), wiring.depositFundsUseCase()), "/deposit")
+                .withServlet(new StatusServlet(wiring.statusUseCase(), new StatusResponseJsonMarshaller()), "/status");
 
         try {
             bankingEventServer.start();

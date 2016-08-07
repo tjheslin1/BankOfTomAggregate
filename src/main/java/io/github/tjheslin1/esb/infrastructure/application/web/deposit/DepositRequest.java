@@ -26,24 +26,4 @@ public class DepositRequest implements Request {
     public String toJson() {
         return format("{\"accountId\": \"%s\", \"amount\": \"%s\"}", accountId, amount);
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        DepositRequest that = (DepositRequest) o;
-
-        return accountId == that.accountId && Double.compare(that.amount, amount) == 0;
-    }
-
-    @Override
-    public int hashCode() {
-        int result;
-        long temp;
-        result = accountId;
-        temp = Double.doubleToLongBits(amount);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        return result;
-    }
 }

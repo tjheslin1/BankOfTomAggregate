@@ -1,7 +1,7 @@
 package io.github.tjheslin1.esb.application.usecases;
 
 import io.github.tjheslin1.esb.application.probe.Probe;
-import io.github.tjheslin1.esb.domain.Status;
+import io.github.tjheslin1.esb.domain.status.ProbeResult;
 
 import java.util.stream.Stream;
 
@@ -13,7 +13,7 @@ public class StatusUseCase {
         this.probes = probes;
     }
 
-    public Status checkStatus() {
-        return probes.anyMatch(probe -> Status.FAIL.equals(probe.probe())) ? Status.FAIL : Status.OK;
+    public Stream<ProbeResult> checkStatusProbes() {
+        return probes.map(Probe::probe);
     }
 }

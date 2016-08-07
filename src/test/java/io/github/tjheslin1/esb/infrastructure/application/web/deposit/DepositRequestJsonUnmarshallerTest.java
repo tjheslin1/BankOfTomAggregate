@@ -14,6 +14,7 @@ public class DepositRequestJsonUnmarshallerTest implements WithAssertions {
         DepositRequest actualRequest = unmarshaller.unmarshall(exampleRequest);
 
         DepositRequest expectedRequest = new DepositRequest(7, 50.0);
-        assertThat(actualRequest).isEqualTo(expectedRequest);
+        assertThat(actualRequest.accountId()).isEqualTo(expectedRequest.accountId());
+        assertThat(actualRequest.amount()).isEqualTo(expectedRequest.amount());
     }
 }
