@@ -11,13 +11,13 @@ import static java.util.stream.Collectors.toList;
 
 public class StatusUseCase {
 
-    private final Stream<Probe> probes;
+    private final List<Probe> probes;
 
-    public StatusUseCase(Stream<Probe> probes) {
+    public StatusUseCase(List<Probe> probes) {
         this.probes = probes;
     }
 
     public List<ProbeResult> checkStatusProbes() {
-        return probes.map(Probe::probe).collect(toList());
+        return probes.stream().map(Probe::probe).collect(toList());
     }
 }

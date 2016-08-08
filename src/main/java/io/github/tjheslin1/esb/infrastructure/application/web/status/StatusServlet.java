@@ -11,10 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.toList;
 
 public class StatusServlet extends HttpServlet {
 
@@ -34,7 +30,7 @@ public class StatusServlet extends HttpServlet {
         List<ProbeResult> probeResultList = statusUseCase.checkStatusProbes();
 
         Status overallStatus = probeResultList.stream().anyMatch(probeResult -> Status.FAIL.equals(probeResult.result())) ? Status.FAIL : Status.OK;
-        String responseBody = marshaller.marshall(probeResultList);
+        String responseBody = marshaller.marshall(new StatusPageResult(probeResultList, overallStatus.value));
 
         if (Status.OK.equals(overallStatus)) {
             response.setStatus(HttpServletResponse.SC_OK);

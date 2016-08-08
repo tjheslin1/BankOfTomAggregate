@@ -1,7 +1,6 @@
 package io.github.tjheslin1.esb.infrastructure;
 
 import com.mongodb.MongoClient;
-import com.mongodb.MongoClientOptions;
 import io.github.tjheslin1.esb.application.cqrs.command.BalanceCommandWriter;
 import io.github.tjheslin1.esb.application.usecases.DepositFundsUseCase;
 import io.github.tjheslin1.esb.application.usecases.StatusUseCase;
@@ -10,7 +9,7 @@ import io.github.tjheslin1.esb.infrastructure.mongo.MongoConnection;
 import io.github.tjheslin1.esb.infrastructure.mongo.MongoProbe;
 import io.github.tjheslin1.esb.infrastructure.settings.Settings;
 
-import java.util.stream.Stream;
+import static java.util.Arrays.asList;
 
 public class Wiring {
 
@@ -25,7 +24,7 @@ public class Wiring {
     }
 
     public StatusUseCase statusUseCase() {
-        return new StatusUseCase(Stream.of(new MongoProbe(mongoClient(), settings)));
+        return new StatusUseCase(asList(new MongoProbe(mongoClient(), settings)));
     }
 
     private BalanceCommandWriter balanceCommandWriter() {
