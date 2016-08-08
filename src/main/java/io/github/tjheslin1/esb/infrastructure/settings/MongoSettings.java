@@ -4,4 +4,6 @@ public interface MongoSettings {
 
     int mongoDbPort();
     String mongoDbName();
+    int connectTimeout();
+    int maxWaitTime();
 }

@@ -12,7 +12,10 @@ import org.junit.Test;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
-import java.util.stream.Stream;
+import java.util.List;
+
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
 
 public class StatusServletTest implements WithAssertions, WithMockito {
 
@@ -43,12 +46,13 @@ public class StatusServletTest implements WithAssertions, WithMockito {
 
     @Test
     public void returns200IfAllProbesAreOK() throws Exception {
-        Stream<ProbeResult> probeResults = Stream.of(this.firstOKProbeResult, secondOKProbeResult);
+        List<ProbeResult> probeResults = asList(firstOKProbeResult, secondOKProbeResult);
 
         when(statusUseCase.checkStatusProbes()).thenReturn(probeResults);
         when(response.getWriter()).thenReturn(printWriter);
 
-        String expectedBody = "{probes: [{\"result\": OK}, {\"result\": OK}]}";
+//        String expectedBody = "{probes: [{\"result\": OK}, {\"result\": OK}]}";
+        String expectedBody = "{{\"result\": OK}, {\"result\": OK}}";
         when(marshaller.marshall(probeResults)).thenReturn(expectedBody);
 
         statusServlet.doGet(request, response);
@@ -60,12 +64,13 @@ public class StatusServletTest implements WithAssertions, WithMockito {
 
     @Test
     public void returns409IfAnyProbesAreFail() throws Exception {
-        Stream<ProbeResult> probeResults = Stream.of(this.firstOKProbeResult, firstFailProbeResult);
+        List<ProbeResult> probeResults = asList(firstOKProbeResult, firstFailProbeResult);
 
         when(statusUseCase.checkStatusProbes()).thenReturn(probeResults);
         when(response.getWriter()).thenReturn(printWriter);
 
-        String expectedBody = "{probes: [{\"result\": OK}, {\"result\": OK}]}";
+//        String expectedBody = "{probes: [{\"result\": OK}, {\"result\": OK}]}";
+        String expectedBody = "{{\"result\": OK}, {\"result\": FAIL}}";
         when(marshaller.marshall(probeResults)).thenReturn(expectedBody);
 
         statusServlet.doGet(request, response);
@@ -77,7 +82,7 @@ public class StatusServletTest implements WithAssertions, WithMockito {
 
     @Test
     public void returns200IfThereAreNoProbes() throws Exception {
-        Stream<ProbeResult> probeResults = Stream.empty();
+        List<ProbeResult> probeResults = emptyList();
 
         when(statusUseCase.checkStatusProbes()).thenReturn(probeResults);
         when(response.getWriter()).thenReturn(printWriter);

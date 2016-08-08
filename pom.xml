@@ -218,12 +218,6 @@
             <artifactId>json</artifactId>
             <version>20160212</version>
         </dependency>
-
-        <dependency>
-            <groupId>io.github.theangrydev</groupId>
-            <artifactId>business-flows</artifactId>
-            <version>2.2.0</version>
-        </dependency>
     </dependencies>
 
     <profiles>

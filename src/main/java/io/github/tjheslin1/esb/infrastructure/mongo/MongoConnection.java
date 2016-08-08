@@ -7,8 +7,14 @@ import io.github.tjheslin1.esb.infrastructure.settings.MongoSettings;
 
 public class MongoConnection {
 
+    /**
+     * Used for Wiring and tests only.
+     */
     public static MongoClient mongoClient(MongoSettings mongoSettings) {
-        MongoClientOptions.Builder mongoClientBuilder = MongoClientOptions.builder().connectTimeout(1000);
+        MongoClientOptions.Builder mongoClientBuilder = MongoClientOptions.builder()
+                .connectTimeout(mongoSettings.connectTimeout())
+                .maxWaitTime(mongoSettings.maxWaitTime());
+
         return new MongoClient(new ServerAddress("localhost", mongoSettings.mongoDbPort()), mongoClientBuilder.build());
     }
 }

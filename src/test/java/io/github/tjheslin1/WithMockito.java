@@ -26,11 +26,7 @@ public interface WithMockito {
         return Mockito.times(numOfInvocations);
     }
 
-    default String anyString() {
-        return Mockito.anyString();
-    }
-
-    default Object any() {
+    default <T> T any() {
         return Mockito.any();
     }
 

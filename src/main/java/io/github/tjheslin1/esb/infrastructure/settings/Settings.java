@@ -21,6 +21,16 @@ public class Settings implements MongoSettings, ServerSettings {
     }
 
     @Override
+    public int connectTimeout() {
+        return Integer.parseInt(properties.getProperty("mongo.connect.timeout"));
+    }
+
+    @Override
+    public int maxWaitTime() {
+        return Integer.parseInt(properties.getProperty("mongo.max.wait.time"));
+    }
+
+    @Override
     public String webProtocol() {
         return properties.getProperty("web.protocol");
     }

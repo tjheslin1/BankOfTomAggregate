@@ -16,6 +16,9 @@ public class MongoConnectionTest implements WithAssertions, WithMockito {
     @Test
     public void connectToDatabaseContainerTest() throws Exception {
         when(settings.mongoDbPort()).thenReturn(27017);
+        when(settings.maxWaitTime()).thenReturn(1000);
+        when(settings.connectTimeout()).thenReturn(1000);
+
         MongoClient mongoClient = mongoClient(settings);
 
         try {
