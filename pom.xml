@@ -124,6 +124,7 @@
                     <threads>4</threads>
                     <withHistory>false</withHistory>
                     <mutationThreshold>100</mutationThreshold>
+                    <verbose>false</verbose>
                     <timestampedReports>false</timestampedReports>
                     <failWhenNoMutations>true</failWhenNoMutations>
                     <timeoutFactor>1.25</timeoutFactor>

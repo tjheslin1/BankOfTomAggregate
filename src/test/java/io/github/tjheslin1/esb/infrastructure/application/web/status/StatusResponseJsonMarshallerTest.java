@@ -18,6 +18,6 @@ public class StatusResponseJsonMarshallerTest implements WithAssertions, WithMoc
         when(statusPageResult.probeResults()).thenReturn(singletonList(new MongoProbeResult("ok")));
         when(statusPageResult.overallResult()).thenReturn("OK");
 
-        assertThat(marshaller.marshall(statusPageResult)).isEqualTo("{ probes: [{\"dbStatus\": \"OK\"}], \"overallStatus\": \"OK\"}");
+        assertThat(marshaller.marshall(statusPageResult)).isEqualTo("{ \"probes\": [{\"dbStatus\": \"OK\"}], \"overallStatus\": \"OK\"}");
     }
 }

@@ -57,4 +57,24 @@ public class SettingsTest implements WithAssertions, WithMockito {
 
         assertThat(settings.serverPort()).isEqualTo(1000);
     }
+
+    @Test
+    public void connectTimeoutTest() throws Exception {
+        Properties properties = mock(Properties.class);
+        Settings settings = new Settings(properties);
+
+        when(properties.getProperty("mongo.connect.timeout")).thenReturn("1000");
+
+        assertThat(settings.connectTimeout()).isEqualTo(1000);
+    }
+
+    @Test
+    public void maxWaitTimeTest() throws Exception {
+        Properties properties = mock(Properties.class);
+        Settings settings = new Settings(properties);
+
+        when(properties.getProperty("mongo.max.wait.time")).thenReturn("1000");
+
+        assertThat(settings.maxWaitTime()).isEqualTo(1000);
+    }
 }

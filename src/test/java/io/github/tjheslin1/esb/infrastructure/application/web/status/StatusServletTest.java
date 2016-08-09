@@ -41,8 +41,8 @@ public class StatusServletTest implements WithAssertions, WithMockito {
 //        when(secondOKProbeResult.result()).thenReturn(Status.OK);
 //        when(secondOKProbeResult.toJson()).thenReturn("{\"result\": \"OK\"}");
 //
-//        when(firstFailProbeResult.result()).thenReturn(Status.FAIL);
-//        when(firstFailProbeResult.toJson()).thenReturn("{\"result\": \"FAIL\"}");
+        when(firstFailProbeResult.result()).thenReturn(Status.FAIL);
+        when(firstFailProbeResult.toJson()).thenReturn("{\"result\": \"FAIL\"}");
     }
 
     @Test
@@ -69,7 +69,7 @@ public class StatusServletTest implements WithAssertions, WithMockito {
         when(statusUseCase.checkStatusProbes()).thenReturn(probeResults);
         when(response.getWriter()).thenReturn(printWriter);
 
-        String expectedBody = "{ \"probes\": [{\"result\": \"OK\"}, {\"result\": \"OK\"}]}";
+        String expectedBody = "{ \"probes\": [{\"result\": \"OK\"}, {\"result\": \"FAIL\"}], \"overallStatus\": \"FAIL\"}";
         when(marshaller.marshall(any())).thenReturn(expectedBody);
 
         statusServlet.doGet(request, response);
@@ -86,7 +86,7 @@ public class StatusServletTest implements WithAssertions, WithMockito {
         when(statusUseCase.checkStatusProbes()).thenReturn(probeResults);
         when(response.getWriter()).thenReturn(printWriter);
 
-        String expectedBody = "{ \"probes\": [], \"overallStatus\": \"OK\"}";
+        String expectedBody = "{ probes: [], \"overallStatus\": \"OK\"}";
         when(marshaller.marshall(any())).thenReturn(expectedBody);
 
         statusServlet.doGet(request, response);
