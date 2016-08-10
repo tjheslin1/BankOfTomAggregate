@@ -1,11 +1,12 @@
 package io.github.tjheslin1.esb.database;
 
 import com.mongodb.MongoClient;
+import com.mongodb.MongoWriteException;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import io.github.tjheslin1.WithMockito;
-import io.github.tjheslin1.esb.infrastructure.application.cqrs.deposit.DepositFundsCommand;
 import io.github.tjheslin1.esb.infrastructure.application.cqrs.MongoBalanceCommandWriter;
+import io.github.tjheslin1.esb.infrastructure.application.cqrs.deposit.DepositFundsCommand;
 import io.github.tjheslin1.esb.infrastructure.application.cqrs.withdraw.WithdrawFundsCommand;
 import io.github.tjheslin1.esb.infrastructure.settings.MongoSettings;
 import io.github.tjheslin1.esb.infrastructure.settings.Settings;
@@ -26,6 +27,8 @@ import static io.github.tjheslin1.esb.infrastructure.mongo.MongoConnection.mongo
 import static io.github.tjheslin1.esb.infrastructure.mongo.MongoOperations.collectionNameForEvent;
 
 public class MongoBalanceCommandWriterTest implements WithAssertions, WithMockito {
+
+    private static final int ACCOUNT_ID = 20;
 
     private MongoSettings settings = mock(Settings.class);
 
@@ -60,7 +63,7 @@ public class MongoBalanceCommandWriterTest implements WithAssertions, WithMockit
 
     @Test
     public void writeDepositFundsEventToDatabaseTest() throws Exception {
-        DepositFundsCommand depositFundsCommand = depositFundsCommand(20, 6, LocalDateTime.now(clock));
+        DepositFundsCommand depositFundsCommand = depositFundsCommand(ACCOUNT_ID, 6, LocalDateTime.now(clock));
         eventWriter.write(depositFundsCommand, depositEventWiring());
 
         assertThat(mongoClient.getDatabase(settings.mongoDbName())
@@ -71,12 +74,21 @@ public class MongoBalanceCommandWriterTest implements WithAssertions, WithMockit
 
     @Test
     public void writeWithdrawFundsEventToDatabaseTest() throws Exception {
-        WithdrawFundsCommand withdrawFundsCommand = withdrawFundsCommand(20, 6, LocalDateTime.now(clock));
+        WithdrawFundsCommand withdrawFundsCommand = withdrawFundsCommand(ACCOUNT_ID, 6, LocalDateTime.now(clock));
         eventWriter.write(withdrawFundsCommand, withdrawalEventWiring());
 
         assertThat(mongoClient.getDatabase(settings.mongoDbName())
                 .getCollection(collectionNameForEvent(withdrawFundsCommand.getClass()))
                 .count())
                 .isEqualTo(1);
+    }
+
+    @Test(expected = MongoWriteException.class)
+    public void writesTheSameEventTwice() throws Exception {
+        int depositAmount = 6;
+        DepositFundsCommand depositFundsCommand = depositFundsCommand(ACCOUNT_ID, depositAmount, LocalDateTime.now(clock));
+
+        eventWriter.write(depositFundsCommand, depositEventWiring());
+        eventWriter.write(depositFundsCommand, depositEventWiring());
     }
 }
