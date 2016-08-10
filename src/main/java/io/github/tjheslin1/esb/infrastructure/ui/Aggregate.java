@@ -18,7 +18,12 @@ import static java.lang.String.format;
 public class Aggregate {
 
     public static void main(String[] args) {
-        Properties properties = loadProperties("localhost");
+        String env = System.getenv("bank-of-tom-env");
+        if (env == null) {
+            env = "localhost";
+        }
+
+        Properties properties = loadProperties(env);
         Settings settings = new Settings(properties);
         Wiring wiring = new Wiring(settings);
 

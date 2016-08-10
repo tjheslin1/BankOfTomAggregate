@@ -2,7 +2,6 @@ package io.github.tjheslin1.esb.database;
 
 import com.mongodb.MongoClient;
 import io.github.tjheslin1.WithMockito;
-import io.github.tjheslin1.esb.infrastructure.settings.MongoSettings;
 import io.github.tjheslin1.esb.infrastructure.settings.Settings;
 import org.assertj.core.api.WithAssertions;
 import org.junit.Test;
@@ -11,7 +10,7 @@ import static io.github.tjheslin1.esb.infrastructure.mongo.MongoConnection.mongo
 
 public class MongoConnectionTest implements WithAssertions, WithMockito {
 
-    private MongoSettings settings = mock(Settings.class);
+    private Settings settings = mock(Settings.class);
 
     @Test
     public void connectToDatabaseContainerTest() throws Exception {

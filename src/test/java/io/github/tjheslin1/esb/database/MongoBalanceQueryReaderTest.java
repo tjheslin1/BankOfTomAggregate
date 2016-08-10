@@ -33,7 +33,7 @@ import static io.github.tjheslin1.esb.infrastructure.mongo.MongoOperations.colle
 
 public class MongoBalanceQueryReaderTest implements WithAssertions, WithMockito {
 
-    private MongoSettings settings = mock(Settings.class);
+    private Settings settings = mock(Settings.class);
 
     private BalanceCommandWriter eventWriter;
     private BalanceQueryReader balanceQueryReader;

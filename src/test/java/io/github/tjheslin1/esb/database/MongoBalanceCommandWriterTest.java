@@ -30,7 +30,7 @@ public class MongoBalanceCommandWriterTest implements WithAssertions, WithMockit
 
     private static final int ACCOUNT_ID = 20;
 
-    private MongoSettings settings = mock(Settings.class);
+    private Settings settings = mock(Settings.class);
 
     private MongoBalanceCommandWriter eventWriter;
     private MongoClient mongoClient;

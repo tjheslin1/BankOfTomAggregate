@@ -5,17 +5,18 @@ import com.mongodb.MongoClientOptions;
 import com.mongodb.MongoClientURI;
 import com.mongodb.ServerAddress;
 import io.github.tjheslin1.esb.infrastructure.settings.MongoSettings;
+import io.github.tjheslin1.esb.infrastructure.settings.Settings;
 
 public class MongoConnection {
 
     /**
      * Used for Wiring and tests only.
      */
-    public static MongoClient mongoClient(MongoSettings mongoSettings) {
+    public static MongoClient mongoClient(Settings settings) {
         MongoClientOptions.Builder mongoClientBuilder = MongoClientOptions.builder()
-                .connectTimeout(mongoSettings.connectTimeout())
-                .maxWaitTime(mongoSettings.maxWaitTime());
+                .connectTimeout(settings.connectTimeout())
+                .maxWaitTime(settings.maxWaitTime());
 
-        return new MongoClient(new ServerAddress("172.17.0.2", mongoSettings.mongoDbPort()), mongoClientBuilder.build());
+        return new MongoClient(new ServerAddress(settings.host(), settings.mongoDbPort()), mongoClientBuilder.build());
     }
 }
