@@ -18,10 +18,7 @@ import static java.lang.String.format;
 public class Aggregate {
 
     public static void main(String[] args) {
-        String env = System.getenv("bank-of-tom-env");
-        if (env == null) {
-            env = "localhost";
-        }
+        String env = getPropertiesFileEnv();
 
         Properties properties = loadProperties(env);
         Settings settings = new Settings(properties);
@@ -48,6 +45,14 @@ public class Aggregate {
             }
             System.out.println("Server stopped.");
         }
+    }
+
+    private static String getPropertiesFileEnv() {
+        String env = System.getenv("bank-of-tom-env");
+        if (env == null) {
+            env = "localhost";
+        }
+        return env;
     }
 
     static Properties loadProperties(String environment) {
