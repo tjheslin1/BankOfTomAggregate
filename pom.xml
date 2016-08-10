@@ -145,7 +145,6 @@
                     </targetClasses>
                     <targetTests>
                         <param>io.github.tjheslin1.esb.*</param>
-                        <param>acceptancetests*</param>
                     </targetTests>
                     <jvmArgs>
                         <jvmArg>-Dsilent.process.errors=true</jvmArg>
@@ -153,7 +152,6 @@
                     <exportLineCoverage>true</exportLineCoverage>
                     <excludedClasses>
                         <excludedClass>io.github.tjheslin1.esb.infrastructure.ui.Aggregate</excludedClass>
-                        <excludedClass>io.github.tjheslin1.esb.infrastructure.ui.App</excludedClass>
                         <excludedClass>io.github.tjheslin1.esb.infrastructure.Wiring</excludedClass>
                         <excludedClass>io.github.tjheslin1.esb.infrastructure.domain.eventstore.BankingEventServer</excludedClass>
                     </excludedClasses>
