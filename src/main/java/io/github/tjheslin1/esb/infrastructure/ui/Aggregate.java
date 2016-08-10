@@ -8,6 +8,7 @@ import io.github.tjheslin1.esb.infrastructure.application.web.status.StatusServl
 import io.github.tjheslin1.esb.infrastructure.domain.eventstore.BankingEventServer;
 import io.github.tjheslin1.esb.infrastructure.settings.Settings;
 
+import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -22,11 +23,13 @@ public class Aggregate {
         Wiring wiring = new Wiring(settings);
 
         BankingEventServer bankingEventServer = new BankingEventServer(settings)
-                .withServlet(new DepositServlet(new DepositRequestJsonUnmarshaller(), wiring.depositFundsUseCase()), "/deposit")
+                .withServlet(new DepositServlet(wiring.depositFundsUseCase(), new DepositRequestJsonUnmarshaller()), "/deposit")
                 .withServlet(new StatusServlet(wiring.statusUseCase(), new StatusResponseJsonMarshaller()), "/status");
 
         try {
             bankingEventServer.start();
+
+            System.out.println(format("http://%s:%s/status", settings.host(), settings.serverPort()));
 
             while (true) {
             }

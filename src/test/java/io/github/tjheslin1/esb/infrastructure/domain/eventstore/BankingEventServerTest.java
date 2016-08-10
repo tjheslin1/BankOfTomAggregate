@@ -30,7 +30,7 @@ public class BankingEventServerTest implements WithAssertions, WithMockito {
         when(unmarshaller.unmarshall("{\"accountId\": \"7\", \"amount\": \"45.0\"}")).thenReturn(new DepositRequest(7, 45.0));
 
         server = new BankingEventServer(settings);
-        server.withServlet(new DepositServlet(unmarshaller, new DepositFundsUseCase(commandWriter)), "/deposit");
+        server.withServlet(new DepositServlet(new DepositFundsUseCase(commandWriter), unmarshaller), "/deposit");
 
         server.start();
     }

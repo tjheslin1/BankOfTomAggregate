@@ -24,7 +24,7 @@
     </properties>
 
     <build>
-        <defaultGoal>clean test org.pitest:pitest-maven:mutationCoverage</defaultGoal>
+        <defaultGoal>clean test org.pitest:pitest-maven:mutationCoverage package</defaultGoal>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -55,7 +55,7 @@
                             <transformers>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>io.github.tjheslin1.esb.infrastructure.ui.App</mainClass>
+                                    <mainClass>io.github.tjheslin1.esb.infrastructure.ui.Aggregate</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>

@@ -29,16 +29,6 @@ public class SettingsTest implements WithAssertions, WithMockito {
     }
 
     @Test
-    public void webProtocolTest() throws Exception {
-        Properties properties = mock(Properties.class);
-        Settings settings = new Settings(properties);
-
-        when(properties.getProperty("web.protocol")).thenReturn("http");
-
-        assertThat(settings.webProtocol()).isEqualTo("http");
-    }
-
-    @Test
     public void hostTest() throws Exception {
         Properties properties = mock(Properties.class);
         Settings settings = new Settings(properties);

@@ -1,7 +1,8 @@
 FROM java:8
 
-RUN ["mkdir", "esb"]
-ADD BankOfTomAggregate-1.0-SNAPSHOT.jar /esb
+RUN ["mkdir", "BankOfTom"]
+ADD target/BankOfTomAggregate-1.0-SNAPSHOT.jar /BankOfTom
 
-CMD ["java", "-jar", "/esb/BankOfTomAggregate-1.0-SNAPSHOT.jar"]
-#ENTRYPOINT ["java", "-jar", "BankOfTomAggregate-1.0-SNAPSHOT.jar", "--acceptLicense", "/dev/root/"]
+EXPOSE 8085
+
+CMD ["java", "-jar", "/BankOfTom/BankOfTomAggregate-1.0-SNAPSHOT.jar"]

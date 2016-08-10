@@ -31,11 +31,6 @@ public class Settings implements MongoSettings, ServerSettings {
     }
 
     @Override
-    public String webProtocol() {
-        return properties.getProperty("web.protocol");
-    }
-
-    @Override
     public String host() {
         return properties.getProperty("host");
     }

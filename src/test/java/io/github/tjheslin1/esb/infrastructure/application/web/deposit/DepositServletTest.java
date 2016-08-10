@@ -44,7 +44,7 @@ public class DepositServletTest implements WithAssertions, WithMockito {
 
     @Test
     public void callsUseCaseSuccessfullyAndReturns200() throws Exception {
-        DepositServlet depositServlet = new DepositServlet(unmarshaller, depositFundsUseCase);
+        DepositServlet depositServlet = new DepositServlet(depositFundsUseCase, unmarshaller);
 
         String body = format("{ \"accountId\": \"%s\", \"amount\": \"%s\"}", ACCOUNT_ID, 45.0);
         when(unmarshaller.unmarshall(body)).thenReturn(depositRequest);
@@ -62,7 +62,7 @@ public class DepositServletTest implements WithAssertions, WithMockito {
 
     @Test
     public void returnsErrorCode409OnBadRequest() throws Exception {
-        DepositServlet depositServlet = new DepositServlet(new DepositRequestJsonUnmarshaller(), depositFundsUseCase);
+        DepositServlet depositServlet = new DepositServlet(depositFundsUseCase, new DepositRequestJsonUnmarshaller());
 
         String badBody = "{}";
         when(request.getReader()).thenReturn(bufferedReader);

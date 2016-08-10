@@ -15,7 +15,7 @@ public class DepositServlet extends HttpServlet {
     private DepositRequestJsonUnmarshaller unmarshaller;
     private DepositFundsUseCase depositFundsUseCase;
 
-    public DepositServlet(DepositRequestJsonUnmarshaller unmarshaller, DepositFundsUseCase depositFundsUseCase) {
+    public DepositServlet(DepositFundsUseCase depositFundsUseCase, DepositRequestJsonUnmarshaller unmarshaller) {
         this.unmarshaller = unmarshaller;
         this.depositFundsUseCase = depositFundsUseCase;
     }
