@@ -16,15 +16,15 @@
         <!-- Project -->
         <java.language.level>1.8</java.language.level>
         <project.file.encoding>UTF-8</project.file.encoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <skipTests>false</skipTests>
 
         <!-- Plugins -->
         <maven.compiler.plugin.version>3.5</maven.compiler.plugin.version>
-
-        <skipTests>false</skipTests>
     </properties>
 
     <build>
-        <defaultGoal>clean test org.pitest:pitest-maven:mutationCoverage package</defaultGoal>
+        <defaultGoal>clean test failsafe:integration-test org.pitest:pitest-maven:mutationCoverage package</defaultGoal>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -55,12 +55,43 @@
                             <transformers>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>io.github.tjheslin1.esb.infrastructure.ui.Aggregate</mainClass>
+                                    <mainClass>io.github.tjheslin1.aggregate.infrastructure.ui.Aggregate</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
                         <goals>
                             <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Unit tests -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.12.1</version>
+                <configuration>
+                    <excludes>
+                        <exclude>**/acceptance/*.java</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.19.1</version>
+                <configuration>
+                    <includes>
+                        <include>**/acceptance/*.java</include>
+                    </includes>
+                    <skip>${skipTests}</skip>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -93,19 +124,19 @@
                         </goals>
                     </execution>
                     <execution>
-                        <id>install</id>
-                        <phase>install</phase>
+                        <id>pre-integration-test</id>
+                        <phase>pre-integration-test</phase>
                         <configuration>
                             <target>
-                                <mkdir dir="target/docker-ready"/>
-                                <copy todir="target/docker-ready">
-                                    <fileset dir="">
-                                        <include name="Dockerfile"/>
-                                    </fileset>
-                                    <fileset dir="target">
-                                        <include name="BankOfTomAggregate-${project.version}.jar"/>
-                                    </fileset>
-                                </copy>
+                                <exec dir="${project.basedir}/scripts" executable="/bin/bash">
+                                    <arg value="aggregate_remove.sh"/>
+                                </exec>
+                                <exec dir="${project.basedir}/scripts" executable="/bin/bash">
+                                    <arg value="aggregate_build.sh"/>
+                                </exec>
+                                <exec dir="${project.basedir}/scripts" executable="/bin/bash">
+                                    <arg value="aggregate_start.sh"/>
+                                </exec>
                             </target>
                         </configuration>
                         <goals>
@@ -114,10 +145,11 @@
                     </execution>
                 </executions>
             </plugin>
+
             <plugin>
                 <groupId>org.pitest</groupId>
                 <artifactId>pitest-maven</artifactId>
-                <version>1.1.9</version>
+                <version>1.1.10</version>
                 <configuration>
                     <reportsDirectory>${project.build.directory}/pit-output</reportsDirectory>
                     <skip>${skipTests}</skip>
@@ -141,19 +173,20 @@
                     </mutators>
                     <parseSurefireConfig>false</parseSurefireConfig>
                     <targetClasses>
-                        <param>io.github.tjheslin1.esb.*</param>
+                        <param>io.github.tjheslin1.aggregate.*</param>
                     </targetClasses>
                     <targetTests>
-                        <param>io.github.tjheslin1.esb.*</param>
+                        <param>io.github.tjheslin1.aggregate.*</param>
                     </targetTests>
                     <jvmArgs>
                         <jvmArg>-Dsilent.process.errors=true</jvmArg>
                     </jvmArgs>
                     <exportLineCoverage>true</exportLineCoverage>
                     <excludedClasses>
-                        <excludedClass>io.github.tjheslin1.esb.infrastructure.ui.Aggregate</excludedClass>
-                        <excludedClass>io.github.tjheslin1.esb.infrastructure.Wiring</excludedClass>
-                        <excludedClass>io.github.tjheslin1.esb.infrastructure.domain.eventstore.BankingEventServer</excludedClass>
+                        <excludedClass>io.github.tjheslin1.aggregate.infrastructure.ui.Aggregate</excludedClass>
+                        <excludedClass>io.github.tjheslin1.aggregate.infrastructure.Wiring</excludedClass>
+                        <excludedClass>io.github.tjheslin1.aggregate.infrastructure.domain.eventstore.BankingEventServer
+                        </excludedClass>
                     </excludedClasses>
                     <excludedMethods>
                         <excludedMethod>equals</excludedMethod>
@@ -173,27 +206,6 @@
     </build>
 
     <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
-            <version>3.4.1</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-all</artifactId>
-            <version>1.10.19</version>
-            <scope>test</scope>
-        </dependency>
-
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongo-java-driver</artifactId>
@@ -216,6 +228,42 @@
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20160212</version>
+        </dependency>
+
+        <!-- Test Dependencies -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>3.4.1</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>1.10.19</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.github.theangrydev</groupId>
+            <artifactId>yatspec-fluent</artifactId>
+            <version>1.6.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>3.4.1</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -245,5 +293,4 @@
             </build>
         </profile>
     </profiles>
-
 </project>
