@@ -53,7 +53,6 @@ public class MongoBalanceCommandWriterTest implements WithAssertions, WithMockit
         clearBalanceCollections(mongoClient);
     }
 
-    @Ignore // returning 2 for some reason.
     @Test
     public void writeDepositFundsEventToDatabaseTest() throws Exception {
         DepositFundsCommand depositFundsCommand = depositFundsCommand(ACCOUNT_ID, 6, LocalDateTime.now(clock));

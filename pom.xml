@@ -21,7 +21,6 @@
 
         <!-- Plugins -->
         <maven.compiler.plugin.version>3.5</maven.compiler.plugin.version>
-        <surefire.skip>false</surefire.skip>
     </properties>
 
     <build>
@@ -73,7 +72,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.12.1</version>
                 <configuration>
-                    <skip>${surefire.skip}</skip>
+                    <skip>${skipTests}</skip>
                     <excludes>
                         <exclude>**/acceptance/*.java</exclude>
                     </excludes>
