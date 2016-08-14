@@ -28,8 +28,8 @@ public class DepositServlet extends HttpServlet {
 
         try {
             DepositRequest depositRequest = unmarshaller.unmarshall(body);
-            depositFundsUseCase.depositFunds(depositRequest, LocalDateTime.now());
-            response.setStatus(HttpServletResponse.SC_OK);
+//            depositFundsUseCase.depositFunds(depositRequest, LocalDateTime.now());
+            response.setStatus(HttpServletResponse.SC_CONFLICT);
         } catch (Exception e) {
             e.printStackTrace();
             response.setStatus(HttpServletResponse.SC_CONFLICT);

@@ -55,6 +55,9 @@ public class WhenADepositIsMade implements When<Request, Response> {
                 .build();
 
         String json = format("{ \"accountId\": \"%s\", \"amount\": \"%s\"}", accountId, amount);
+
+        System.out.println(format("Sending request to '%s' with body '%s'", depositUrl.toString(), json));
+
         return new Request.Builder()
                 .url(depositUrl)
                 .post(RequestBody.create(JSON, json))

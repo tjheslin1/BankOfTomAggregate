@@ -7,12 +7,16 @@ import org.eclipse.jetty.servlet.ServletHolder;
 
 import javax.servlet.http.HttpServlet;
 
+import static java.lang.String.format;
+
 public class BankingEventServer {
 
     private Server server;
     private ServletContextHandler context;
+    private Settings settings;
 
     public BankingEventServer(Settings settings) {
+        this.settings = settings;
         this.server = new Server(settings.serverPort());
 
         this.context = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
@@ -34,6 +38,6 @@ public class BankingEventServer {
     }
 
     public String baseUrl() {
-        return server.getURI().toString();
+        return format("http://%s:%s", settings.host(), settings.serverPort());
     }
 }
