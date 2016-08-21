@@ -71,6 +71,7 @@ public class MongoBalanceCommandWriterTest implements WithAssertions, WithMockit
 
         commandWriter.write(withdrawFundsCommand, withdrawalEventWiring());
 
+
         assertThat(mongoClient.getDatabase(settings.mongoDbName())
                 .getCollection(collectionNameForEvent(withdrawFundsCommand.getClass()))
                 .count())

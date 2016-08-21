@@ -25,6 +25,7 @@
 
     <build>
         <defaultGoal>clean verify</defaultGoal>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

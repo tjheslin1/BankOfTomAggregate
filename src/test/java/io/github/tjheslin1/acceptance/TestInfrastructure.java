@@ -26,7 +26,10 @@ public class TestInfrastructure {
 
     public Response execute(Request request) {
         try {
-            return new OkHttpClient().newCall(request).execute();
+            return new OkHttpClient().newBuilder()
+                    .retryOnConnectionFailure(true)
+                    .build()
+                    .newCall(request).execute();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
