@@ -11,12 +11,10 @@ public abstract class AcceptanceTest<Request, Response> extends FluentTest<Reque
 
     @Before
     public void setUp() throws Exception {
-        testInfrastructure.setUp();
     }
 
     @After
     public void tearDown() throws Exception {
-        testInfrastructure.tearDown();
     }
 
 }

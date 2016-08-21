@@ -37,4 +37,9 @@ public class ThenTheResponse implements WithAssertions {
     public ThenTheResponse willReturn() {
         return this;
     }
+
+    public ThenTheResponse withNoBody() {
+        withBody("");
+        return this;
+    }
 }

@@ -33,8 +33,9 @@ public class BankingEventServerTest implements WithAssertions, WithMockito {
         when(settings.serverPort()).thenReturn(8085);
         when(unmarshaller.unmarshall(format("{\"accountId\": \"%s\", \"amount\": \"%s\"}", ACCOUNT_ID, AMOUNT))).thenReturn(new DepositRequest(7, 45.0));
 
-        server = new BankingEventServer(settings);
-        server.withServlet(depositServlet, "/deposit");
+        server = new BankingEventServerBuilder(settings)
+                .withServlet(depositServlet, "/deposit")
+                .build();
 
         server.start();
     }

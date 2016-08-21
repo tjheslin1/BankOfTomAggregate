@@ -6,6 +6,7 @@ import io.github.tjheslin1.aggregate.infrastructure.application.web.deposit.Depo
 import io.github.tjheslin1.aggregate.infrastructure.application.web.status.StatusResponseJsonMarshaller;
 import io.github.tjheslin1.aggregate.infrastructure.application.web.status.StatusServlet;
 import io.github.tjheslin1.aggregate.infrastructure.domain.eventstore.BankingEventServer;
+import io.github.tjheslin1.aggregate.infrastructure.domain.eventstore.BankingEventServerBuilder;
 import io.github.tjheslin1.aggregate.infrastructure.settings.Settings;
 
 import java.io.IOException;
@@ -23,12 +24,13 @@ public class Aggregate {
         Settings settings = new Settings(properties);
         Wiring wiring = new Wiring(settings);
 
-        BankingEventServer bankingEventServer = new BankingEventServer(settings)
+        BankingEventServer eventServer = new BankingEventServerBuilder(settings)
                 .withServlet(new DepositServlet(wiring.depositFundsUseCase(), new DepositRequestJsonUnmarshaller()), "/deposit")
-                .withServlet(new StatusServlet(wiring.statusUseCase(), new StatusResponseJsonMarshaller()), "/status");
+                .withServlet(new StatusServlet(wiring.statusUseCase(), new StatusResponseJsonMarshaller()), "/status")
+                .build();
 
         try {
-            bankingEventServer.start();
+            eventServer.start();
 
             System.out.println(format("http://%s:%s/status", settings.host(), settings.serverPort()));
 
@@ -38,7 +40,7 @@ public class Aggregate {
             e.printStackTrace();
         } finally {
             try {
-                bankingEventServer.stop();
+                eventServer.stop();
             } catch (Exception e) {
                 e.printStackTrace();
             }

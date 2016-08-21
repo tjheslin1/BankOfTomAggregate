@@ -1,5 +1,6 @@
 package io.github.tjheslin1.acceptance;
 
+import io.github.tjheslin1.aggregate.infrastructure.domain.eventstore.BankingEventServerBuilder;
 import io.github.tjheslin1.aggregate.infrastructure.settings.Settings;
 import io.github.tjheslin1.aggregate.infrastructure.ui.Aggregate;
 import okhttp3.OkHttpClient;
@@ -13,15 +14,18 @@ import static java.lang.String.format;
 public class TestInfrastructure {
 
     private Settings settings = new Settings(Aggregate.loadProperties("localhost"));
+    private BankingEventServerBuilder eventServerBuilder = new BankingEventServerBuilder(settings);
+
+    public BankingEventServerBuilder eventServerBuilder() {
+        return eventServerBuilder;
+    }
+
+    public Settings settings() {
+        return settings;
+    }
 
     public String serverBaseUrl() {
         return format("http://%s:%s", settings.host(), settings.serverPort());
-    }
-
-    public void setUp() throws Exception {
-    }
-
-    public void tearDown() throws Exception {
     }
 
     public Response execute(Request request) {

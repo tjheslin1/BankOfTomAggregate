@@ -4,23 +4,20 @@ import io.github.theangrydev.yatspecfluent.Given;
 import io.github.theangrydev.yatspecfluent.WriteOnlyTestItems;
 import io.github.tjheslin1.acceptance.TestInfrastructure;
 
-public class GivenTheEventStore implements Given {
+import javax.servlet.http.HttpServlet;
+
+public class GivenTheStatusPage implements Given {
 
     private final WriteOnlyTestItems writeOnlyTestItems;
     private final TestInfrastructure testInfrastructure;
 
-    private int accountId;
-
-    public GivenTheEventStore(WriteOnlyTestItems writeOnlyTestItems, TestInfrastructure testInfrastructure) {
+    public GivenTheStatusPage(WriteOnlyTestItems writeOnlyTestItems, TestInfrastructure testInfrastructure) {
         this.writeOnlyTestItems = writeOnlyTestItems;
         this.testInfrastructure = testInfrastructure;
     }
 
-    public GivenTheEventStore contains() {
-        return this;
-    }
-
-    public GivenTheEventStore noEventsForAccountWithId(int accountId) {
+    public GivenTheStatusPage containsProbe(HttpServlet servlet, String path) {
+        testInfrastructure.eventServerBuilder().withServlet(servlet, path);
         return this;
     }
 
