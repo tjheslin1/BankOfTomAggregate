@@ -8,6 +8,7 @@ import io.github.tjheslin1.aggregate.infrastructure.application.web.status.Statu
 import io.github.tjheslin1.aggregate.infrastructure.domain.eventstore.BankingEventServer;
 import io.github.tjheslin1.aggregate.infrastructure.domain.eventstore.BankingEventServerBuilder;
 import io.github.tjheslin1.aggregate.infrastructure.settings.Settings;
+import org.eclipse.jetty.servlet.ServletHolder;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,9 +25,11 @@ public class Aggregate {
         Settings settings = new Settings(properties);
         Wiring wiring = new Wiring(settings);
 
-        BankingEventServer eventServer = new BankingEventServerBuilder(settings)
-                .withServlet(new DepositServlet(wiring.depositFundsUseCase(), new DepositRequestJsonUnmarshaller()), "/deposit")
-                .withServlet(new StatusServlet(wiring.statusUseCase(), new StatusResponseJsonMarshaller()), "/status")
+        final DepositServlet servlet = new DepositServlet(wiring.depositFundsUseCase(), new DepositRequestJsonUnmarshaller());
+        final StatusServlet servlet1 = new StatusServlet(wiring.statusUseCase(), new StatusResponseJsonMarshaller());
+        BankingEventServer eventServer = new BankingEventServerBuilder(wiring.servletContextHandler(), settings)
+                .withServlet(new ServletHolder(servlet), "/deposit")
+                .withServlet(new ServletHolder(servlet1), "/status")
                 .build();
 
         try {

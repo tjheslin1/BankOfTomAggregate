@@ -7,9 +7,10 @@ import io.github.tjheslin1.aggregate.infrastructure.application.web.deposit.Depo
 import io.github.tjheslin1.aggregate.infrastructure.settings.Settings;
 import org.assertj.core.api.WithAssertions;
 import org.eclipse.jetty.http.HttpStatus;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.net.HttpURLConnection;
@@ -33,8 +34,8 @@ public class BankingEventServerTest implements WithAssertions, WithMockito {
         when(settings.serverPort()).thenReturn(8085);
         when(unmarshaller.unmarshall(format("{\"accountId\": \"%s\", \"amount\": \"%s\"}", ACCOUNT_ID, AMOUNT))).thenReturn(new DepositRequest(7, 45.0));
 
-        server = new BankingEventServerBuilder(settings)
-                .withServlet(depositServlet, "/deposit")
+        server = new BankingEventServerBuilder(new ServletContextHandler(ServletContextHandler.NO_SESSIONS), settings)
+                .withServlet(new ServletHolder(depositServlet), "/deposit")
                 .build();
 
         server.start();

@@ -8,6 +8,7 @@ import io.github.tjheslin1.aggregate.infrastructure.application.cqrs.MongoBalanc
 import io.github.tjheslin1.aggregate.infrastructure.mongo.MongoConnection;
 import io.github.tjheslin1.aggregate.infrastructure.mongo.MongoProbe;
 import io.github.tjheslin1.aggregate.infrastructure.settings.Settings;
+import org.eclipse.jetty.servlet.ServletContextHandler;
 
 import static java.util.Arrays.asList;
 
@@ -25,6 +26,10 @@ public class Wiring {
 
     public StatusUseCase statusUseCase() {
         return new StatusUseCase(asList(new MongoProbe(mongoClient(), settings)));
+    }
+
+    public ServletContextHandler servletContextHandler() {
+        return new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
     }
 
     private BalanceCommandWriter balanceCommandWriter() {

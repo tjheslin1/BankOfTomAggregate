@@ -4,22 +4,20 @@ import io.github.tjheslin1.aggregate.infrastructure.settings.Settings;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
-import javax.servlet.http.HttpServlet;
-
 public class BankingEventServerBuilder {
 
     private ServletContextHandler context;
     private Settings settings;
 
-    public BankingEventServerBuilder(Settings settings) {
-        this.context = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
+    public BankingEventServerBuilder(ServletContextHandler context, Settings settings) {
+        this.context = context;
         this.context.setContextPath("/");
 
         this.settings = settings;
     }
 
-    public BankingEventServerBuilder withServlet(HttpServlet servlet, String path) {
-        context.addServlet(new ServletHolder(servlet), path);
+    public BankingEventServerBuilder withServlet(ServletHolder servlet, String path) {
+        context.addServlet(servlet, path);
         return this;
     }
 

@@ -6,6 +6,7 @@ import io.github.tjheslin1.aggregate.infrastructure.ui.Aggregate;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import org.eclipse.jetty.servlet.ServletContextHandler;
 
 import java.io.IOException;
 
@@ -14,7 +15,7 @@ import static java.lang.String.format;
 public class TestInfrastructure {
 
     private Settings settings = new Settings(Aggregate.loadProperties("localhost"));
-    private BankingEventServerBuilder eventServerBuilder = new BankingEventServerBuilder(settings);
+    private BankingEventServerBuilder eventServerBuilder = new BankingEventServerBuilder(new ServletContextHandler(ServletContextHandler.NO_SESSIONS), settings);
 
     public BankingEventServerBuilder eventServerBuilder() {
         return eventServerBuilder;

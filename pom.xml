@@ -21,6 +21,8 @@
 
         <!-- Plugins -->
         <maven.compiler.plugin.version>3.5</maven.compiler.plugin.version>
+
+        <yatspec.output.dir>${project.build.directory}/yatspec-output</yatspec.output.dir>
     </properties>
 
     <build>
@@ -187,8 +189,7 @@
                     <excludedClasses>
                         <excludedClass>io.github.tjheslin1.aggregate.infrastructure.ui.Aggregate</excludedClass>
                         <excludedClass>io.github.tjheslin1.aggregate.infrastructure.Wiring</excludedClass>
-                        <excludedClass>io.github.tjheslin1.aggregate.infrastructure.domain.eventstore.BankingEventServer
-                        </excludedClass>
+                        <excludedClass>io.github.tjheslin1.aggregate.infrastructure.domain.eventstore.BankingEventServer</excludedClass>
                     </excludedClasses>
                     <excludedMethods>
                         <excludedMethod>equals</excludedMethod>
