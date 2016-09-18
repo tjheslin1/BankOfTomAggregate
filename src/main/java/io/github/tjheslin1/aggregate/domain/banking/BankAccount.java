@@ -14,8 +14,8 @@ public class BankAccount {
         return accountId;
     }
 
-    public Balance balance() {
-        return balance;
+    public double funds() {
+        return balance.funds();
     }
 
     @Override

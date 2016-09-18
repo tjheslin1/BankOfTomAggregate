@@ -17,6 +17,6 @@ public class BankAccountTest implements WithAssertions, WithMockito {
         BankAccount bankAccount = new BankAccount(ACCOUNT_ID, balance);
 
         assertThat(bankAccount.accountId()).isEqualTo(ACCOUNT_ID);
-        assertThat(bankAccount.balance()).isEqualTo(balance);
+        assertThat(bankAccount.funds()).isEqualTo(0.0);
     }
 }

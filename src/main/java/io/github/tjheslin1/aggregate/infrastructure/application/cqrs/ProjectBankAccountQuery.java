@@ -4,18 +4,17 @@ import io.github.tjheslin1.aggregate.domain.banking.Balance;
 import io.github.tjheslin1.aggregate.domain.banking.BankAccount;
 import io.github.tjheslin1.aggregate.domain.events.BalanceCommand;
 import io.github.tjheslin1.aggregate.domain.events.BalanceEventVisitor;
-import io.github.tjheslin1.aggregate.domain.events.EventView;
+import io.github.tjheslin1.aggregate.domain.events.EventSorter;
 
+import java.util.List;
 import java.util.stream.Stream;
-
-import static io.github.tjheslin1.aggregate.application.cqrs.command.DepositEventWiring.depositEventWiring;
-import static io.github.tjheslin1.aggregate.application.cqrs.command.WithdrawEventWiring.withdrawalEventWiring;
 
 public class ProjectBankAccountQuery {
 
-    public static BankAccount projectBankAccountQuery(int accountId, EventView eventView) throws Exception {
-        Stream<BalanceCommand> balanceCommands = eventView.eventsSortedByTime(accountId, depositEventWiring(), withdrawalEventWiring());
-        return new BankAccount(accountId, upToDateBalance(balanceCommands));
+    public static BankAccount projectBankAccountQuery(int accountId, EventSorter eventSorter, List<BalanceCommand>... balanceCommands)
+            throws Exception {
+        Stream<BalanceCommand> sortedCommands = eventSorter.sortedEventViews(balanceCommands);
+        return new BankAccount(accountId, upToDateBalance(sortedCommands));
     }
 
     private static Balance upToDateBalance(Stream<BalanceCommand> balanceCommands) {
