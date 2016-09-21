@@ -22,6 +22,6 @@ public class BankingEventServerBuilder {
     }
 
     public BankingEventServer build() {
-        return new BankingEventServer(context, settings);
+        return new BankingEventServer(context, settings.serverPort());
     }
 }

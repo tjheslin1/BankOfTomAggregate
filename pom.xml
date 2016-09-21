@@ -190,6 +190,7 @@
                         <excludedClass>io.github.tjheslin1.aggregate.infrastructure.ui.Aggregate</excludedClass>
                         <excludedClass>io.github.tjheslin1.aggregate.infrastructure.Wiring</excludedClass>
                         <excludedClass>io.github.tjheslin1.aggregate.infrastructure.domain.eventstore.BankingEventServer</excludedClass>
+                        <excludedClass>io.github.tjheslin1.aggregate.infrastructure.domain.eventstore.BankingEventServerBuilder</excludedClass>
                     </excludedClasses>
                     <excludedMethods>
                         <excludedMethod>equals</excludedMethod>
