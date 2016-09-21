@@ -1,5 +1,0 @@
-- eventsAreRetrievedFromDatabaseAndSortedByDateTime test
-
-- writeDepositFundsEventToDatabaseTest - need to cleanup
-
-- BankingEventServerTest#testPost is flakey
