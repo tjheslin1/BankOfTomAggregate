@@ -12,14 +12,14 @@ public class DepositTest extends AcceptanceTest<Request, Response> {
     public static final int ACCOUNT_ID = 23;
     public static final double AMOUNT = 51.0;
 
-    private WhenADepositIsMade aDepositIsMade = new WhenADepositIsMade(this, testInfrastructure, "Gateway");
+    private WhenADepositIsMade aDepositIsMade = new WhenADepositIsMade(this, testInfrastructure, "Gateway",
+            new RequestFormatter(), new ResponseFormatter());
     private ThenFactory<ThenTheResponse, Response> theResponse = ThenTheResponse::new;
 
     @Test
     public void depositIsMadeTest() throws Exception {
         when(aDepositIsMade.forAccountWithId(ACCOUNT_ID).withAmount(AMOUNT));
         then(theResponse).willReturn()
-                .withNoBody()
                 .withResponseCode(200);
     }
 }

@@ -26,10 +26,11 @@ public class StatusServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");
 
-        // collect to prevent 'stream already closed'
         List<ProbeResult> probeResultList = statusUseCase.checkStatusProbes();
 
-        Status overallStatus = probeResultList.stream().anyMatch(probeResult -> Status.FAIL.equals(probeResult.result())) ? Status.FAIL : Status.OK;
+        Status overallStatus = probeResultList.stream()
+                .anyMatch(probeResult -> Status.FAIL.equals(probeResult.result())) ? Status.FAIL : Status.OK;
+
         String responseBody = marshaller.marshall(new StatusPageResult(probeResultList, overallStatus.value));
 
         if (Status.OK.equals(overallStatus)) {

@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 import static java.lang.String.format;
+import static java.util.Arrays.asList;
 
 public class Aggregate {
 
@@ -25,11 +26,11 @@ public class Aggregate {
         Settings settings = new Settings(properties);
         Wiring wiring = new Wiring(settings);
 
-        final DepositServlet servlet = new DepositServlet(wiring.depositFundsUseCase(), new DepositRequestJsonUnmarshaller());
-        final StatusServlet servlet1 = new StatusServlet(wiring.statusUseCase(), new StatusResponseJsonMarshaller());
+        final DepositServlet depositServlet = new DepositServlet(wiring.depositFundsUseCase(), new DepositRequestJsonUnmarshaller());
+        final StatusServlet statusServlet = new StatusServlet(wiring.statusUseCase(asList(wiring.mongoProbe())), new StatusResponseJsonMarshaller());
         BankingEventServer eventServer = new BankingEventServerBuilder(wiring.servletContextHandler(), settings)
-                .withServlet(new ServletHolder(servlet), "/deposit")
-                .withServlet(new ServletHolder(servlet1), "/status")
+                .withServlet(new ServletHolder(depositServlet), "/deposit")
+                .withServlet(new ServletHolder(statusServlet), "/status")
                 .build();
 
         try {
